@@ -76,15 +76,16 @@ Características de la Data:
 - 92 (2018)
 - 98 (2019)
 
-Missing data < 4%
+**Datos nulos < 4%**
 
-Principal limitante:
-Sólo 5 indicadores permanecen constante a lo largo de los 6 años. Una comparación a nivel de indicadores es por lo tanto inestable estadísticamente.
+**Principal limitante**:
+>Sólo 5 indicadores permanecen constante a lo largo de los 6 años. Una comparación a nivel de indicadores es por lo tanto inestable estadísticamente.
 
 ## Principales desiciones
 
 ### Normalización unificada (0–100)
 
+**Problema**
 El problema de las escalas por metodología:
 > GCI 3.0: escala 1–7
 >
@@ -98,11 +99,12 @@ Esto asegura la homogenidad de la métrica. Previene variaciones artificiales de
 
 ### Nivel de Agregación: Pillar > Indicador
 
-Issue
-Indicator definitions change across years.
+**Problema**
+>Las definiciones de los indicadores cambiaron a lo largo de los años, es un problema poder comparar a nivel de indicadores.
 
-Decision
-Compute pillar-level scores as:
+**Decision**
+
+Cálculo de los puntajes (scores) a nivel de pilares, Se hizo mediante:
 
 $$
     P_{k,j} = \frac{1}{n_j}\sum_{i in j}{sc_{i,k}}
@@ -116,34 +118,40 @@ Donde:
 Esto reduce la inestabilidad dimensional, mejora la robustes de las técnicas PCA y STATIS y reduce el ruido de la relocalización de los indicadores.
 
 
-4.3 Missing Data Strategy
+### Estrategia para datos nulos o perdidos
 
-Missingness < 4%.
+Pérdida de valores < 4%
 
-Decision
-No complex imputation performed.
+**Decisión**
+No se necesitaron imputaciones complejas.
 
-Rationale
+De esta forma se mantuvo la data estable para análisis de clustering y PCA. Se evitó bias por inyección.
 
-Low proportion.
+### Enriquecimiento de Categorías
 
-Avoid bias injection.
-
-Structural methods (PCA, clustering) remain stable.
-
-4.4 Categorical Enrichment
-
-Two categorical variables introduced:
-
-- BLOK: geographic region
-- ORG: institutional group
+Se introdujeron 2 nuevas categorías: 
+- **BLOK**: Región geográfica
+- **ORG**: Organización mundial
     - OECD
     - BRICS
 
-Purpose
+Esto permite validar la coherencia del clustering, examinar la heterogeneidad de la estructura de los datos y permite dar interpretatibilidad a los resultados.
 
-Validate cluster coherence.
 
-Examine structural heterogeneity.
+## Framework de Análisis
+### Análisis Exploratorio Descriptivo (EDA)
 
-Provide interpretability layer.
+- Distribución de los indicadores respecto a lo que representan para cada pilar.
+- Diagnóstico de valores perdidos
+- Matriz de correlaciones entre los pilares
+- Evolución temporal de los puntajes
+
+### Agrupamiento Jerárquico
+
+La distancia ocupada fue la euclediana:
+
+$$
+d(x,y) = {||x−y||}^{2}
+d(x,y) = {||x−y||}^{2}
+$$
+
