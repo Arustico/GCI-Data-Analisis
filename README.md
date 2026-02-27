@@ -62,3 +62,88 @@ flowchart LR
     getMatriz --> makeAnalisis
 ```
 
+### Datos
+
+**Fuente**: Reportes (pdf) del Foro Económico Mundial (2014 - 2019)
+
+Características de la Data:
+- 55 países
+- 12 pilares
+- Periodo 2014–2019
+
+**N° de Indicadores por año**:
+- 109 (2014–2017)
+- 92 (2018)
+- 98 (2019)
+
+Missing data < 4%
+
+Principal limitante:
+Sólo 5 indicadores permanecen constante a lo largo de los 6 años. Una comparación a nivel de indicadores es por lo tanto inestable estadísticamente.
+
+## Principales desiciones
+
+### Normalización unificada (0–100)
+
+El problema de las escalas por metodología:
+> GCI 3.0: escala 1–7
+>
+> GCI 4.0: escala 0–100
+
+**Desición**
+> Todos los indicadores seran re-escalados utilizando la normalización 0 - 100 de la metodología GCI 4.0.
+
+Esto asegura la homogenidad de la métrica. Previene variaciones artificiales de inflación, preserva la monotocidad y permite una comparación estructural a nivel de pilares.
+
+
+### Nivel de Agregación: Pillar > Indicador
+
+Issue
+Indicator definitions change across years.
+
+Decision
+Compute pillar-level scores as:
+
+$$
+    P_{k,j} = \frac{1}{n_j}\sum_{i in j}{sc_{i,k}}
+$$
+
+Donde:
+- $k$ es el país
+- $j$ es el pilar
+- $sc_{i,k}$ es el score del indicador normalizado
+
+Esto reduce la inestabilidad dimensional, mejora la robustes de las técnicas PCA y STATIS y reduce el ruido de la relocalización de los indicadores.
+
+
+4.3 Missing Data Strategy
+
+Missingness < 4%.
+
+Decision
+No complex imputation performed.
+
+Rationale
+
+Low proportion.
+
+Avoid bias injection.
+
+Structural methods (PCA, clustering) remain stable.
+
+4.4 Categorical Enrichment
+
+Two categorical variables introduced:
+
+- BLOK: geographic region
+- ORG: institutional group
+    - OECD
+    - BRICS
+
+Purpose
+
+Validate cluster coherence.
+
+Examine structural heterogeneity.
+
+Provide interpretability layer.
