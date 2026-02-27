@@ -152,8 +152,8 @@ La distancia ocupada fue la euclediana:
 
 $$
 \begin{align}
-    d(x,y) = {||x−y||}^{2}\\
-    d(x,y) = {||x−y||}^{2}
+    d(x,y) &= {\hbar{x−y}}^{2}\\
+    d(x,y) &= {\hbar{x−y}}^{2}
 \end{align}
 $$
 
