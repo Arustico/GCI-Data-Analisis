@@ -12,8 +12,8 @@ Autor: Ariel Ignacio Núñez Salinas
 
 Este proyecto analiza la estructura temporal de los 12 pilares del Índice de Competitividad Global (GCI) publicado por el World Economic Forum durante el período 2014–2019. Existieron 2 metodologías:
 
-    GCI 3.0 → usado hasta 2017
-    GCI 4.0 → introducida en 2018
+> GCI 3.0 → usado hasta 2017
+> GCI 4.0 → introducida en 2018
 
 Esta transisción modificó
 
@@ -24,7 +24,7 @@ Esta transisción modificó
 
 El proyecto aborda el siguiente problema:
     
-    Es el GCI comparable estructuralmente a lo largo del periodo 2014-2019, o la transición metodológica genera una discontinuidad estadística detectable?
+> Es el GCI comparable estructuralmente a lo largo del periodo 2014-2019, o la transición metodológica genera una discontinuidad estadística detectable?
     
 Para abordar esto, se implementa un enfoque multivariante combinando:
 
@@ -51,7 +51,7 @@ El pipeline sigue esta estructura lógica:
 ```mermaid
 flowchart LR
     indexRaw[Indicadores Raw
-            (2014 - 2019)]
+            (2014-2019)]
     normalization[Normalización 0-100]
     getAverage[Cálculo de promedio por Pilar]
     getMatriz[Matrices País x Pilar x Año]
