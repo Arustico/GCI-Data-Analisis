@@ -151,7 +151,10 @@ Esto permite validar la coherencia del clustering, examinar la heterogeneidad de
 La distancia ocupada fue la euclediana:
 
 $$
-d(x,y) = {||x−y||}^{2}
-d(x,y) = {||x−y||}^{2}
+\begin{align}
+    d(x,y) = {||x−y||}^{2}\\
+    d(x,y) = {||x−y||}^{2}
+\end{align}
 $$
+
 
