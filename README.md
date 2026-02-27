@@ -52,7 +52,7 @@ El pipeline sigue esta estructura lógica:
 ```mermaid
 flowchart LR
     indexRaw[Indicadores Raw
-            (2014 a 2019)]
+             2014 - 2019]
     normalization[Normalización 0-100]
     getAverage[Cálculo de promedio por Pilar]
     getMatriz[Matrices País x Pilar x Año]
