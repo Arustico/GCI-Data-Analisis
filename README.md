@@ -7,8 +7,9 @@ Universidad Bernardo O’Higgins
 Santiago, Chile – 2025
 
 Autor: Ariel Ignacio Núñez Salinas
+------------------------------------------------------------------------
 
-## Descripción del Proyecto
+## 1. Descripción del Proyecto
 
 Este proyecto analiza la estructura temporal de los 12 pilares del Índice de Competitividad Global (GCI) publicado por el World Economic Forum durante el período 2014–2019. Existieron 2 metodologías:
 
@@ -36,8 +37,9 @@ Para abordar esto, se implementa un enfoque multivariante combinando:
 - STATIS
 
 El objetivo no es solo replicar rankings, sino evaluar coherencia estructural, estabilidad y discontinuidades internas del índice.
+------------------------------------------------------------------------
 
-## Objetivos de análisis
+## 2. Objetivos de análisis
 
 1. Evaluar la consistencia temporal de los pilares.
 2. Detectar pilares sensibles a cambios metodológicos o shocks económicos.
@@ -61,8 +63,9 @@ flowchart LR
     normalization --> getAverage --> getMatriz
     getMatriz --> makeAnalisis
 ```
+------------------------------------------------------------------------
 
-### Datos
+## 3. Datos
 
 **Fuente**: Reportes (pdf) del Foro Económico Mundial (2014 - 2019)
 
@@ -81,9 +84,11 @@ Características de la Data:
 **Principal limitante**:
 >Sólo 5 indicadores permanecen constante a lo largo de los 6 años. Una comparación a nivel de indicadores es por lo tanto inestable estadísticamente.
 
-## Principales desiciones
+------------------------------------------------------------------------
 
-### Normalización unificada (0–100)
+## 4. Principales desiciones
+
+### 4.1 Normalización unificada (0–100)
 
 **Problema**
 El problema de las escalas por metodología:
@@ -97,7 +102,7 @@ El problema de las escalas por metodología:
 Esto asegura la homogenidad de la métrica. Previene variaciones artificiales de inflación, preserva la monotocidad y permite una comparación estructural a nivel de pilares.
 
 
-### Nivel de Agregación: Pillar > Indicador
+### 4.2 Nivel de Agregación: Pillar > Indicador
 
 **Problema**
 >Las definiciones de los indicadores cambiaron a lo largo de los años, es un problema poder comparar a nivel de indicadores.
@@ -107,7 +112,7 @@ Esto asegura la homogenidad de la métrica. Previene variaciones artificiales de
 Cálculo de los puntajes (scores) a nivel de pilares, Se hizo mediante:
 
 $$
-    P_{k,j} = \frac{1}{n_j}\sum_{i in j}{sc_{i,k}}
+    P_{k,j} = \frac{1}{n_j}\sum_{i \in j}{sc_{i,k}}
 $$
 
 Donde:
@@ -118,7 +123,7 @@ Donde:
 Esto reduce la inestabilidad dimensional, mejora la robustes de las técnicas PCA y STATIS y reduce el ruido de la relocalización de los indicadores.
 
 
-### Estrategia para datos nulos o perdidos
+### 4.3 Estrategia para datos nulos o perdidos
 
 Pérdida de valores < 4%
 
@@ -127,7 +132,7 @@ No se necesitaron imputaciones complejas.
 
 De esta forma se mantuvo la data estable para análisis de clustering y PCA. Se evitó bias por inyección.
 
-### Enriquecimiento de Categorías
+### 4.4 Enriquecimiento de Categorías
 
 Se introdujeron 2 nuevas categorías: 
 - **BLOK**: Región geográfica
@@ -136,25 +141,108 @@ Se introdujeron 2 nuevas categorías:
     - BRICS
 
 Esto permite validar la coherencia del clustering, examinar la heterogeneidad de la estructura de los datos y permite dar interpretatibilidad a los resultados.
+------------------------------------------------------------------------
 
-
-## Framework de Análisis
-### Análisis Exploratorio Descriptivo (EDA)
+## 5. Framework de Análisis
+### 5.1 Análisis Exploratorio Descriptivo (EDA)
 
 - Distribución de los indicadores respecto a lo que representan para cada pilar.
 - Diagnóstico de valores perdidos
 - Matriz de correlaciones entre los pilares
 - Evolución temporal de los puntajes
 
-### Agrupamiento Jerárquico
+### 5.2 Agrupamiento Jerárquico
+-   Distance: Euclidean
+-   Linkage: Ward's method
+-   Validation: Cophenetic correlation coefficient
 
-La distancia ocupada fue la euclediana:
+Distancia euclediana:
+$$
+    d(x,y) &= {\left\Vert{x−y}\right\Vert}^{2}\\
+$$
 
-$$
-\begin{align}
-    d(x,y) &= {\hbar{x−y}}^{2}\\
-    d(x,y) &= {\hbar{x−y}}^{2}
-\end{align}
-$$
+**Resultado**: Clara seperación entre 2014--2017 y 2018--2019.
+
+
+### 5.2 Principal Component Analysis (PCA)
+
+-   PC1 ≈ 80% variance explained
+-   PC2 ≈ 5%
+
+PC1 separates developed vs emerging economies.
+
+
+
+### 5.3 HJ-Biplot
+
+Based on Singular Value Decomposition (SVD).\
+Allows simultaneous representation of countries and pillar-year
+variables.
+
+Key Finding: Structural rotations in pillars 3 and 10 during 2016 and
+2018.
+
+
+### 5.4 STATIS (Multi-table Analysis)
+
+Each year treated as an independent table.\
+RV coefficient used to measure similarity across yearly matrices.
+
+Findings:
+
+-   Strong coherence within 2014--2017.
+-   Distinct structure in 2018--2019.
+-   Methodological discontinuity confirmed.
+
+------------------------------------------------------------------------
+
+## 6. Main Findings
+
+1.  Structural stability within homogeneous methodological periods.
+2.  Clear structural break between GCI 3.0 and GCI 4.0.
+3.  Pillars 3, 7, and 10 most sensitive to redesign.
+4.  Developed economies show lower structural volatility.
+5.  Multivariate geometry more informative than ranking positions.
+
+------------------------------------------------------------------------
+
+## 7. Repository Structure
+
+    ├── data/
+    ├── notebooks/
+    ├── src/
+    ├── figures/
+    ├── README.md
+
+------------------------------------------------------------------------
+
+## 8. Reproducibilidad
+
+### Dependencias de Python
+
+-   pandas
+-   numpy
+-   scipy
+-   scikit-learn
+-   seaborn
+-   plotly
+
+### Dependencias de R
+
+-   ade4
+-   FactoMineR
+-   ggplot2
+
+------------------------------------------------------------------------
+
+## 9. Consideraciones metodológicas
+
+Los valores de GCI son comparables solo dentro de los periodos por separado:
+
+-   2014--2017\
+-   2018--2019
+
+Una comparación directa a lo largo del cambio metodológico, es estadísticamente inválida sin ajustes estructurales.
+
 
 
