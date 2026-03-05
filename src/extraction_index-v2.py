@@ -1,11 +1,50 @@
 """
 extraction_index.py
 -------------------
-Módulo para extraer y estructurar índices e indicadores desde archivos PDF
-usando tabula-py. Genera un DataFrame consolidado con número de índice,
-descripción normalizada y año de publicación.
+Módulo para extraer y estructurar índices e indicadores desde los PDFs del
+Informe de Competitividad Global (WEF) para los años 2014–2019.
 
-Uso:
+Estrategia de extracción por año
+─────────────────────────────────
+Los PDFs del WEF cambiaron su maquetación entre ediciones. Hay dos formatos:
+
+  FORMATO A — 2018/2019 (tabula, stream):
+    Las tablas de índices son estructuras tabulares detectables por tabula-py.
+    Columna 0 contiene strings "N.NN Descripción".
+
+  FORMATO B — 2014/2015/2016 (pdftotext + regex):
+    Los indicadores están en una columna de texto de doble página (layout a 2
+    columnas). tabula no detecta tabla alguna porque no hay líneas de borde.
+    Se extrae con `pdftotext -layout` y un parser de segmentos por línea que
+    maneja DOS sub-formatos internos:
+      B1) "N.NN Descripción"       → número y descripción en el mismo segmento
+      B2) "N.NN" | "Descripción"   → separados por las múltiples columnas del layout
+          (pilar 3 y pilares 11-12 presentan este comportamiento)
+
+  FORMATO C — 2017 (tabula + transposición):
+    Idéntico al Formato A pero la tabla está transpuesta; los indicadores se
+    distribuyen en las filas 0 y 4 de la versión transpuesta.
+
+Páginas correctas por PDF (confirmadas inspeccionando los PDFs reales)
+────────────────────────────────────────────────────────────────────────
+  Archivo (orden alfabético)                        Páginas  Método
+  ────────────────────────────────────────────────────────────────────
+  Global_Competitiveness_Report_2015-2016.pdf       57-58    pdftotext  ← CORREGIDO
+  TheGlobalCompetitivenessReport2016-2017_FINAL     55-56    pdftotext  ← CORREGIDO
+  TheGlobalCompetitivenessReport2017-2018           55       tabula
+  TheGlobalCompetitivenessReport2018                70-71    tabula
+  WEF_GlobalCompetitivenessReport_2014-15           65-67    pdftotext  ← CORREGIDO
+  WEF_TheGlobalCompetitivenessReport2019            63-65    tabula
+
+Requisitos de entorno (.env)
+────────────────────────────
+  PDF_FILES_PATH   → directorio con los PDFs
+  FOLDER_PROCESSED → directorio donde se guarda el CSV de salida
+  FOLDER_RAW       → (opcional) carpeta local de datos crudos
+  LOG_LEVEL        → (opcional) nivel de logging; por defecto INFO
+
+Uso
+───
     python extraction_index.py
 """
 
@@ -14,16 +53,15 @@ Uso:
 # ─────────────────────────────────────────────
 import os
 import re
+import subprocess
 import logging
 import unicodedata
 from pathlib import Path
-from typing import Optional
 
 # ─────────────────────────────────────────────
 # Librerías de terceros
 # ─────────────────────────────────────────────
 import pandas as pd
-import numpy as np
 import tabula
 from dotenv import load_dotenv
 
@@ -44,8 +82,14 @@ logger = logging.getLogger(__name__)
 # Variables de configuración
 # ─────────────────────────────────────────────
 FOLDER_RAW_LOCAL = Path(os.getenv("FOLDER_RAW", "data/raw"))
-FOLDER_PROCESSED = Path(os.getenv("FOLDER_PROCESSED"))
 
+_folder_processed = os.getenv("FOLDER_PROCESSED")
+if not _folder_processed:
+    raise EnvironmentError(
+        "La variable de entorno 'FOLDER_PROCESSED' no está definida. "
+        "Agrégala en tu archivo .env antes de continuar."
+    )
+FOLDER_PROCESSED = Path(_folder_processed)
 
 _pdf_path_env = os.getenv("PDF_FILES_PATH")
 if not _pdf_path_env:
@@ -55,335 +99,458 @@ if not _pdf_path_env:
     )
 PDF_FILES_PATH = Path(_pdf_path_env)
 
-# Páginas a leer por PDF (en el mismo orden que los archivos del directorio).
-# NOTA: actualizar esta lista si se agregan nuevos PDFs o periodos.
-PAGES_PER_PDF: list[str] = ["63-65", "70-71", "55", "95", "111", "121"]
+# ── Páginas por PDF ────────────────────────────────────────────────────────────
+# Orden: coincide con el orden ALFABÉTICO de los archivos en PDF_FILES_PATH.
+# NOTA: actualizar esta lista si se agregan nuevos PDFs.
+#
+PAGES_PER_PDF: list[str] = ["57-58", "55-56", "55", "70-71", "65-67", "63-65"]
 
-# Patrón por defecto para capturar la descripción de un indicador
+# ── Sets de años por método de extracción ─────────────────────────────────────
+AÑOS_PDFTOTEXT = {"2014", "2015", "2016"}   # Formato B: pdftotext + regex
+AÑOS_TABULA_A  = {"2018", "2019"}           # Formato A: tabula, columna 0
+AÑOS_TABULA_C  = {"2017"}                   # Formato C: tabula + transposición
+
+# ── Patrones de regex compilados ──────────────────────────────────────────────
+# Número de índice exacto (todo el segmento): "1.01", "12.07"
+_RE_NUMERO_SOLO = re.compile(r"^\d+\.\d+$")
+# Número + descripción juntos en un segmento: "1.01 Property rights"
+_RE_INDIC_COMPLETO = re.compile(r"^(\d+\.\d+)\s+([A-Z].+)")
+# Número en inicio de cadena más larga (para filtros de candidatos tabula)
+_RE_NUMERO_EN_CADENA = re.compile(r"^\d+\.\d+")
+
 DEFAULT_DESCRIPTION_PATTERN = r"([A-Z])\w.+"
 
-# Columnas del DataFrame final
-OUTPUT_COLUMNS = ["NUM_INDX", "DESCRIPCION", "AÑO", "DESCRIPCION_INDX_NORM"]
+# ── Esquemas de columnas ──────────────────────────────────────────────────────
+OUTPUT_COLUMNS = [
+    "NUM_INDX", "DESCRIPCION_INDX", "DESCRIPCION_INDX_NORM",
+    "PILAR", "SUBPILAR", "DESCRIPCION_PILAR",
+    "AÑO", "CATEGORIA_INDX", "CATEGORIA_DESC", "FACTOR",
+]
+
+# ── Mapeos WEF ────────────────────────────────────────────────────────────────
+MAP_CATEGORIAS = [
+    {"CATEGORIA_INDX": "A", "CATEGORIA_DESC": "Requisitos Básicos",
+     "FACTOR": 0.4, "PILAR": [1, 2, 3, 4]},
+    {"CATEGORIA_INDX": "B", "CATEGORIA_DESC": "Impulsores de Eficiencia",
+     "FACTOR": 0.5, "PILAR": [5, 6, 7, 8, 9, 10]},
+    {"CATEGORIA_INDX": "C", "CATEGORIA_DESC": "Factores de Innovación y Sofisticación",
+     "FACTOR": 0.1, "PILAR": [11, 12]},
+]
+
+MAP_DESCRIPCION_PILAR = {
+    1: "Instituciones",
+    2: "Infraestructura",
+    3: "Adopción de Tecnologías de Información y Comunicación (TIC)",
+    4: "Estabilidad Macroeconómica",
+    5: "Salud",
+    6: "Habilidades",
+    7: "Mercado de Productos",
+    8: "Mercado Laboral",
+    9: "Sistema Financiero",
+    10: "Tamaño del Mercado",
+    11: "Dinamismo Empresarial",
+    12: "Capacidad de Innovación",
+}
 
 
 # ─────────────────────────────────────────────
-# Funciones auxiliares
+# Funciones auxiliares de texto
 # ─────────────────────────────────────────────
 
 def normalizar_texto(texto: str) -> str:
     """
-    Normaliza una cadena de texto para comparaciones y búsquedas:
-      1. Elimina acentos (NFD + filtro de categoría 'Mn').
+    Normaliza una cadena para comparaciones y búsquedas:
+      1. Elimina acentos (NFD + filtro categoría 'Mn').
       2. Convierte a minúsculas.
       3. Elimina caracteres que no sean letras, dígitos ni espacios.
-      4. Colapsa espacios múltiples en uno solo.
+      4. Colapsa espacios múltiples.
 
-    Args:
-        texto: Cadena a normalizar.
-
-    Returns:
-        Cadena normalizada.
+    Ejemplo:
+        >>> normalizar_texto("Índice de Innovación (2019)")
+        'indice de innovacion 2019'
     """
     texto = str(texto)
-    # Paso 1 – quitar acentos
     texto = "".join(
         c for c in unicodedata.normalize("NFD", texto)
         if unicodedata.category(c) != "Mn"
     )
-    # Paso 2 – minúsculas
     texto = texto.lower()
-    # Paso 3 – solo alfanuméricos y espacios
     texto = re.sub(r"[^a-z0-9\s]", "", texto)
-    # Paso 4 – espacios múltiples
-    texto = re.sub(r"\s+", " ", texto).strip()
-    return texto
+    return re.sub(r"\s+", " ", texto).strip()
 
 
 def extraer_indice_y_descripcion(
-    cadena_indicador: str,
+    cadena: str,
     patron_descripcion: str = DEFAULT_DESCRIPTION_PATTERN,
-) -> list[str]:
+) -> tuple[str, str]:
     """
-    Extrae el número de índice y la descripción desde una cadena con formato:
-        '1.2 Descripción del indicador ...'
+    Extrae (numero_indice, descripcion) de un string con formato
+    "N.NN Descripción del indicador".
 
     Args:
-        cadena_indicador:   Cadena raw del PDF.
-        patron_descripcion: Expresión regular para capturar la descripción.
-                            Por defecto captura palabras que inician en mayúscula.
+        cadena: String ya limpio (sin puntos suspensivos ni rankings).
+        patron_descripcion: Regex para capturar la descripción.
 
     Returns:
-        Lista con dos elementos: [numero_indice, descripcion].
+        Tupla (numero_indice, descripcion).
 
     Raises:
-        ValueError: Si no se encuentran el índice o la descripción.
+        ValueError: Si no se encuentra el índice o la descripción.
     """
-    match_indice = re.search(r"^\d+\.\d+", cadena_indicador)
-    match_descripcion = re.search(patron_descripcion, cadena_indicador)
-
-    if not match_indice:
-        raise ValueError(
-            f"No se encontró un número de índice válido en: '{cadena_indicador}'"
-        )
-    if not match_descripcion:
-        raise ValueError(
-            f"No se encontró descripción con patrón '{patron_descripcion}' en: '{cadena_indicador}'"
-        )
-
-    return [match_indice.group(), match_descripcion.group()]
+    m_num = re.search(r"^\d+\.\d+", cadena)
+    m_desc = re.search(patron_descripcion, cadena)
+    if not m_num:
+        raise ValueError(f"Sin número de índice en: '{cadena}'")
+    if not m_desc:
+        raise ValueError(f"Sin descripción en: '{cadena}'")
+    return m_num.group(), m_desc.group()
 
 
-def extraer_descripcion_con_puntos(cadena_indice: str) -> list[str] | str:
+def limpiar_descripcion_wef(raw: str) -> str:
     """
-    Extrae el número y la descripción de un índice con formato de tabla de contenidos:
-        '1.2  Nombre del indicador .....'
+    Elimina sufijos de notas al pie de las descripciones WEF:
+      - Asterisco y lo que sigue:  "Strength of investor protection*"  → "..."
+      - Símbolo ½ y lo que sigue:  "Mobile subscriptions* ½"           → "..."
+      - Fracción escrita "1/2" con espacio previo.
 
-    Args:
-        cadena_indice: Cadena raw del PDF con puntos suspensivos al final.
-
-    Returns:
-        Lista [numero_indice, descripcion] si hay coincidencia,
-        o la cadena original si no se reconoce el formato.
+    No elimina letras de footnote pegadas (ej. "malariak") porque la
+    distinción con letras propias de la palabra es ambigua. Estas letras
+    son irrelevantes para normalizar_texto().
     """
-    cadena_indice = str(cadena_indice)
-    patron_frase = r"^\s*(?:\d+(\.\d+)?\s+)?(.*?)\s+\.{2,}"
-    patron_numero = r"^\d+\.\d+"
-
-    match_frase = re.search(patron_frase, cadena_indice)
-    if not match_frase:
-        logger.debug("Formato de tabla de contenidos no reconocido: '%s'", cadena_indice)
-        return cadena_indice
-
-    match_numero = re.search(patron_numero, cadena_indice)
-    if not match_numero:
-        logger.debug("Número de índice no encontrado en: '%s'", cadena_indice)
-        return cadena_indice
-
-    return [match_numero.group(), match_frase.group(2)]
+    desc = re.sub(r"\s*[\*½].*$", "", raw)
+    desc = re.sub(r"\s+1/2.*$", "", desc)
+    return desc.strip()
 
 
 # ─────────────────────────────────────────────
-# Funciones principales
+# Lectura de PDFs con tabula
 # ─────────────────────────────────────────────
 
 def leer_tablas_desde_pdfs(ruta_pdfs: Path) -> list[tuple]:
     """
-    Lee tablas de los PDFs ubicados en *ruta_pdfs* usando tabula-py.
+    Lee tablas de todos los PDFs en *ruta_pdfs* con tabula-py.
 
-    Cada PDF se empareja con la página correspondiente en PAGES_PER_PDF
-    (se asume que el orden del sistema de archivos coincide con el orden
-    de las páginas declaradas).
-
-    Args:
-        ruta_pdfs: Directorio que contiene los archivos PDF.
+    Para los años que usan pdftotext (2014/2015/2016), tabula puede devolver
+    listas vacías; esto está previsto en `construir_dataframe_indices`.
 
     Returns:
-        Lista de tuplas con estructura:
-            (nombre_archivo, periodo, año, lista_de_DataFrames)
+        Lista de tuplas (nombre_archivo, periodo, año, lista_tablas).
 
     Raises:
         FileNotFoundError: Si el directorio no existe.
     """
     if not ruta_pdfs.exists():
-        raise FileNotFoundError(f"El directorio de PDFs no existe: {ruta_pdfs}")
+        raise FileNotFoundError(f"Directorio no encontrado: {ruta_pdfs}")
 
-    archivos_pdf = sorted(ruta_pdfs.iterdir())  # orden consistente entre SO
+    archivos_pdf = sorted(ruta_pdfs.iterdir())
+
     if len(archivos_pdf) != len(PAGES_PER_PDF):
         logger.warning(
-            "Se encontraron %d archivos PDF pero hay %d entradas en PAGES_PER_PDF. "
-            "Verifica que la lista de páginas esté actualizada.",
-            len(archivos_pdf),
-            len(PAGES_PER_PDF),
+            "Hay %d PDFs pero PAGES_PER_PDF tiene %d entradas. "
+            "Verifica la sincronización.",
+            len(archivos_pdf), len(PAGES_PER_PDF),
         )
 
     resultados: list[tuple] = []
-
     for archivo, paginas in zip(archivos_pdf, PAGES_PER_PDF):
-        nombre_archivo = archivo.name
-        # Extrae el periodo del nombre de archivo (ej. "2016-01", "2018")
-        match_periodo = re.search(r"\d+[-_]\d+|\d+", nombre_archivo)
-        if not match_periodo:
-            logger.warning("No se pudo extraer el periodo de '%s'. Se omite.", nombre_archivo)
+        nombre = archivo.name
+        m = re.search(r"\d+[-_]\d+|\d+", nombre)
+        if not m:
+            logger.warning("Sin periodo en '%s'. Se omite.", nombre)
             continue
 
-        periodo = match_periodo.group()
+        periodo = m.group()
         año = re.split(r"[-_]", periodo)[0]
 
-        logger.info("Leyendo: %s  |  páginas: %s", nombre_archivo, paginas)
+        logger.info("Leyendo: %-55s | páginas: %s", nombre, paginas)
         try:
             tablas = tabula.read_pdf(str(archivo), pages=paginas, multiple_tables=True)
-            resultados.append((nombre_archivo, periodo, año, tablas))
-        except Exception as exc:  # tabula puede lanzar varios tipos de error
-            logger.error("No se pudo leer '%s': %s", nombre_archivo, exc)
+            resultados.append((nombre, periodo, año, tablas))
+            logger.debug("  → %d tabla(s).", len(tablas))
+        except Exception as exc:
+            logger.error("No se pudo leer '%s': %s", nombre, exc)
 
     return resultados
 
 
-def construir_dataframe_indices(tablas_por_pdf: list[tuple]) -> pd.DataFrame:
-    """
-    Consolida los índices extraídos de todos los PDFs en un único DataFrame.
+# ─────────────────────────────────────────────
+# Extractores especializados por formato
+# ─────────────────────────────────────────────
 
-    Lógica por año:
-      - 2016 / 2017: tabla transpuesta; índices en filas 0 y 4.
-      - 2018 / 2019: concatenación de todas las tablas; índices en columna 0.
-      - 2014 / 2015: tabla transpuesta con descripción compuesta (filas 2 y 3).
-        Los índices siguen el formato de tabla de contenidos (puntos al final).
+def _extraer_con_pdftotext(ruta_pdf: str, paginas: str, año: str) -> list[tuple]:
+    """
+    Extractor para años 2014/2015/2016 (Formato B).
+
+    Estos PDFs presentan los indicadores en una estructura de dos columnas
+    de texto sin bordes tabulares visibles, por lo que tabula no las detecta.
+    Se usa `pdftotext -layout` que preserva el posicionamiento espacial,
+    permitiendo separar las columnas por cantidad de espacios.
+
+    Sub-formatos internos manejados:
+      B1) Número y descripción en el mismo segmento de columna:
+              "1.01 Property rights"
+      B2) Número solo en un segmento, descripción en el siguiente
+          (ocurre en pilar 3 y pilares 11-12):
+              Seg[i]   = "3.01"
+              Seg[i+1] = "Government budget balance*"
+
+    Páginas correctas confirmadas inspeccionando los PDFs:
+        2014 → 65-67  (pilar 3 en pág 65-66, pilares 11-12 en pág 67)
+        2015 → 57-58
+        2016 → 55-56
 
     Args:
-        tablas_por_pdf: Salida de `leer_tablas_desde_pdfs`.
+        ruta_pdf: Ruta completa al archivo PDF.
+        paginas:  Rango "inicio-fin" (ej. "65-67") o página sola ("55").
+        año:      Año del informe.
+
+    Returns:
+        Lista de tuplas (NUM_INDX, DESCRIPCION, AÑO), deduplicada y ordenada.
+    """
+    primera, *resto = paginas.split("-")
+    ultima = resto[0] if resto else primera
+
+    proc = subprocess.run(
+        ["pdftotext", "-f", primera, "-l", ultima, "-layout", ruta_pdf, "-"],
+        capture_output=True, text=True,
+    )
+    if proc.returncode != 0:
+        logger.error("[%s] pdftotext falló: %s", año, proc.stderr.strip())
+        return []
+
+    texto = proc.stdout
+    vistos: set[str] = set()
+    indicadores: list[tuple] = []
+
+    for linea in texto.splitlines():
+        # Dividir la línea por 4+ espacios → separa columnas del layout.
+        segmentos = [s.strip() for s in re.split(r"\s{4,}", linea) if s.strip()]
+
+        i = 0
+        while i < len(segmentos):
+            seg = segmentos[i]
+
+            # ── Caso B1: "N.NN Descripción..." en el mismo segmento ─────────
+            m = _RE_INDIC_COMPLETO.match(seg)
+            if m:
+                num = m.group(1)
+                desc = limpiar_descripcion_wef(m.group(2))
+                if desc and len(desc) >= 3 and num not in vistos:
+                    vistos.add(num)
+                    indicadores.append((num, desc, año))
+                i += 1
+                continue
+
+            # ── Caso B2: "N.NN" solo → descripción en el segmento siguiente ─
+            if _RE_NUMERO_SOLO.match(seg) and i + 1 < len(segmentos):
+                siguiente = segmentos[i + 1]
+                if re.match(r"^[A-Z]", siguiente):
+                    num = seg
+                    desc = limpiar_descripcion_wef(siguiente)
+                    if desc and len(desc) >= 3 and num not in vistos:
+                        vistos.add(num)
+                        indicadores.append((num, desc, año))
+                    i += 2
+                    continue
+
+            i += 1
+
+    indicadores.sort(key=lambda x: [int(p) for p in x[0].split(".")])
+    logger.info("[%s] %d indicadores extraídos (pdftotext).", año, len(indicadores))
+    return indicadores
+
+
+def _extraer_2018_2019(tablas: list, año: str) -> list[tuple]:
+    """
+    Extractor para 2018/2019 (Formato A).
+
+    Concatena todas las tablas del PDF y toma la columna 0, que contiene
+    strings con formato "N.NN Descripción".
+
+    Corrección vs versión original: se usa `tablas` (el PDF actual) en lugar
+    de `tablas_por_pdf[0][-1]` que siempre apuntaba al primer PDF cargado.
+    """
+    if not tablas:
+        logger.warning("[%s] tabula no encontró tablas.", año)
+        return []
+
+    candidatos = pd.concat(tablas).iloc[:, 0].tolist()
+    candidatos = [c for c in candidatos if _RE_NUMERO_EN_CADENA.search(str(c))]
+
+    filas: list[tuple] = []
+    for c in candidatos:
+        try:
+            num, desc = extraer_indice_y_descripcion(str(c))
+            filas.append((num, desc, año))
+        except ValueError as exc:
+            logger.debug("[%s] Omitido: %s", año, exc)
+
+    logger.info("[%s] %d indicadores extraídos (tabula).", año, len(filas))
+    return filas
+
+
+def _extraer_2017(tablas: list, año: str) -> list[tuple]:
+    """
+    Extractor para 2017 (Formato C — tabla transpuesta).
+
+    La tabla del PDF está transpuesta: tras hacer `.T`, los indicadores se
+    encuentran en las filas 0 y 4. Se valida la existencia de esas filas
+    antes de acceder y se usa `.to_frame().T.iloc[0]` para re-indexar
+    (igual que el notebook original), evitando errores de índice duplicado.
+    """
+    if not tablas:
+        logger.warning("[%s] tabula no encontró tablas.", año)
+        return []
+
+    tabla_t = tablas[0].T
+    n_filas = tabla_t.shape[0]
+
+    if n_filas < 1:
+        logger.warning("[%s] Tabla transpuesta vacía.", año)
+        return []
+
+    bloques = [tabla_t.iloc[0, :]]
+    if n_filas >= 5:
+        bloques.append(tabla_t.iloc[4, :])
+    else:
+        logger.warning(
+            "[%s] Tabla transpuesta tiene %d fila(s); solo se usa fila 0.",
+            año, n_filas,
+        )
+
+    candidatos = pd.concat(bloques).to_frame().T.iloc[0].tolist()
+    candidatos = [c for c in candidatos if _RE_NUMERO_EN_CADENA.search(str(c))]
+
+    filas: list[tuple] = []
+    for c in candidatos:
+        try:
+            num, desc = extraer_indice_y_descripcion(str(c))
+            filas.append((num, desc, año))
+        except ValueError as exc:
+            logger.debug("[%s] Omitido: %s", año, exc)
+
+    logger.info("[%s] %d indicadores extraídos (tabula+T).", año, len(filas))
+    return filas
+
+
+# ─────────────────────────────────────────────
+# Pipeline principal de extracción
+# ─────────────────────────────────────────────
+
+def construir_dataframe_indices(
+    tablas_por_pdf: list[tuple],
+    ruta_pdfs: Path,
+) -> pd.DataFrame:
+    """
+    Consolida los índices de todos los PDFs en un único DataFrame intermedio.
+
+    Despacha a la función de extracción correcta según el año:
+        2014/2015/2016  →  _extraer_con_pdftotext()
+        2017            →  _extraer_2017()
+        2018/2019       →  _extraer_2018_2019()
+
+    Args:
+        tablas_por_pdf: Salida de `leer_tablas_desde_pdfs()`.
+        ruta_pdfs:      Directorio con los PDFs (para localizar el archivo
+                        al llamar a pdftotext).
 
     Returns:
         DataFrame con columnas: NUM_INDX, DESCRIPCION, AÑO, DESCRIPCION_INDX_NORM.
 
     Raises:
-        ValueError: Si el DataFrame resultante está vacío.
+        ValueError: Si no se extrajo ningún indicador.
     """
-    patron_numero_indice = r"^\d+\.\d+"
+    archivos_ordenados = sorted(ruta_pdfs.iterdir())
     filas_acumuladas: list[tuple] = []
 
     for nombre_archivo, periodo, año, tablas in tablas_por_pdf:
-        logger.debug("Procesando año %s (%s)...", año, nombre_archivo)
-        filas_año: list[tuple] = []
-
+        logger.debug("Procesando: %s (año=%s)...", nombre_archivo, año)
         try:
-            if año in {"2016", "2017"}:
-                # Las tablas de 2016-2017 tienen una sola tabla con índices en
-                # las filas 0 y 4 de su versión transpuesta.
-                tabla_t = tablas[0].T
-                candidatos = pd.concat([tabla_t.iloc[0, :], tabla_t.iloc[4, :]]).tolist()
-                candidatos = [
-                    c for c in candidatos
-                    if re.search(patron_numero_indice, str(c))
-                ]
-                filas_año = [
-                    (*extraer_indice_y_descripcion(c), año)
-                    for c in candidatos
-                ]
-
-            elif año in {"2018", "2019"}:
-                # BUG ORIGINAL: usaba `tablas_por_pdf[0]` (siempre el primer PDF)
-                # en lugar de `tablas` (el PDF actual). Corregido ↓
-                candidatos = pd.concat(tablas).iloc[:, 0].tolist()
-                candidatos = [
-                    c for c in candidatos
-                    if re.search(patron_numero_indice, str(c))
-                ]
-                filas_año = [
-                    (*extraer_indice_y_descripcion(c), año)
-                    for c in candidatos
-                ]
-
-            elif año in {"2014", "2015"}:
-                # Descripción compuesta: fila 2 (código) + fila 3 (texto)
-                tabla_t = tablas[0].T
-                descripcion_compuesta = (
-                    tabla_t.iloc[2, :].astype(str) + " " + tabla_t.iloc[3, :]
+            if año in AÑOS_PDFTOTEXT:
+                # Localizar el índice de este PDF para obtener sus páginas
+                idx = next(
+                    i for i, f in enumerate(archivos_ordenados)
+                    if f.name == nombre_archivo
                 )
-                candidatos = pd.concat([tabla_t.iloc[0, :], descripcion_compuesta]).tolist()
-                candidatos = [
-                    c for c in candidatos
-                    if re.search(patron_numero_indice, str(c))
-                ]
-                # Eliminar los puntos suspensivos del formato tabla de contenidos
-                candidatos = [re.split(r"\.{3,}", str(c))[0] for c in candidatos]
-                filas_año = [
-                    (*extraer_indice_y_descripcion(c), año)
-                    for c in candidatos
-                ]
+                paginas = PAGES_PER_PDF[idx]
+                filas = _extraer_con_pdftotext(
+                    str(ruta_pdfs / nombre_archivo), paginas, año
+                )
+
+            elif año in AÑOS_TABULA_A:
+                filas = _extraer_2018_2019(tablas, año)
+
+            elif año in AÑOS_TABULA_C:
+                filas = _extraer_2017(tablas, año)
 
             else:
-                logger.warning("Año '%s' no tiene lógica de extracción definida. Se omite.", año)
+                logger.warning("Año '%s' sin extractor definido. Se omite.", año)
+                continue
+
+            filas_acumuladas.extend(filas)
 
         except Exception as exc:
             logger.error(
-                "Error al procesar el año %s (%s): %s", año, nombre_archivo, exc
+                "Error inesperado en año %s (%s): %s", año, nombre_archivo, exc
             )
-
-        filas_acumuladas.extend(filas_año)
 
     if not filas_acumuladas:
         raise ValueError(
-            "No se extrajeron índices. Revisa los PDFs, las páginas configuradas "
-            "y la lógica de extracción por año."
+            "No se extrajo ningún indicador. Revisa PDFs, PAGES_PER_PDF "
+            "y los extractores por año."
         )
 
     df = pd.DataFrame(filas_acumuladas, columns=["NUM_INDX", "DESCRIPCION", "AÑO"])
     df["DESCRIPCION_INDX_NORM"] = df["DESCRIPCION"].apply(normalizar_texto)
-
-    logger.info("DataFrame construido: %d registros, %d columnas.", len(df), len(df.columns))
-    return df[OUTPUT_COLUMNS]
-
-
-def crea_subpilares(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Agrega las columnas subpilar y pilar. Además se agregan las categorías,
-    """
-    df['PILAR'] = df['NUM_INDX'].apply(lambda x: int(re.search(r'(^\d+)', x)[0]))
-    df['SUBPILAR'] = df['NUM_INDX'].apply(lambda x: int(re.search(r'(?<=\d.)(\d+)', x)[0]))
-
-    # Arreglo dtype al año
-    df['AÑO'] = df['AÑO'].astype(int)
-    df = df.sort_values(by=["AÑO","PILAR","SUBPILAR"]).reset_index(drop=True)
-
-    return df
-
-def crea_categorias(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Incorpora la categoría dada por los informes del WEF y su factor según metodología.
-    """
-    #  Creación de categorías
-    map_categorias = [{"CATEGORIA_INDX":"A","CATEGORIA_DESC":"Requisitos Básicos","FACTOR":0.4, "PILAR":[1,2,3,4]},
-                    {"CATEGORIA_INDX":"B","CATEGORIA_DESC":"Impulsores de Eficiencia","FACTOR":0.5, "PILAR":[5,6,7,8,9,10]},
-                    {"CATEGORIA_INDX":"C","CATEGORIA_DESC":"Factores de Innovación y Sofisticación","FACTOR":0.1, "PILAR":[11,12]}]
-
-    for cat in map_categorias:
-        df.loc[df['PILAR'].isin(cat['PILAR']),'CATEGORIA_INDX'] = cat['CATEGORIA_INDX']
-        df.loc[df['PILAR'].isin(cat['PILAR']),'CATEGORIA_DESC'] = cat['CATEGORIA_DESC']
-        df.loc[indicadores['PILAR'].isin(cat['PILAR']),'FACTOR'] = cat['FACTOR']
-
+    logger.info("DataFrame intermedio: %d filas.", len(df))
     return df
 
 
-def crea_descripcion_pilar(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Incorpora la columna descripción de cada pilar
-    """
-   # Creación de descrpición de pilar
-    map_description_pilar = {
-        1: "Instituciones", 2: "Infraestructura",
-        3: "Adopción de Tecnologías de Información y Comunicación (TIC)",
-        4: "Estabilidad Macroeconómica", 5: "Salud", 6: "Habilidades",
-        7: "Mercado de Productos",8: "Mercado Laboral", 9: "Sistema Financiero",
-        10: "Tamaño del Mercado",11: "Dinamismo Empresarial",
-        12: "Capacidad de Innovación"
-        }
-    for pilar,des in dic_descr_pilar.items():
-        df.loc[df['PILAR']==pilar,'DESCRIPCION_PILAR'] = des
+# ─────────────────────────────────────────────
+# Enriquecimiento del DataFrame
+# ─────────────────────────────────────────────
 
-def creacion_nuevas_columnas(df):
-    """
-    Crea nuevas columnas a partir de las funciones:
-        1. crea_subpilares
-        2. crea_categorias
-        3. crea_descripcion_pilar
-    """
-    print("=" * 90 + "\n")
-    logger.info("Incorporación de nuevas columnas")
-    print("=" * 90 + "\n")
+def agregar_pilar_y_subpilar(df: pd.DataFrame) -> pd.DataFrame:
+    """Deriva PILAR y SUBPILAR desde NUM_INDX y ordena el DataFrame."""
+    df = df.copy()
+    df["PILAR"]   = df["NUM_INDX"].apply(lambda x: int(re.search(r"(^\d+)", x).group()))
+    df["SUBPILAR"] = df["NUM_INDX"].apply(lambda x: int(re.search(r"(?<=\d\.)(\d+)", x).group()))
+    df["AÑO"] = df["AÑO"].astype(int)
+    return df.sort_values(["AÑO", "PILAR", "SUBPILAR"]).reset_index(drop=True)
 
-    df = crea_subpilares(df)
-    df = crea_categorias(df)
-    df = crea_descripcion_pilar(df)
 
-    # Arreglos finales
-    used_cols = ['NUM_INDX', 'DESCRIPCION','DESCRIPCION_INDX_NORM', 'PILAR', 'SUBPILAR','DESCRIPCION_PILAR','AÑO' ,
-                'CATEGORIA_INDX','CATEGORIA_DESC', 'FACTOR']
-    df = df.rename(columns={"DESCRIPCION":"DESCRIPCION_INDX",})
-
-    df = df[used_cols].copy()
-
+def agregar_categorias(df: pd.DataFrame) -> pd.DataFrame:
+    """Asigna CATEGORIA_INDX, CATEGORIA_DESC y FACTOR según metodología WEF."""
+    df = df.copy()
+    for cat in MAP_CATEGORIAS:
+        mask = df["PILAR"].isin(cat["PILAR"])
+        df.loc[mask, "CATEGORIA_INDX"] = cat["CATEGORIA_INDX"]
+        df.loc[mask, "CATEGORIA_DESC"] = cat["CATEGORIA_DESC"]
+        df.loc[mask, "FACTOR"]         = cat["FACTOR"]
     return df
 
+
+def agregar_descripcion_pilar(df: pd.DataFrame) -> pd.DataFrame:
+    """Asigna DESCRIPCION_PILAR según el mapeo oficial WEF."""
+    df = df.copy()
+    for pilar, descripcion in MAP_DESCRIPCION_PILAR.items():
+        df.loc[df["PILAR"] == pilar, "DESCRIPCION_PILAR"] = descripcion
+    return df
+
+
+def construir_dataframe_final(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Orquesta el enriquecimiento completo y retorna el DataFrame
+    con el esquema de salida definido en OUTPUT_COLUMNS.
+    """
+    logger.info("Enriqueciendo DataFrame...")
+    df = agregar_pilar_y_subpilar(df)
+    df = agregar_categorias(df)
+    df = agregar_descripcion_pilar(df)
+    df = df.rename(columns={"DESCRIPCION": "DESCRIPCION_INDX"})
+    df = df[OUTPUT_COLUMNS].copy()
+    logger.info("DataFrame final: %d filas, %d columnas.", len(df), len(df.columns))
+    return df
 
 
 # ─────────────────────────────────────────────
@@ -391,23 +558,41 @@ def creacion_nuevas_columnas(df):
 # ─────────────────────────────────────────────
 
 def main() -> None:
-    logger.info("Iniciando extracción de índices desde: %s", PDF_FILES_PATH)
+    """
+    Pipeline completo de extracción y exportación:
+        1. Lee todos los PDFs con tabula (para años tabula) o pdftotext
+           (para años 2014/2015/2016).
+        2. Construye el DataFrame intermedio con indicadores y descripciones.
+        3. Enriquece con pilares, categorías y descripciones.
+        4. Exporta a CSV en FOLDER_PROCESSED.
+    """
+    logger.info("=" * 70)
+    logger.info("Iniciando extracción de índices WEF.")
+    logger.info("Directorio de PDFs: %s", PDF_FILES_PATH)
+    logger.info("=" * 70)
 
     tablas_pdf = leer_tablas_desde_pdfs(PDF_FILES_PATH)
-    logger.info("%d PDF(s) leídos correctamente.", len(tablas_pdf))
+    logger.info("%d PDF(s) procesados por tabula.", len(tablas_pdf))
 
-    df_indices = construir_dataframe_indices(tablas_pdf)
+    df_indices = construir_dataframe_indices(tablas_pdf, PDF_FILES_PATH)
 
-    # Muestra un resumen en consola (útil en desarrollo)
     print("\n" + "=" * 90)
-    print(df_indices.to_string(index=False))
+    print("VISTA PREVIA — DataFrame intermedio (primeras 10 filas):")
+    print(df_indices.head(10).to_string(index=False))
     print("=" * 90 + "\n")
 
-    # Opcional: exportar a CSV en la carpeta raw local
+    df_final = construir_dataframe_final(df_indices)
+
+    print("\n" + "=" * 90)
+    print("VISTA PREVIA — DataFrame final (primeras 10 filas):")
+    print(df_final.head(10).to_string(index=False))
+    print("=" * 90 + "\n")
+
+    FOLDER_PROCESSED.mkdir(parents=True, exist_ok=True)
     ruta_salida = FOLDER_PROCESSED / "bd_diccionario_indices.csv"
-    FOLDER_RAW_LOCAL.mkdir(parents=True, exist_ok=True)
-    df_indices.to_csv(ruta_salida, index=False, encoding="utf-8-sig")
+    df_final.to_csv(ruta_salida, index=False, encoding="utf-8-sig")
     logger.info("Archivo guardado en: %s", ruta_salida)
+    logger.info("=" * 70)
 
 
 if __name__ == "__main__":

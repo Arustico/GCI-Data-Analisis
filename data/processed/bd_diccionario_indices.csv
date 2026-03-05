@@ -1,164 +1,652 @@
-﻿NUM_INDX,DESCRIPCION,AÑO,DESCRIPCION_INDX_NORM
-1.01,Property rights,2017,property rights
-1.02,Intellectual property protection,2017,intellectual property protection
-1.03,Diversion of public funds,2017,diversion of public funds
-1.04,Public trust in politicians,2017,public trust in politicians
-1.05,Irregular payments and bribes,2017,irregular payments and bribes
-1.06,Judicial independence,2017,judicial independence
-1.07,Favoritism in decisions of government officials,2017,favoritism in decisions of government officials
-1.08,Efficiency of government spending,2017,efficiency of government spending
-1.09,Burden of government regulation,2017,burden of government regulation
-1.10,Efficiency of legal framework in settling disputes,2017,efficiency of legal framework in settling disputes
-1.11,Efficiency of legal framework in challenging regulations,2017,efficiency of legal framework in challenging regulations
-1.12,Transparency of government policymaking,2017,transparency of government policymaking
-1.13,Business costs of terrorism,2017,business costs of terrorism
-1.14,Business costs of crime and violence,2017,business costs of crime and violence
-1.15,Organized crime,2017,organized crime
-1.16,Reliability of police services,2017,reliability of police services
-1.17,Ethical behavior of firms,2017,ethical behavior of firms
-1.18,Strength of auditing and reporting standards,2017,strength of auditing and reporting standards
-1.19,Efficacy of corporate boards,2017,efficacy of corporate boards
-1.20,Protection of minority shareholders’ interests,2017,protection of minority shareholders interests
-1.21,Strength of investor protection,2017,strength of investor protection
-2.01,Quality of overall infrastructure,2017,quality of overall infrastructure
-2.02,Quality of roads,2017,quality of roads
-2.03,Quality of railroad infrastructure,2017,quality of railroad infrastructure
-2.04,Quality of port infrastructure,2017,quality of port infrastructure
-2.05,Quality of air transport infrastructure,2017,quality of air transport infrastructure
-2.06,Available airline seat kilometers,2017,available airline seat kilometers
-2.07,Quality of electricity supply,2017,quality of electricity supply
-2.08,Mobile-cellular telephone subscriptions,2017,mobilecellular telephone subscriptions
-2.09,Fixed-telephone lines /100 pop.,2017,fixedtelephone lines 100 pop
-3.01,Government budget balance,2017,government budget balance
-3.02,Gross national savings,2017,gross national savings
-3.03,Inflation annual % change,2017,inflation annual change
-3.04,Government debt % GDP,2017,government debt gdp
-3.05,Country credit rating 0-100 (best),2017,country credit rating 0100 best
-4.01,"Malaria incidence cases/100,000 pop.",2017,malaria incidence cases100000 pop
-4.02,Business impact of malaria,2017,business impact of malaria
-4.03,Tuberculosis incidence,2017,tuberculosis incidence
-4.04,Business impact of tuberculosis,2017,business impact of tuberculosis
-4.05,HIV prevalence % adult pop.,2017,hiv prevalence adult pop
-4.06,Business impact of HIV/AIDS,2017,business impact of hivaids
-4.07,"Infant mortality deaths/1,000 live births",2017,infant mortality deaths1000 live births
-4.08,Life expectancy years,2017,life expectancy years
-4.09,Quality of primary education,2017,quality of primary education
-4.10,Primary education enrollment rate,2017,primary education enrollment rate
-5.01,Secondary education enrollment rate,2017,secondary education enrollment rate
-5.02,Tertiary education enrollment rate,2017,tertiary education enrollment rate
-5.03,Quality of the education system,2017,quality of the education system
-5.04,Quality of math and science education,2017,quality of math and science education
-5.05,Quality of management schools,2017,quality of management schools
-5.06,Internet access in schools,2017,internet access in schools
-5.07,Local availability of specialized training services,2017,local availability of specialized training services
-5.08,Extent of staff training,2017,extent of staff training
-6.01,Intensity of local competition,2017,intensity of local competition
-6.02,Extent of market dominance,2017,extent of market dominance
-6.03,Effectiveness of anti-monopoly policy,2017,effectiveness of antimonopoly policy
-6.04,Effect of taxation on incentives to invest,2017,effect of taxation on incentives to invest
-6.05,Total tax rate % profits,2017,total tax rate profits
-6.06,No. of procedures to start a business,2017,no of procedures to start a business
-6.07,Time to start a business days,2017,time to start a business days
-6.08,Agricultural policy costs,2017,agricultural policy costs
-6.09,Prevalence of non-tariff barriers,2017,prevalence of nontariff barriers
-6.10,Trade tariffs % duty,2017,trade tariffs duty
-6.11,Prevalence of foreign ownership,2017,prevalence of foreign ownership
-6.12,Business impact of rules on FDI,2017,business impact of rules on fdi
-6.13,Burden of customs procedures,2017,burden of customs procedures
-6.14,Imports % GDP,2017,imports gdp
-6.15,Degree of customer orientation,2017,degree of customer orientation
-6.16,Buyer sophistication,2017,buyer sophistication
-7.01,Cooperation in labor-employer relations,2017,cooperation in laboremployer relations
-7.02,Flexibility of wage determination,2017,flexibility of wage determination
-7.03,Hiring and firing practices,2017,hiring and firing practices
-7.04,Redundancy costs weeks of salary,2017,redundancy costs weeks of salary
-7.05,Effect of taxation on incentives to work,2017,effect of taxation on incentives to work
-7.06,Pay and productivity,2017,pay and productivity
-7.07,Reliance on professional management,2017,reliance on professional management
-7.08,Country capacity to retain talent,2017,country capacity to retain talent
-7.09,Country capacity to attract talent,2017,country capacity to attract talent
-7.10,Female participation in the labor force,2017,female participation in the labor force
-8.01,Availability of financial services,2017,availability of financial services
-8.02,Affordability of financial services,2017,affordability of financial services
-8.03,Financing through local equity market,2017,financing through local equity market
-8.04,Ease of access to loans,2017,ease of access to loans
-8.05,Venture capital availability,2017,venture capital availability
-8.06,Soundness of banks,2017,soundness of banks
-8.07,Regulation of securities exchanges,2017,regulation of securities exchanges
-8.08,Legal rights index 0-10 (best),2017,legal rights index 010 best
-9.01,Availability of latest technologies,2017,availability of latest technologies
-9.02,Firm-level technology absorption,2017,firmlevel technology absorption
-9.03,FDI and technology transfer,2017,fdi and technology transfer
-9.04,Internet users % pop.,2017,internet users pop
-9.05,Fixed-broadband Internet subscriptions,2017,fixedbroadband internet subscriptions
-9.06,Internet bandwidth kb/s/user,2017,internet bandwidth kbsuser
-9.07,Mobile-broadband subscriptions /100 pop.,2017,mobilebroadband subscriptions 100 pop
-10.01,Domestic market size index,2017,domestic market size index
-10.02,Foreign market size index,2017,foreign market size index
-10.03,GDP (PPP) PPP $ billions,2017,gdp ppp ppp billions
-10.04,Exports % GDP,2017,exports gdp
-11.01,Local supplier quantity,2017,local supplier quantity
-11.02,Local supplier quality,2017,local supplier quality
-11.03,State of cluster development,2017,state of cluster development
-11.04,Nature of competitive advantage,2017,nature of competitive advantage
-11.05,Value chain breadth,2017,value chain breadth
-11.06,Control of international distribution,2017,control of international distribution
-11.07,Production process sophistication,2017,production process sophistication
-11.08,Extent of marketing,2017,extent of marketing
-11.09,Willingness to delegate authority,2017,willingness to delegate authority
-12.01,Capacity for innovation,2017,capacity for innovation
-12.02,Quality of scientific research institutions,2017,quality of scientific research institutions
-12.03,Company spending on R&D,2017,company spending on rd
-12.04,University-industry collaboration in R&D,2017,universityindustry collaboration in rd
-12.05,Gov't procurement of advanced technology products,2017,govt procurement of advanced technology products
-12.06,Availability of scientists and engineers,2017,availability of scientists and engineers
-12.07,PCT patents applications/million pop.,2017,pct patents applicationsmillion pop
-7.01,Distortive effect of taxes and subsidies on competition,2018,distortive effect of taxes and subsidies on competition
-7.02,Extent of market dominance 1-7 (best),2018,extent of market dominance 17 best
-7.03,Competition in services 1-7 (best),2018,competition in services 17 best
-7.04,Prevalence of non-tariff barriers 1-7 (best),2018,prevalence of nontariff barriers 17 best
-7.05,Trade tariffs % duty,2018,trade tariffs duty
-7.06,Complexity of tariffs 1-7 (best),2018,complexity of tariffs 17 best
-7.07,Efficiency of the clearance process 1–5 (best),2018,efficiency of the clearance process 15 best
-7.08,Services trade openness 0-100 (worst),2018,services trade openness 0100 worst
-8.01,Redundancy costs weeks of salary,2018,redundancy costs weeks of salary
-8.02,Hiring and firing practices 1-7 (best),2018,hiring and firing practices 17 best
-8.03,Cooperation in Labour-employer relations,2018,cooperation in labouremployer relations
-8.04,Flexibility of wage determination 1-7 (best),2018,flexibility of wage determination 17 best
-8.05,Active Labour policies 1-7 (best),2018,active labour policies 17 best
-8.06,Workers' rights 0-100 (best),2018,workers rights 0100 best
-8.07,Ease of hiring foreign labour 1-7 (best),2018,ease of hiring foreign labour 17 best
-8.08,Internal Labour mobility 1-7 (best),2018,internal labour mobility 17 best
-8.09,Reliance on professional management,2018,reliance on professional management
-8.10,Pay and productivity 1-7 (best),2018,pay and productivity 17 best
-8.11,Female participation in Labour force,2018,female participation in labour force
-8.12,Labour tax rate %,2018,labour tax rate
-9.01,Domestic credit to private sector % GDP,2018,domestic credit to private sector gdp
-9.02,Financing of SMEs 1-7 (best),2018,financing of smes 17 best
-9.03,Venture capital availability 1-7 (best),2018,venture capital availability 17 best
-9.04,Market capitalization % GDP,2018,market capitalization gdp
-9.05,Insurance premium % GDP,2018,insurance premium gdp
-9.06,Soundness of banks 1-7 (best),2018,soundness of banks 17 best
-9.07,Non-performing loans % loan portfolio value,2018,nonperforming loans loan portfolio value
-9.08,Credit gap percentage points,2018,credit gap percentage points
-9.09,Banks’ regulatory capital ratio ratio,2018,banks regulatory capital ratio ratio
-10.01,Gross domestic product PPP $ billions,2018,gross domestic product ppp billions
-10.02,Imports % GDP,2018,imports gdp
-11.01,Cost of starting a business % GNI per capita,2018,cost of starting a business gni per capita
-11.02,Time to start a business days,2018,time to start a business days
-11.03,Insolvency recovery rate cents/$,2018,insolvency recovery rate cents
-11.04,Insolvency regulatory framework 0-16 (best),2018,insolvency regulatory framework 016 best
-11.05,Attitudes toward entrepreneurial risk,2018,attitudes toward entrepreneurial risk
-11.06,Willingness to delegate authority 1-7 (best),2018,willingness to delegate authority 17 best
-11.07,Growth of innovative companies 1-7 (best),2018,growth of innovative companies 17 best
-11.08,Companies embracing disruptive ideas,2018,companies embracing disruptive ideas
-12.01,Diversity of workforce 1-7 (best),2018,diversity of workforce 17 best
-12.02,State of cluster development 1-7 (best),2018,state of cluster development 17 best
-12.03,International co-inventions applications/million pop.,2018,international coinventions applicationsmillion pop
-12.04,Multi-stakeholder collaboration 1-7 (best),2018,multistakeholder collaboration 17 best
-12.05,Scientific publications H Index,2018,scientific publications h index
-12.06,Patent applications applications/million pop.,2018,patent applications applicationsmillion pop
-12.07,GDP,2018,gdp
-12.08,Quality of research institutions index,2018,quality of research institutions index
-12.09,Buyer sophistication 1-7 (best),2018,buyer sophistication 17 best
-12.10,Trademark applications applications/million pop.,2018,trademark applications applicationsmillion pop
+﻿NUM_INDX,DESCRIPCION_INDX,DESCRIPCION_INDX_NORM,PILAR,SUBPILAR,DESCRIPCION_PILAR,AÑO,CATEGORIA_INDX,CATEGORIA_DESC,FACTOR
+1.01,Property rights,property rights,1,1,Instituciones,2014,A,Requisitos Básicos,0.4
+1.02,Intellectual property protection,intellectual property protection,1,2,Instituciones,2014,A,Requisitos Básicos,0.4
+1.03,Diversion of public funds,diversion of public funds,1,3,Instituciones,2014,A,Requisitos Básicos,0.4
+1.04,Public trust in politicians,public trust in politicians,1,4,Instituciones,2014,A,Requisitos Básicos,0.4
+1.05,Irregular payments and bribes,irregular payments and bribes,1,5,Instituciones,2014,A,Requisitos Básicos,0.4
+1.06,Judicial independence,judicial independence,1,6,Instituciones,2014,A,Requisitos Básicos,0.4
+1.07,Favoritism in decisions of government officials,favoritism in decisions of government officials,1,7,Instituciones,2014,A,Requisitos Básicos,0.4
+1.08,Wastefulness of government spending,wastefulness of government spending,1,8,Instituciones,2014,A,Requisitos Básicos,0.4
+1.09,Burden of government regulation,burden of government regulation,1,9,Instituciones,2014,A,Requisitos Básicos,0.4
+1.10,Efficiency of legal framework in settling disputes,efficiency of legal framework in settling disputes,1,10,Instituciones,2014,A,Requisitos Básicos,0.4
+1.11,Efficiency of legal framework in challenging regulations,efficiency of legal framework in challenging regulations,1,11,Instituciones,2014,A,Requisitos Básicos,0.4
+1.12,Transparency of government policymaking,transparency of government policymaking,1,12,Instituciones,2014,A,Requisitos Básicos,0.4
+1.13,Business costs of terrorism,business costs of terrorism,1,13,Instituciones,2014,A,Requisitos Básicos,0.4
+1.14,Business costs of crime and violence,business costs of crime and violence,1,14,Instituciones,2014,A,Requisitos Básicos,0.4
+1.15,Organized crime,organized crime,1,15,Instituciones,2014,A,Requisitos Básicos,0.4
+1.16,Reliability of police services,reliability of police services,1,16,Instituciones,2014,A,Requisitos Básicos,0.4
+1.17,Ethical behavior of firms,ethical behavior of firms,1,17,Instituciones,2014,A,Requisitos Básicos,0.4
+1.18,Strength of auditing and reporting standards,strength of auditing and reporting standards,1,18,Instituciones,2014,A,Requisitos Básicos,0.4
+1.19,Efficacy of corporate boards,efficacy of corporate boards,1,19,Instituciones,2014,A,Requisitos Básicos,0.4
+1.20,Protection of minority shareholders’ interests,protection of minority shareholders interests,1,20,Instituciones,2014,A,Requisitos Básicos,0.4
+1.21,Strength of investor protection,strength of investor protection,1,21,Instituciones,2014,A,Requisitos Básicos,0.4
+2.01,Quality of overall infrastructure,quality of overall infrastructure,2,1,Infraestructura,2014,A,Requisitos Básicos,0.4
+2.02,Quality of roads,quality of roads,2,2,Infraestructura,2014,A,Requisitos Básicos,0.4
+2.03,Quality of railroad infrastructure e,quality of railroad infrastructure e,2,3,Infraestructura,2014,A,Requisitos Básicos,0.4
+2.04,Quality of port infrastructure,quality of port infrastructure,2,4,Infraestructura,2014,A,Requisitos Básicos,0.4
+2.05,Quality of air transport infrastructure,quality of air transport infrastructure,2,5,Infraestructura,2014,A,Requisitos Básicos,0.4
+2.06,Available airline seat kilometers,available airline seat kilometers,2,6,Infraestructura,2014,A,Requisitos Básicos,0.4
+2.07,Quality of electricity supply,quality of electricity supply,2,7,Infraestructura,2014,A,Requisitos Básicos,0.4
+2.08,Mobile telephone subscriptions,mobile telephone subscriptions,2,8,Infraestructura,2014,A,Requisitos Básicos,0.4
+2.09,Fixed telephone lines,fixed telephone lines,2,9,Infraestructura,2014,A,Requisitos Básicos,0.4
+3.01,Government budget balance,government budget balance,3,1,Adopción de Tecnologías de Información y Comunicación (TIC),2014,A,Requisitos Básicos,0.4
+3.02,Gross national savings,gross national savings,3,2,Adopción de Tecnologías de Información y Comunicación (TIC),2014,A,Requisitos Básicos,0.4
+3.03,Inflation,inflation,3,3,Adopción de Tecnologías de Información y Comunicación (TIC),2014,A,Requisitos Básicos,0.4
+3.04,Government debt,government debt,3,4,Adopción de Tecnologías de Información y Comunicación (TIC),2014,A,Requisitos Básicos,0.4
+3.05,Country credit rating,country credit rating,3,5,Adopción de Tecnologías de Información y Comunicación (TIC),2014,A,Requisitos Básicos,0.4
+4.01,Business impact of malaria g,business impact of malaria g,4,1,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.02,Malaria incidence,malaria incidence,4,2,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.03,Business impact of tuberculosis g,business impact of tuberculosis g,4,3,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.04,Tuberculosis incidence,tuberculosis incidence,4,4,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.05,Business impact of HIV/AIDS g,business impact of hivaids g,4,5,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.06,HIV prevalence,hiv prevalence,4,6,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.07,Infant mortality,infant mortality,4,7,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.08,Life expectancy,life expectancy,4,8,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.09,Quality of primary education,quality of primary education,4,9,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+4.10,Primary education enrollment rate,primary education enrollment rate,4,10,Estabilidad Macroeconómica,2014,A,Requisitos Básicos,0.4
+5.01,Secondary education enrollment rate,secondary education enrollment rate,5,1,Salud,2014,B,Impulsores de Eficiencia,0.5
+5.02,Tertiary education enrollment rate,tertiary education enrollment rate,5,2,Salud,2014,B,Impulsores de Eficiencia,0.5
+5.03,Quality of the education system,quality of the education system,5,3,Salud,2014,B,Impulsores de Eficiencia,0.5
+5.04,Quality of math and science education,quality of math and science education,5,4,Salud,2014,B,Impulsores de Eficiencia,0.5
+5.05,Quality of management schools,quality of management schools,5,5,Salud,2014,B,Impulsores de Eficiencia,0.5
+5.06,Internet access in schools,internet access in schools,5,6,Salud,2014,B,Impulsores de Eficiencia,0.5
+5.07,Local availability of specialized research and training,local availability of specialized research and training,5,7,Salud,2014,B,Impulsores de Eficiencia,0.5
+5.08,Extent of staff training,extent of staff training,5,8,Salud,2014,B,Impulsores de Eficiencia,0.5
+6.01,Intensity of local competition,intensity of local competition,6,1,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.02,Extent of market dominance,extent of market dominance,6,2,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.03,Effectiveness of anti-monopoly policy,effectiveness of antimonopoly policy,6,3,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.04,Effect of taxation on incentives to invest,effect of taxation on incentives to invest,6,4,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.05,Total tax rate,total tax rate,6,5,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.06,Number of procedures required to start a business,number of procedures required to start a business,6,6,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.07,Time required to start a business,time required to start a business,6,7,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.08,Agricultural policy costs,agricultural policy costs,6,8,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.09,Prevalence of trade barriers,prevalence of trade barriers,6,9,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.10,Trade tariffs,trade tariffs,6,10,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.11,Prevalence of foreign ownership,prevalence of foreign ownership,6,11,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.12,Business impact of rules on FDI,business impact of rules on fdi,6,12,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.13,Burden of customs procedures,burden of customs procedures,6,13,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.14,Imports as a percentage of GDP,imports as a percentage of gdp,6,14,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.15,Degree of customer orientation,degree of customer orientation,6,15,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+6.16,Buyer sophistication,buyer sophistication,6,16,Habilidades,2014,B,Impulsores de Eficiencia,0.5
+7.01,Cooperation in labor-employer relations,cooperation in laboremployer relations,7,1,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.02,Flexibility of wage determination,flexibility of wage determination,7,2,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.03,Hiring and firing practices,hiring and firing practices,7,3,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.04,Redundancy costs,redundancy costs,7,4,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.05,Effect of taxation on incentives to work,effect of taxation on incentives to work,7,5,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.06,Pay and productivity,pay and productivity,7,6,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.07,Reliance on professional management,reliance on professional management,7,7,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.08,Country capacity to retain talent,country capacity to retain talent,7,8,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.09,Country capacity to attract talent,country capacity to attract talent,7,9,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+7.10,Female participation in labor force,female participation in labor force,7,10,Mercado de Productos,2014,B,Impulsores de Eficiencia,0.5
+8.01,Availability of financial services,availability of financial services,8,1,Mercado Laboral,2014,B,Impulsores de Eficiencia,0.5
+8.02,Affordability of financial services,affordability of financial services,8,2,Mercado Laboral,2014,B,Impulsores de Eficiencia,0.5
+8.03,Financing through local equity market,financing through local equity market,8,3,Mercado Laboral,2014,B,Impulsores de Eficiencia,0.5
+8.04,Ease of access to loans,ease of access to loans,8,4,Mercado Laboral,2014,B,Impulsores de Eficiencia,0.5
+8.05,Venture capital availability,venture capital availability,8,5,Mercado Laboral,2014,B,Impulsores de Eficiencia,0.5
+8.06,Soundness of banks,soundness of banks,8,6,Mercado Laboral,2014,B,Impulsores de Eficiencia,0.5
+8.07,Regulation of securities exchanges,regulation of securities exchanges,8,7,Mercado Laboral,2014,B,Impulsores de Eficiencia,0.5
+8.08,Legal rights index,legal rights index,8,8,Mercado Laboral,2014,B,Impulsores de Eficiencia,0.5
+9.01,Availability of latest technologies,availability of latest technologies,9,1,Sistema Financiero,2014,B,Impulsores de Eficiencia,0.5
+9.02,Firm-level technology absorption,firmlevel technology absorption,9,2,Sistema Financiero,2014,B,Impulsores de Eficiencia,0.5
+9.03,FDI and technology transfer,fdi and technology transfer,9,3,Sistema Financiero,2014,B,Impulsores de Eficiencia,0.5
+9.04,Internet users,internet users,9,4,Sistema Financiero,2014,B,Impulsores de Eficiencia,0.5
+9.05,Broadband Internet subscriptions,broadband internet subscriptions,9,5,Sistema Financiero,2014,B,Impulsores de Eficiencia,0.5
+9.06,Internet bandwidth,internet bandwidth,9,6,Sistema Financiero,2014,B,Impulsores de Eficiencia,0.5
+9.07,Mobile broadband subscriptions,mobile broadband subscriptions,9,7,Sistema Financiero,2014,B,Impulsores de Eficiencia,0.5
+10.01,Domestic market size index,domestic market size index,10,1,Tamaño del Mercado,2014,B,Impulsores de Eficiencia,0.5
+10.02,Foreign market size index,foreign market size index,10,2,Tamaño del Mercado,2014,B,Impulsores de Eficiencia,0.5
+11.01,Local supplier quantity,local supplier quantity,11,1,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+11.02,Local supplier quality,local supplier quality,11,2,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+11.03,State of cluster development,state of cluster development,11,3,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+11.04,Nature of competitive advantage,nature of competitive advantage,11,4,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+11.05,Value chain breadth,value chain breadth,11,5,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+11.06,Control of international distribution,control of international distribution,11,6,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+11.07,Production process sophistication,production process sophistication,11,7,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+11.08,Extent of marketing,extent of marketing,11,8,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+11.09,Willingness to delegate authority,willingness to delegate authority,11,9,Dinamismo Empresarial,2014,C,Factores de Innovación y Sofisticación,0.1
+12.01,Capacity for innovation,capacity for innovation,12,1,Capacidad de Innovación,2014,C,Factores de Innovación y Sofisticación,0.1
+12.02,Quality of scientific research institutions,quality of scientific research institutions,12,2,Capacidad de Innovación,2014,C,Factores de Innovación y Sofisticación,0.1
+12.03,Company spending on R&D,company spending on rd,12,3,Capacidad de Innovación,2014,C,Factores de Innovación y Sofisticación,0.1
+12.04,University-industry collaboration in R&D,universityindustry collaboration in rd,12,4,Capacidad de Innovación,2014,C,Factores de Innovación y Sofisticación,0.1
+12.05,Government procurement of advanced technology products,government procurement of advanced technology products,12,5,Capacidad de Innovación,2014,C,Factores de Innovación y Sofisticación,0.1
+12.06,Availability of scientists and engineers,availability of scientists and engineers,12,6,Capacidad de Innovación,2014,C,Factores de Innovación y Sofisticación,0.1
+12.07,PCT patent applications,pct patent applications,12,7,Capacidad de Innovación,2014,C,Factores de Innovación y Sofisticación,0.1
+1.01,Property rights,property rights,1,1,Instituciones,2015,A,Requisitos Básicos,0.4
+1.02,Intellectual property protection,intellectual property protection,1,2,Instituciones,2015,A,Requisitos Básicos,0.4
+1.03,Diversion of public funds,diversion of public funds,1,3,Instituciones,2015,A,Requisitos Básicos,0.4
+1.04,Public trust in politicians,public trust in politicians,1,4,Instituciones,2015,A,Requisitos Básicos,0.4
+1.05,Irregular payments and bribes,irregular payments and bribes,1,5,Instituciones,2015,A,Requisitos Básicos,0.4
+1.06,Judicial independence,judicial independence,1,6,Instituciones,2015,A,Requisitos Básicos,0.4
+1.07,Favoritism in decisions of government officials,favoritism in decisions of government officials,1,7,Instituciones,2015,A,Requisitos Básicos,0.4
+1.08,Wastefulness of government spending,wastefulness of government spending,1,8,Instituciones,2015,A,Requisitos Básicos,0.4
+1.09,Burden of government regulation,burden of government regulation,1,9,Instituciones,2015,A,Requisitos Básicos,0.4
+1.10,Efficiency of legal framework in settling disputes,efficiency of legal framework in settling disputes,1,10,Instituciones,2015,A,Requisitos Básicos,0.4
+1.11,Efficiency of legal framework in challenging regulations,efficiency of legal framework in challenging regulations,1,11,Instituciones,2015,A,Requisitos Básicos,0.4
+1.12,Transparency of government policymaking,transparency of government policymaking,1,12,Instituciones,2015,A,Requisitos Básicos,0.4
+1.13,Business costs of terrorism,business costs of terrorism,1,13,Instituciones,2015,A,Requisitos Básicos,0.4
+1.14,Business costs of crime and violence,business costs of crime and violence,1,14,Instituciones,2015,A,Requisitos Básicos,0.4
+1.15,Organized crime,organized crime,1,15,Instituciones,2015,A,Requisitos Básicos,0.4
+1.16,Reliability of police services,reliability of police services,1,16,Instituciones,2015,A,Requisitos Básicos,0.4
+1.17,Ethical behavior of firms,ethical behavior of firms,1,17,Instituciones,2015,A,Requisitos Básicos,0.4
+1.18,Strength of auditing and reporting standards,strength of auditing and reporting standards,1,18,Instituciones,2015,A,Requisitos Básicos,0.4
+1.19,Efficacy of corporate boards,efficacy of corporate boards,1,19,Instituciones,2015,A,Requisitos Básicos,0.4
+1.20,Protection of minority shareholders’ interests,protection of minority shareholders interests,1,20,Instituciones,2015,A,Requisitos Básicos,0.4
+1.21,Strength of investor protection,strength of investor protection,1,21,Instituciones,2015,A,Requisitos Básicos,0.4
+2.01,Quality of overall infrastructure,quality of overall infrastructure,2,1,Infraestructura,2015,A,Requisitos Básicos,0.4
+2.02,Quality of roads,quality of roads,2,2,Infraestructura,2015,A,Requisitos Básicos,0.4
+2.03,Quality of railroad infrastructurei,quality of railroad infrastructurei,2,3,Infraestructura,2015,A,Requisitos Básicos,0.4
+2.04,Quality of port infrastructure,quality of port infrastructure,2,4,Infraestructura,2015,A,Requisitos Básicos,0.4
+2.05,Quality of air transport infrastructure,quality of air transport infrastructure,2,5,Infraestructura,2015,A,Requisitos Básicos,0.4
+2.06,Available airline seat kilometers,available airline seat kilometers,2,6,Infraestructura,2015,A,Requisitos Básicos,0.4
+2.07,Quality of electricity supply,quality of electricity supply,2,7,Infraestructura,2015,A,Requisitos Básicos,0.4
+2.08,Mobile telephone subscriptions,mobile telephone subscriptions,2,8,Infraestructura,2015,A,Requisitos Básicos,0.4
+2.09,Fixed telephone lines,fixed telephone lines,2,9,Infraestructura,2015,A,Requisitos Básicos,0.4
+3.01,Government budget balance,government budget balance,3,1,Adopción de Tecnologías de Información y Comunicación (TIC),2015,A,Requisitos Básicos,0.4
+3.02,Gross national savings,gross national savings,3,2,Adopción de Tecnologías de Información y Comunicación (TIC),2015,A,Requisitos Básicos,0.4
+3.03,Inflation,inflation,3,3,Adopción de Tecnologías de Información y Comunicación (TIC),2015,A,Requisitos Básicos,0.4
+3.04,Government debt,government debt,3,4,Adopción de Tecnologías de Información y Comunicación (TIC),2015,A,Requisitos Básicos,0.4
+3.05,Country credit rating,country credit rating,3,5,Adopción de Tecnologías de Información y Comunicación (TIC),2015,A,Requisitos Básicos,0.4
+4.01,Business impact of malariak,business impact of malariak,4,1,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.02,Malaria incidence,malaria incidence,4,2,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.03,Business impact of tuberculosisk,business impact of tuberculosisk,4,3,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.04,Tuberculosis incidence,tuberculosis incidence,4,4,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.05,Business impact of HIV/AIDSk,business impact of hivaidsk,4,5,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.06,HIV prevalence,hiv prevalence,4,6,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.07,Infant mortality,infant mortality,4,7,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.08,Life expectancy,life expectancy,4,8,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.09,Quality of primary education,quality of primary education,4,9,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+4.10,Primary education enrollment rate,primary education enrollment rate,4,10,Estabilidad Macroeconómica,2015,A,Requisitos Básicos,0.4
+5.01,Secondary education enrollment rate,secondary education enrollment rate,5,1,Salud,2015,B,Impulsores de Eficiencia,0.5
+5.02,Tertiary education enrollment rate,tertiary education enrollment rate,5,2,Salud,2015,B,Impulsores de Eficiencia,0.5
+5.03,Quality of the educational system,quality of the educational system,5,3,Salud,2015,B,Impulsores de Eficiencia,0.5
+5.04,Quality of math and science education,quality of math and science education,5,4,Salud,2015,B,Impulsores de Eficiencia,0.5
+5.05,Quality of management schools,quality of management schools,5,5,Salud,2015,B,Impulsores de Eficiencia,0.5
+5.06,Internet access in schools,internet access in schools,5,6,Salud,2015,B,Impulsores de Eficiencia,0.5
+5.07,Local availability of specialized research and training,local availability of specialized research and training,5,7,Salud,2015,B,Impulsores de Eficiencia,0.5
+5.08,Extent of staff training,extent of staff training,5,8,Salud,2015,B,Impulsores de Eficiencia,0.5
+6.01,Intensity of local competition,intensity of local competition,6,1,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.02,Extent of market dominance,extent of market dominance,6,2,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.03,Effectiveness of anti-monopoly policy,effectiveness of antimonopoly policy,6,3,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.04,Effect of taxation on incentives to invest,effect of taxation on incentives to invest,6,4,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.05,Total tax rate,total tax rate,6,5,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.06,Number of procedures required to start a business,number of procedures required to start a business,6,6,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.07,Time required to start a business,time required to start a business,6,7,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.08,Agricultural policy costs,agricultural policy costs,6,8,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.09,Prevalence of trade barriers,prevalence of trade barriers,6,9,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.10,Trade tariffs,trade tariffs,6,10,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.11,Prevalence of foreign ownership,prevalence of foreign ownership,6,11,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.12,Business impact of rules on FDI,business impact of rules on fdi,6,12,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.13,Burden of customs procedures,burden of customs procedures,6,13,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.14,Imports as a percentage of GDP,imports as a percentage of gdp,6,14,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.15,Degree of customer orientation,degree of customer orientation,6,15,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+6.16,Buyer sophistication,buyer sophistication,6,16,Habilidades,2015,B,Impulsores de Eficiencia,0.5
+7.01,Cooperation in labor-employer relations,cooperation in laboremployer relations,7,1,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.02,Flexibility of wage determination,flexibility of wage determination,7,2,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.03,Hiring and firing practices,hiring and firing practices,7,3,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.04,Redundancy costs,redundancy costs,7,4,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.05,Effect of taxation on incentives to work,effect of taxation on incentives to work,7,5,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.06,Pay and productivity,pay and productivity,7,6,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.07,Reliance on professional management,reliance on professional management,7,7,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.08,Country capacity to retain talent,country capacity to retain talent,7,8,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.09,Country capacity to attract talent,country capacity to attract talent,7,9,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+7.10,Female participation in labor force,female participation in labor force,7,10,Mercado de Productos,2015,B,Impulsores de Eficiencia,0.5
+8.01,Availability of financial services,availability of financial services,8,1,Mercado Laboral,2015,B,Impulsores de Eficiencia,0.5
+8.02,Affordability of financial services,affordability of financial services,8,2,Mercado Laboral,2015,B,Impulsores de Eficiencia,0.5
+8.03,Financing through local equity market,financing through local equity market,8,3,Mercado Laboral,2015,B,Impulsores de Eficiencia,0.5
+8.04,Ease of access to loans,ease of access to loans,8,4,Mercado Laboral,2015,B,Impulsores de Eficiencia,0.5
+8.05,Venture capital availability,venture capital availability,8,5,Mercado Laboral,2015,B,Impulsores de Eficiencia,0.5
+8.06,Soundness of banks,soundness of banks,8,6,Mercado Laboral,2015,B,Impulsores de Eficiencia,0.5
+8.07,Regulation of securities exchanges,regulation of securities exchanges,8,7,Mercado Laboral,2015,B,Impulsores de Eficiencia,0.5
+8.08,Legal rights index,legal rights index,8,8,Mercado Laboral,2015,B,Impulsores de Eficiencia,0.5
+9.01,Availability of latest technologies,availability of latest technologies,9,1,Sistema Financiero,2015,B,Impulsores de Eficiencia,0.5
+9.02,Firm-level technology absorption,firmlevel technology absorption,9,2,Sistema Financiero,2015,B,Impulsores de Eficiencia,0.5
+9.03,FDI and technology transfer,fdi and technology transfer,9,3,Sistema Financiero,2015,B,Impulsores de Eficiencia,0.5
+9.04,Internet users,internet users,9,4,Sistema Financiero,2015,B,Impulsores de Eficiencia,0.5
+9.05,Broadband Internet subscriptions,broadband internet subscriptions,9,5,Sistema Financiero,2015,B,Impulsores de Eficiencia,0.5
+9.06,Internet bandwidth,internet bandwidth,9,6,Sistema Financiero,2015,B,Impulsores de Eficiencia,0.5
+9.07,Mobile broadband subscriptions,mobile broadband subscriptions,9,7,Sistema Financiero,2015,B,Impulsores de Eficiencia,0.5
+10.01,Domestic market size index,domestic market size index,10,1,Tamaño del Mercado,2015,B,Impulsores de Eficiencia,0.5
+10.02,Foreign market size index,foreign market size index,10,2,Tamaño del Mercado,2015,B,Impulsores de Eficiencia,0.5
+11.01,Local supplier quantity,local supplier quantity,11,1,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+11.02,Local supplier quality,local supplier quality,11,2,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+11.03,State of cluster development,state of cluster development,11,3,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+11.04,Nature of competitive advantage,nature of competitive advantage,11,4,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+11.05,Value chain breadth,value chain breadth,11,5,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+11.06,Control of international distribution,control of international distribution,11,6,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+11.07,Production process sophistication,production process sophistication,11,7,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+11.08,Extent of marketing,extent of marketing,11,8,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+11.09,Willingness to delegate authority,willingness to delegate authority,11,9,Dinamismo Empresarial,2015,C,Factores de Innovación y Sofisticación,0.1
+12.01,Capacity for innovation,capacity for innovation,12,1,Capacidad de Innovación,2015,C,Factores de Innovación y Sofisticación,0.1
+12.02,Quality of scientific research institutions,quality of scientific research institutions,12,2,Capacidad de Innovación,2015,C,Factores de Innovación y Sofisticación,0.1
+12.03,Company spending on R&D,company spending on rd,12,3,Capacidad de Innovación,2015,C,Factores de Innovación y Sofisticación,0.1
+12.04,University-industry collaboration in R&D,universityindustry collaboration in rd,12,4,Capacidad de Innovación,2015,C,Factores de Innovación y Sofisticación,0.1
+12.05,Government procurement of advanced technology products,government procurement of advanced technology products,12,5,Capacidad de Innovación,2015,C,Factores de Innovación y Sofisticación,0.1
+12.06,Availability of scientists and engineers,availability of scientists and engineers,12,6,Capacidad de Innovación,2015,C,Factores de Innovación y Sofisticación,0.1
+12.07,PCT patent applications,pct patent applications,12,7,Capacidad de Innovación,2015,C,Factores de Innovación y Sofisticación,0.1
+1.01,Property rights,property rights,1,1,Instituciones,2016,A,Requisitos Básicos,0.4
+1.02,Intellectual property protection,intellectual property protection,1,2,Instituciones,2016,A,Requisitos Básicos,0.4
+1.03,Diversion of public funds,diversion of public funds,1,3,Instituciones,2016,A,Requisitos Básicos,0.4
+1.04,Public trust in politicians,public trust in politicians,1,4,Instituciones,2016,A,Requisitos Básicos,0.4
+1.05,Irregular payments and bribes,irregular payments and bribes,1,5,Instituciones,2016,A,Requisitos Básicos,0.4
+1.06,Judicial independence,judicial independence,1,6,Instituciones,2016,A,Requisitos Básicos,0.4
+1.07,Favoritism in decisions of government officials,favoritism in decisions of government officials,1,7,Instituciones,2016,A,Requisitos Básicos,0.4
+1.08,Wastefulness of government spending,wastefulness of government spending,1,8,Instituciones,2016,A,Requisitos Básicos,0.4
+1.09,Burden of government regulation,burden of government regulation,1,9,Instituciones,2016,A,Requisitos Básicos,0.4
+1.10,Efficiency of legal framework in settling disputes,efficiency of legal framework in settling disputes,1,10,Instituciones,2016,A,Requisitos Básicos,0.4
+1.11,Efficiency of legal framework in challenging regulations,efficiency of legal framework in challenging regulations,1,11,Instituciones,2016,A,Requisitos Básicos,0.4
+1.12,Transparency of government policymaking,transparency of government policymaking,1,12,Instituciones,2016,A,Requisitos Básicos,0.4
+1.13,Business costs of terrorism,business costs of terrorism,1,13,Instituciones,2016,A,Requisitos Básicos,0.4
+1.14,Business costs of crime and violence,business costs of crime and violence,1,14,Instituciones,2016,A,Requisitos Básicos,0.4
+1.15,Organized crime,organized crime,1,15,Instituciones,2016,A,Requisitos Básicos,0.4
+1.16,Reliability of police services,reliability of police services,1,16,Instituciones,2016,A,Requisitos Básicos,0.4
+1.17,Ethical behavior of firms,ethical behavior of firms,1,17,Instituciones,2016,A,Requisitos Básicos,0.4
+1.18,Strength of auditing and reporting standards,strength of auditing and reporting standards,1,18,Instituciones,2016,A,Requisitos Básicos,0.4
+1.19,Efficacy of corporate boards,efficacy of corporate boards,1,19,Instituciones,2016,A,Requisitos Básicos,0.4
+1.20,Protection of minority shareholders’ interests,protection of minority shareholders interests,1,20,Instituciones,2016,A,Requisitos Básicos,0.4
+1.21,Strength of investor protection,strength of investor protection,1,21,Instituciones,2016,A,Requisitos Básicos,0.4
+2.01,Quality of overall infrastructure,quality of overall infrastructure,2,1,Infraestructura,2016,A,Requisitos Básicos,0.4
+2.02,Quality of roads,quality of roads,2,2,Infraestructura,2016,A,Requisitos Básicos,0.4
+2.03,Quality of railroad infrastructurei,quality of railroad infrastructurei,2,3,Infraestructura,2016,A,Requisitos Básicos,0.4
+2.04,Quality of port infrastructure,quality of port infrastructure,2,4,Infraestructura,2016,A,Requisitos Básicos,0.4
+2.05,Quality of air transport infrastructure,quality of air transport infrastructure,2,5,Infraestructura,2016,A,Requisitos Básicos,0.4
+2.06,Available airline seat kilometers,available airline seat kilometers,2,6,Infraestructura,2016,A,Requisitos Básicos,0.4
+2.07,Quality of electricity supply,quality of electricity supply,2,7,Infraestructura,2016,A,Requisitos Básicos,0.4
+2.08,Mobile telephone subscriptions,mobile telephone subscriptions,2,8,Infraestructura,2016,A,Requisitos Básicos,0.4
+2.09,Fixed telephone lines,fixed telephone lines,2,9,Infraestructura,2016,A,Requisitos Básicos,0.4
+3.01,Government budget balance,government budget balance,3,1,Adopción de Tecnologías de Información y Comunicación (TIC),2016,A,Requisitos Básicos,0.4
+3.02,Gross national savings,gross national savings,3,2,Adopción de Tecnologías de Información y Comunicación (TIC),2016,A,Requisitos Básicos,0.4
+3.03,Inflation,inflation,3,3,Adopción de Tecnologías de Información y Comunicación (TIC),2016,A,Requisitos Básicos,0.4
+3.04,Government debt,government debt,3,4,Adopción de Tecnologías de Información y Comunicación (TIC),2016,A,Requisitos Básicos,0.4
+3.05,Country credit rating,country credit rating,3,5,Adopción de Tecnologías de Información y Comunicación (TIC),2016,A,Requisitos Básicos,0.4
+4.01,Business impact of malariak,business impact of malariak,4,1,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.02,Malaria incidence,malaria incidence,4,2,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.03,Business impact of tuberculosisk,business impact of tuberculosisk,4,3,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.04,Tuberculosis incidence,tuberculosis incidence,4,4,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.05,Business impact of HIV/AIDSk,business impact of hivaidsk,4,5,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.06,HIV prevalence,hiv prevalence,4,6,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.07,Infant mortality,infant mortality,4,7,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.08,Life expectancy,life expectancy,4,8,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.09,Quality of primary education,quality of primary education,4,9,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+4.10,Primary education enrollment rate,primary education enrollment rate,4,10,Estabilidad Macroeconómica,2016,A,Requisitos Básicos,0.4
+5.01,Secondary education enrollment rate,secondary education enrollment rate,5,1,Salud,2016,B,Impulsores de Eficiencia,0.5
+5.02,Tertiary education enrollment rate,tertiary education enrollment rate,5,2,Salud,2016,B,Impulsores de Eficiencia,0.5
+5.03,Quality of the educational system,quality of the educational system,5,3,Salud,2016,B,Impulsores de Eficiencia,0.5
+5.04,Quality of math and science education,quality of math and science education,5,4,Salud,2016,B,Impulsores de Eficiencia,0.5
+5.05,Quality of management schools,quality of management schools,5,5,Salud,2016,B,Impulsores de Eficiencia,0.5
+5.06,Internet access in schools,internet access in schools,5,6,Salud,2016,B,Impulsores de Eficiencia,0.5
+5.07,Local availability of specialized research and training,local availability of specialized research and training,5,7,Salud,2016,B,Impulsores de Eficiencia,0.5
+5.08,Extent of staff training,extent of staff training,5,8,Salud,2016,B,Impulsores de Eficiencia,0.5
+6.01,Intensity of local competition,intensity of local competition,6,1,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.02,Extent of market dominance,extent of market dominance,6,2,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.03,Effectiveness of anti-monopoly policy,effectiveness of antimonopoly policy,6,3,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.04,Effect of taxation on incentives to invest,effect of taxation on incentives to invest,6,4,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.05,Total tax rate,total tax rate,6,5,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.06,Number of procedures required to start a business,number of procedures required to start a business,6,6,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.07,Time required to start a business,time required to start a business,6,7,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.08,Agricultural policy costs,agricultural policy costs,6,8,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.09,Prevalence of trade barriers,prevalence of trade barriers,6,9,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.10,Trade tariffs,trade tariffs,6,10,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.11,Prevalence of foreign ownership,prevalence of foreign ownership,6,11,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.12,Business impact of rules on FDI,business impact of rules on fdi,6,12,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.13,Burden of customs procedures,burden of customs procedures,6,13,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.14,Imports as a percentage of GDP,imports as a percentage of gdp,6,14,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.15,Degree of customer orientation,degree of customer orientation,6,15,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+6.16,Buyer sophistication,buyer sophistication,6,16,Habilidades,2016,B,Impulsores de Eficiencia,0.5
+7.01,Cooperation in labor-employer relations,cooperation in laboremployer relations,7,1,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.02,Flexibility of wage determination,flexibility of wage determination,7,2,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.03,Hiring and firing practices,hiring and firing practices,7,3,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.04,Redundancy costs,redundancy costs,7,4,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.05,Effect of taxation on incentives to work,effect of taxation on incentives to work,7,5,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.06,Pay and productivity,pay and productivity,7,6,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.07,Reliance on professional management,reliance on professional management,7,7,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.08,Country capacity to retain talent,country capacity to retain talent,7,8,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.09,Country capacity to attract talent,country capacity to attract talent,7,9,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+7.10,Female participation in labor force,female participation in labor force,7,10,Mercado de Productos,2016,B,Impulsores de Eficiencia,0.5
+8.01,Financial services meeting business needs,financial services meeting business needs,8,1,Mercado Laboral,2016,B,Impulsores de Eficiencia,0.5
+8.02,Affordability of financial services,affordability of financial services,8,2,Mercado Laboral,2016,B,Impulsores de Eficiencia,0.5
+8.03,Financing through local equity market,financing through local equity market,8,3,Mercado Laboral,2016,B,Impulsores de Eficiencia,0.5
+8.04,Ease of access to loans,ease of access to loans,8,4,Mercado Laboral,2016,B,Impulsores de Eficiencia,0.5
+8.05,Venture capital availability,venture capital availability,8,5,Mercado Laboral,2016,B,Impulsores de Eficiencia,0.5
+8.06,Soundness of banks,soundness of banks,8,6,Mercado Laboral,2016,B,Impulsores de Eficiencia,0.5
+8.07,Regulation of securities exchanges,regulation of securities exchanges,8,7,Mercado Laboral,2016,B,Impulsores de Eficiencia,0.5
+8.08,Legal rights index,legal rights index,8,8,Mercado Laboral,2016,B,Impulsores de Eficiencia,0.5
+9.01,Availability of latest technologies,availability of latest technologies,9,1,Sistema Financiero,2016,B,Impulsores de Eficiencia,0.5
+9.02,Firm-level technology absorption,firmlevel technology absorption,9,2,Sistema Financiero,2016,B,Impulsores de Eficiencia,0.5
+9.03,FDI and technology transfer,fdi and technology transfer,9,3,Sistema Financiero,2016,B,Impulsores de Eficiencia,0.5
+9.04,Internet users,internet users,9,4,Sistema Financiero,2016,B,Impulsores de Eficiencia,0.5
+9.05,Broadband Internet subscriptions,broadband internet subscriptions,9,5,Sistema Financiero,2016,B,Impulsores de Eficiencia,0.5
+9.06,Internet bandwidth,internet bandwidth,9,6,Sistema Financiero,2016,B,Impulsores de Eficiencia,0.5
+9.07,Mobile broadband subscriptions,mobile broadband subscriptions,9,7,Sistema Financiero,2016,B,Impulsores de Eficiencia,0.5
+10.01,Domestic market size index,domestic market size index,10,1,Tamaño del Mercado,2016,B,Impulsores de Eficiencia,0.5
+10.02,Foreign market size index,foreign market size index,10,2,Tamaño del Mercado,2016,B,Impulsores de Eficiencia,0.5
+11.01,Local supplier quantity,local supplier quantity,11,1,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+11.02,Local supplier quality,local supplier quality,11,2,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+11.03,State of cluster development,state of cluster development,11,3,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+11.04,Nature of competitive advantage,nature of competitive advantage,11,4,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+11.05,Value chain breadth,value chain breadth,11,5,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+11.06,Control of international distribution,control of international distribution,11,6,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+11.07,Production process sophistication,production process sophistication,11,7,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+11.08,Extent of marketing,extent of marketing,11,8,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+11.09,Willingness to delegate authority,willingness to delegate authority,11,9,Dinamismo Empresarial,2016,C,Factores de Innovación y Sofisticación,0.1
+12.01,Capacity for innovation,capacity for innovation,12,1,Capacidad de Innovación,2016,C,Factores de Innovación y Sofisticación,0.1
+12.02,Quality of scientific research institutions,quality of scientific research institutions,12,2,Capacidad de Innovación,2016,C,Factores de Innovación y Sofisticación,0.1
+12.03,Company spending on R&D,company spending on rd,12,3,Capacidad de Innovación,2016,C,Factores de Innovación y Sofisticación,0.1
+12.04,University-industry collaboration in R&D,universityindustry collaboration in rd,12,4,Capacidad de Innovación,2016,C,Factores de Innovación y Sofisticación,0.1
+12.05,Government procurement of advanced technology products,government procurement of advanced technology products,12,5,Capacidad de Innovación,2016,C,Factores de Innovación y Sofisticación,0.1
+12.06,Availability of scientists and engineers,availability of scientists and engineers,12,6,Capacidad de Innovación,2016,C,Factores de Innovación y Sofisticación,0.1
+12.07,PCT patent applications,pct patent applications,12,7,Capacidad de Innovación,2016,C,Factores de Innovación y Sofisticación,0.1
+1.01,Property rights,property rights,1,1,Instituciones,2017,A,Requisitos Básicos,0.4
+1.02,Intellectual property protection,intellectual property protection,1,2,Instituciones,2017,A,Requisitos Básicos,0.4
+1.03,Diversion of public funds,diversion of public funds,1,3,Instituciones,2017,A,Requisitos Básicos,0.4
+1.04,Public trust in politicians,public trust in politicians,1,4,Instituciones,2017,A,Requisitos Básicos,0.4
+1.05,Irregular payments and bribes,irregular payments and bribes,1,5,Instituciones,2017,A,Requisitos Básicos,0.4
+1.06,Judicial independence,judicial independence,1,6,Instituciones,2017,A,Requisitos Básicos,0.4
+1.07,Favoritism in decisions of government officials,favoritism in decisions of government officials,1,7,Instituciones,2017,A,Requisitos Básicos,0.4
+1.08,Efficiency of government spending,efficiency of government spending,1,8,Instituciones,2017,A,Requisitos Básicos,0.4
+1.09,Burden of government regulation,burden of government regulation,1,9,Instituciones,2017,A,Requisitos Básicos,0.4
+1.10,Efficiency of legal framework in settling disputes,efficiency of legal framework in settling disputes,1,10,Instituciones,2017,A,Requisitos Básicos,0.4
+1.11,Efficiency of legal framework in challenging regulations,efficiency of legal framework in challenging regulations,1,11,Instituciones,2017,A,Requisitos Básicos,0.4
+1.12,Transparency of government policymaking,transparency of government policymaking,1,12,Instituciones,2017,A,Requisitos Básicos,0.4
+1.13,Business costs of terrorism,business costs of terrorism,1,13,Instituciones,2017,A,Requisitos Básicos,0.4
+1.14,Business costs of crime and violence,business costs of crime and violence,1,14,Instituciones,2017,A,Requisitos Básicos,0.4
+1.15,Organized crime,organized crime,1,15,Instituciones,2017,A,Requisitos Básicos,0.4
+1.16,Reliability of police services,reliability of police services,1,16,Instituciones,2017,A,Requisitos Básicos,0.4
+1.17,Ethical behavior of firms,ethical behavior of firms,1,17,Instituciones,2017,A,Requisitos Básicos,0.4
+1.18,Strength of auditing and reporting standards,strength of auditing and reporting standards,1,18,Instituciones,2017,A,Requisitos Básicos,0.4
+1.19,Efficacy of corporate boards,efficacy of corporate boards,1,19,Instituciones,2017,A,Requisitos Básicos,0.4
+1.20,Protection of minority shareholders’ interests,protection of minority shareholders interests,1,20,Instituciones,2017,A,Requisitos Básicos,0.4
+1.21,Strength of investor protection,strength of investor protection,1,21,Instituciones,2017,A,Requisitos Básicos,0.4
+2.01,Quality of overall infrastructure,quality of overall infrastructure,2,1,Infraestructura,2017,A,Requisitos Básicos,0.4
+2.02,Quality of roads,quality of roads,2,2,Infraestructura,2017,A,Requisitos Básicos,0.4
+2.03,Quality of railroad infrastructure,quality of railroad infrastructure,2,3,Infraestructura,2017,A,Requisitos Básicos,0.4
+2.04,Quality of port infrastructure,quality of port infrastructure,2,4,Infraestructura,2017,A,Requisitos Básicos,0.4
+2.05,Quality of air transport infrastructure,quality of air transport infrastructure,2,5,Infraestructura,2017,A,Requisitos Básicos,0.4
+2.06,Available airline seat kilometers,available airline seat kilometers,2,6,Infraestructura,2017,A,Requisitos Básicos,0.4
+2.07,Quality of electricity supply,quality of electricity supply,2,7,Infraestructura,2017,A,Requisitos Básicos,0.4
+2.08,Mobile-cellular telephone subscriptions,mobilecellular telephone subscriptions,2,8,Infraestructura,2017,A,Requisitos Básicos,0.4
+2.09,Fixed-telephone lines /100 pop.,fixedtelephone lines 100 pop,2,9,Infraestructura,2017,A,Requisitos Básicos,0.4
+3.01,Government budget balance,government budget balance,3,1,Adopción de Tecnologías de Información y Comunicación (TIC),2017,A,Requisitos Básicos,0.4
+3.02,Gross national savings,gross national savings,3,2,Adopción de Tecnologías de Información y Comunicación (TIC),2017,A,Requisitos Básicos,0.4
+3.03,Inflation annual % change,inflation annual change,3,3,Adopción de Tecnologías de Información y Comunicación (TIC),2017,A,Requisitos Básicos,0.4
+3.04,Government debt % GDP,government debt gdp,3,4,Adopción de Tecnologías de Información y Comunicación (TIC),2017,A,Requisitos Básicos,0.4
+3.05,Country credit rating 0-100 (best),country credit rating 0100 best,3,5,Adopción de Tecnologías de Información y Comunicación (TIC),2017,A,Requisitos Básicos,0.4
+4.01,"Malaria incidence cases/100,000 pop.",malaria incidence cases100000 pop,4,1,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.02,Business impact of malaria,business impact of malaria,4,2,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.03,Tuberculosis incidence,tuberculosis incidence,4,3,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.04,Business impact of tuberculosis,business impact of tuberculosis,4,4,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.05,HIV prevalence % adult pop.,hiv prevalence adult pop,4,5,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.06,Business impact of HIV/AIDS,business impact of hivaids,4,6,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.07,"Infant mortality deaths/1,000 live births",infant mortality deaths1000 live births,4,7,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.08,Life expectancy years,life expectancy years,4,8,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.09,Quality of primary education,quality of primary education,4,9,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+4.10,Primary education enrollment rate,primary education enrollment rate,4,10,Estabilidad Macroeconómica,2017,A,Requisitos Básicos,0.4
+5.01,Secondary education enrollment rate,secondary education enrollment rate,5,1,Salud,2017,B,Impulsores de Eficiencia,0.5
+5.02,Tertiary education enrollment rate,tertiary education enrollment rate,5,2,Salud,2017,B,Impulsores de Eficiencia,0.5
+5.03,Quality of the education system,quality of the education system,5,3,Salud,2017,B,Impulsores de Eficiencia,0.5
+5.04,Quality of math and science education,quality of math and science education,5,4,Salud,2017,B,Impulsores de Eficiencia,0.5
+5.05,Quality of management schools,quality of management schools,5,5,Salud,2017,B,Impulsores de Eficiencia,0.5
+5.06,Internet access in schools,internet access in schools,5,6,Salud,2017,B,Impulsores de Eficiencia,0.5
+5.07,Local availability of specialized training services,local availability of specialized training services,5,7,Salud,2017,B,Impulsores de Eficiencia,0.5
+5.08,Extent of staff training,extent of staff training,5,8,Salud,2017,B,Impulsores de Eficiencia,0.5
+6.01,Intensity of local competition,intensity of local competition,6,1,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.02,Extent of market dominance,extent of market dominance,6,2,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.03,Effectiveness of anti-monopoly policy,effectiveness of antimonopoly policy,6,3,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.04,Effect of taxation on incentives to invest,effect of taxation on incentives to invest,6,4,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.05,Total tax rate % profits,total tax rate profits,6,5,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.06,No. of procedures to start a business,no of procedures to start a business,6,6,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.07,Time to start a business days,time to start a business days,6,7,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.08,Agricultural policy costs,agricultural policy costs,6,8,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.09,Prevalence of non-tariff barriers,prevalence of nontariff barriers,6,9,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.10,Trade tariffs % duty,trade tariffs duty,6,10,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.11,Prevalence of foreign ownership,prevalence of foreign ownership,6,11,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.12,Business impact of rules on FDI,business impact of rules on fdi,6,12,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.13,Burden of customs procedures,burden of customs procedures,6,13,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.14,Imports % GDP,imports gdp,6,14,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.15,Degree of customer orientation,degree of customer orientation,6,15,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+6.16,Buyer sophistication,buyer sophistication,6,16,Habilidades,2017,B,Impulsores de Eficiencia,0.5
+7.01,Cooperation in labor-employer relations,cooperation in laboremployer relations,7,1,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.02,Flexibility of wage determination,flexibility of wage determination,7,2,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.03,Hiring and firing practices,hiring and firing practices,7,3,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.04,Redundancy costs weeks of salary,redundancy costs weeks of salary,7,4,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.05,Effect of taxation on incentives to work,effect of taxation on incentives to work,7,5,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.06,Pay and productivity,pay and productivity,7,6,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.07,Reliance on professional management,reliance on professional management,7,7,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.08,Country capacity to retain talent,country capacity to retain talent,7,8,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.09,Country capacity to attract talent,country capacity to attract talent,7,9,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+7.10,Female participation in the labor force,female participation in the labor force,7,10,Mercado de Productos,2017,B,Impulsores de Eficiencia,0.5
+8.01,Availability of financial services,availability of financial services,8,1,Mercado Laboral,2017,B,Impulsores de Eficiencia,0.5
+8.02,Affordability of financial services,affordability of financial services,8,2,Mercado Laboral,2017,B,Impulsores de Eficiencia,0.5
+8.03,Financing through local equity market,financing through local equity market,8,3,Mercado Laboral,2017,B,Impulsores de Eficiencia,0.5
+8.04,Ease of access to loans,ease of access to loans,8,4,Mercado Laboral,2017,B,Impulsores de Eficiencia,0.5
+8.05,Venture capital availability,venture capital availability,8,5,Mercado Laboral,2017,B,Impulsores de Eficiencia,0.5
+8.06,Soundness of banks,soundness of banks,8,6,Mercado Laboral,2017,B,Impulsores de Eficiencia,0.5
+8.07,Regulation of securities exchanges,regulation of securities exchanges,8,7,Mercado Laboral,2017,B,Impulsores de Eficiencia,0.5
+8.08,Legal rights index 0-10 (best),legal rights index 010 best,8,8,Mercado Laboral,2017,B,Impulsores de Eficiencia,0.5
+9.01,Availability of latest technologies,availability of latest technologies,9,1,Sistema Financiero,2017,B,Impulsores de Eficiencia,0.5
+9.02,Firm-level technology absorption,firmlevel technology absorption,9,2,Sistema Financiero,2017,B,Impulsores de Eficiencia,0.5
+9.03,FDI and technology transfer,fdi and technology transfer,9,3,Sistema Financiero,2017,B,Impulsores de Eficiencia,0.5
+9.04,Internet users % pop.,internet users pop,9,4,Sistema Financiero,2017,B,Impulsores de Eficiencia,0.5
+9.05,Fixed-broadband Internet subscriptions,fixedbroadband internet subscriptions,9,5,Sistema Financiero,2017,B,Impulsores de Eficiencia,0.5
+9.06,Internet bandwidth kb/s/user,internet bandwidth kbsuser,9,6,Sistema Financiero,2017,B,Impulsores de Eficiencia,0.5
+9.07,Mobile-broadband subscriptions /100 pop.,mobilebroadband subscriptions 100 pop,9,7,Sistema Financiero,2017,B,Impulsores de Eficiencia,0.5
+10.01,Domestic market size index,domestic market size index,10,1,Tamaño del Mercado,2017,B,Impulsores de Eficiencia,0.5
+10.02,Foreign market size index,foreign market size index,10,2,Tamaño del Mercado,2017,B,Impulsores de Eficiencia,0.5
+10.03,GDP (PPP) PPP $ billions,gdp ppp ppp billions,10,3,Tamaño del Mercado,2017,B,Impulsores de Eficiencia,0.5
+10.04,Exports % GDP,exports gdp,10,4,Tamaño del Mercado,2017,B,Impulsores de Eficiencia,0.5
+11.01,Local supplier quantity,local supplier quantity,11,1,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+11.02,Local supplier quality,local supplier quality,11,2,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+11.03,State of cluster development,state of cluster development,11,3,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+11.04,Nature of competitive advantage,nature of competitive advantage,11,4,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+11.05,Value chain breadth,value chain breadth,11,5,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+11.06,Control of international distribution,control of international distribution,11,6,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+11.07,Production process sophistication,production process sophistication,11,7,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+11.08,Extent of marketing,extent of marketing,11,8,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+11.09,Willingness to delegate authority,willingness to delegate authority,11,9,Dinamismo Empresarial,2017,C,Factores de Innovación y Sofisticación,0.1
+12.01,Capacity for innovation,capacity for innovation,12,1,Capacidad de Innovación,2017,C,Factores de Innovación y Sofisticación,0.1
+12.02,Quality of scientific research institutions,quality of scientific research institutions,12,2,Capacidad de Innovación,2017,C,Factores de Innovación y Sofisticación,0.1
+12.03,Company spending on R&D,company spending on rd,12,3,Capacidad de Innovación,2017,C,Factores de Innovación y Sofisticación,0.1
+12.04,University-industry collaboration in R&D,universityindustry collaboration in rd,12,4,Capacidad de Innovación,2017,C,Factores de Innovación y Sofisticación,0.1
+12.05,Gov't procurement of advanced technology products,govt procurement of advanced technology products,12,5,Capacidad de Innovación,2017,C,Factores de Innovación y Sofisticación,0.1
+12.06,Availability of scientists and engineers,availability of scientists and engineers,12,6,Capacidad de Innovación,2017,C,Factores de Innovación y Sofisticación,0.1
+12.07,PCT patents applications/million pop.,pct patents applicationsmillion pop,12,7,Capacidad de Innovación,2017,C,Factores de Innovación y Sofisticación,0.1
+1.01,Organized crime 1-7 (best),organized crime 17 best,1,1,Instituciones,2018,A,Requisitos Básicos,0.4
+1.02,"Homicide rate /100,000 pop.",homicide rate 100000 pop,1,2,Instituciones,2018,A,Requisitos Básicos,0.4
+1.03,Terrorism incidence 0 (very high) -100 (no incidence),terrorism incidence 0 very high 100 no incidence,1,3,Instituciones,2018,A,Requisitos Básicos,0.4
+1.04,Reliability of police services 1-7 (best),reliability of police services 17 best,1,4,Instituciones,2018,A,Requisitos Básicos,0.4
+1.05,Social capital 0-100 (high),social capital 0100 high,1,5,Instituciones,2018,A,Requisitos Básicos,0.4
+1.06,Budget transparency 0-100 (best),budget transparency 0100 best,1,6,Instituciones,2018,A,Requisitos Básicos,0.4
+1.07,Judicial independence 1-7 (best),judicial independence 17 best,1,7,Instituciones,2018,A,Requisitos Básicos,0.4
+1.08,Efficiency of legal framework in challenging regulations,efficiency of legal framework in challenging regulations,1,8,Instituciones,2018,A,Requisitos Básicos,0.4
+1.09,Freedom of the press 0-100 (worst),freedom of the press 0100 worst,1,9,Instituciones,2018,A,Requisitos Básicos,0.4
+1.10,Burden of government regulation,burden of government regulation,1,10,Instituciones,2018,A,Requisitos Básicos,0.4
+1.11,Efficiency of legal framework in settling disputes,efficiency of legal framework in settling disputes,1,11,Instituciones,2018,A,Requisitos Básicos,0.4
+1.12,Participation Index 0-1 (best),participation index 01 best,1,12,Instituciones,2018,A,Requisitos Básicos,0.4
+1.13,Future orientation of government,future orientation of government,1,13,Instituciones,2018,A,Requisitos Básicos,0.4
+1.14,Incidence of corruption 0-100 (best),incidence of corruption 0100 best,1,14,Instituciones,2018,A,Requisitos Básicos,0.4
+1.15,Property rights 1-7 (best),property rights 17 best,1,15,Instituciones,2018,A,Requisitos Básicos,0.4
+1.16,Intellectual property protection 1-7 (best),intellectual property protection 17 best,1,16,Instituciones,2018,A,Requisitos Básicos,0.4
+1.17,Quality of land administration 0-30 (best),quality of land administration 030 best,1,17,Instituciones,2018,A,Requisitos Básicos,0.4
+1.18,Strength of auditing and reporting standards,strength of auditing and reporting standards,1,18,Instituciones,2018,A,Requisitos Básicos,0.4
+1.19,Conflict of interest regulation 0-10 (best),conflict of interest regulation 010 best,1,19,Instituciones,2018,A,Requisitos Básicos,0.4
+1.20,Shareholder governance 0-10 (best),shareholder governance 010 best,1,20,Instituciones,2018,A,Requisitos Básicos,0.4
+2.01,Road connectivity index 0-100 (best),road connectivity index 0100 best,2,1,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.02,Quality of roads 1-7 (best),quality of roads 17 best,2,2,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.03,Railroad density km of roads/square km,railroad density km of roadssquare km,2,3,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.04,Efficiency of train services 1-7 (best),efficiency of train services 17 best,2,4,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.05,Airport connectivity score,airport connectivity score,2,5,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.06,Efficiency of air transport services,efficiency of air transport services,2,6,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.07,Liner Shipping Connectivity Index,liner shipping connectivity index,2,7,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.08,Efficiency of seaport services 1-7 (best),efficiency of seaport services 17 best,2,8,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.09,Electrification rate % pop.,electrification rate pop,2,9,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.10,Electric power transmission and distribution losses,electric power transmission and distribution losses,2,10,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.11,Exposure to unsafe drinking water,exposure to unsafe drinking water,2,11,Infraestructura,2018,A,Requisitos Básicos,0.4
+2.12,Reliability of water supply 1-7 (best),reliability of water supply 17 best,2,12,Infraestructura,2018,A,Requisitos Básicos,0.4
+3.01,Mobile-cellular telephone subscriptions,mobilecellular telephone subscriptions,3,1,Adopción de Tecnologías de Información y Comunicación (TIC),2018,A,Requisitos Básicos,0.4
+3.02,Mobile-broadband subscriptions,mobilebroadband subscriptions,3,2,Adopción de Tecnologías de Información y Comunicación (TIC),2018,A,Requisitos Básicos,0.4
+3.03,Fixed-broadband Internet subscriptions,fixedbroadband internet subscriptions,3,3,Adopción de Tecnologías de Información y Comunicación (TIC),2018,A,Requisitos Básicos,0.4
+3.04,Fibre Internet subscriptions /100 pop.,fibre internet subscriptions 100 pop,3,4,Adopción de Tecnologías de Información y Comunicación (TIC),2018,A,Requisitos Básicos,0.4
+3.05,Internet users % pop.,internet users pop,3,5,Adopción de Tecnologías de Información y Comunicación (TIC),2018,A,Requisitos Básicos,0.4
+4.01,Inflation annual % change,inflation annual change,4,1,Estabilidad Macroeconómica,2018,A,Requisitos Básicos,0.4
+4.02,Debt dynamics 0-100 (best),debt dynamics 0100 best,4,2,Estabilidad Macroeconómica,2018,A,Requisitos Básicos,0.4
+5.01,Healthy life expectancy years,healthy life expectancy years,5,1,Salud,2018,B,Impulsores de Eficiencia,0.5
+6.01,Mean years of schooling Years,mean years of schooling years,6,1,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+6.02,Extent of staff training 1-7 (best),extent of staff training 17 best,6,2,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+6.03,Quality of vocational training 1-7 (best),quality of vocational training 17 best,6,3,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+6.04,Skillset of graduates 1-7 (best),skillset of graduates 17 best,6,4,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+6.05,Digital skills among population 1-7 (best),digital skills among population 17 best,6,5,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+6.06,Ease of finding skilled employees,ease of finding skilled employees,6,6,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+6.07,School life expectancy Years,school life expectancy years,6,7,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+6.08,Critical thinking in teaching 1-7 (best),critical thinking in teaching 17 best,6,8,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+6.09,Pupil-to-teacher ratio in primary education,pupiltoteacher ratio in primary education,6,9,Habilidades,2018,B,Impulsores de Eficiencia,0.5
+7.01,Distortive effect of taxes and subsidies on competition,distortive effect of taxes and subsidies on competition,7,1,Mercado de Productos,2018,B,Impulsores de Eficiencia,0.5
+7.02,Extent of market dominance 1-7 (best),extent of market dominance 17 best,7,2,Mercado de Productos,2018,B,Impulsores de Eficiencia,0.5
+7.03,Competition in services 1-7 (best),competition in services 17 best,7,3,Mercado de Productos,2018,B,Impulsores de Eficiencia,0.5
+7.04,Prevalence of non-tariff barriers 1-7 (best),prevalence of nontariff barriers 17 best,7,4,Mercado de Productos,2018,B,Impulsores de Eficiencia,0.5
+7.05,Trade tariffs % duty,trade tariffs duty,7,5,Mercado de Productos,2018,B,Impulsores de Eficiencia,0.5
+7.06,Complexity of tariffs 1-7 (best),complexity of tariffs 17 best,7,6,Mercado de Productos,2018,B,Impulsores de Eficiencia,0.5
+7.07,Efficiency of the clearance process 1–5 (best),efficiency of the clearance process 15 best,7,7,Mercado de Productos,2018,B,Impulsores de Eficiencia,0.5
+7.08,Services trade openness 0-100 (worst),services trade openness 0100 worst,7,8,Mercado de Productos,2018,B,Impulsores de Eficiencia,0.5
+8.01,Redundancy costs weeks of salary,redundancy costs weeks of salary,8,1,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.02,Hiring and firing practices 1-7 (best),hiring and firing practices 17 best,8,2,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.03,Cooperation in Labour-employer relations,cooperation in labouremployer relations,8,3,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.04,Flexibility of wage determination 1-7 (best),flexibility of wage determination 17 best,8,4,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.05,Active Labour policies 1-7 (best),active labour policies 17 best,8,5,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.06,Workers' rights 0-100 (best),workers rights 0100 best,8,6,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.07,Ease of hiring foreign labour 1-7 (best),ease of hiring foreign labour 17 best,8,7,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.08,Internal Labour mobility 1-7 (best),internal labour mobility 17 best,8,8,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.09,Reliance on professional management,reliance on professional management,8,9,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.10,Pay and productivity 1-7 (best),pay and productivity 17 best,8,10,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.11,Female participation in Labour force,female participation in labour force,8,11,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+8.12,Labour tax rate %,labour tax rate,8,12,Mercado Laboral,2018,B,Impulsores de Eficiencia,0.5
+9.01,Domestic credit to private sector % GDP,domestic credit to private sector gdp,9,1,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+9.02,Financing of SMEs 1-7 (best),financing of smes 17 best,9,2,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+9.03,Venture capital availability 1-7 (best),venture capital availability 17 best,9,3,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+9.04,Market capitalization % GDP,market capitalization gdp,9,4,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+9.05,Insurance premium % GDP,insurance premium gdp,9,5,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+9.06,Soundness of banks 1-7 (best),soundness of banks 17 best,9,6,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+9.07,Non-performing loans % loan portfolio value,nonperforming loans loan portfolio value,9,7,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+9.08,Credit gap percentage points,credit gap percentage points,9,8,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+9.09,Banks’ regulatory capital ratio ratio,banks regulatory capital ratio ratio,9,9,Sistema Financiero,2018,B,Impulsores de Eficiencia,0.5
+10.01,Gross domestic product PPP $ billions,gross domestic product ppp billions,10,1,Tamaño del Mercado,2018,B,Impulsores de Eficiencia,0.5
+10.02,Imports % GDP,imports gdp,10,2,Tamaño del Mercado,2018,B,Impulsores de Eficiencia,0.5
+11.01,Cost of starting a business % GNI per capita,cost of starting a business gni per capita,11,1,Dinamismo Empresarial,2018,C,Factores de Innovación y Sofisticación,0.1
+11.02,Time to start a business days,time to start a business days,11,2,Dinamismo Empresarial,2018,C,Factores de Innovación y Sofisticación,0.1
+11.03,Insolvency recovery rate cents/$,insolvency recovery rate cents,11,3,Dinamismo Empresarial,2018,C,Factores de Innovación y Sofisticación,0.1
+11.04,Insolvency regulatory framework 0-16 (best),insolvency regulatory framework 016 best,11,4,Dinamismo Empresarial,2018,C,Factores de Innovación y Sofisticación,0.1
+11.05,Attitudes toward entrepreneurial risk,attitudes toward entrepreneurial risk,11,5,Dinamismo Empresarial,2018,C,Factores de Innovación y Sofisticación,0.1
+11.06,Willingness to delegate authority 1-7 (best),willingness to delegate authority 17 best,11,6,Dinamismo Empresarial,2018,C,Factores de Innovación y Sofisticación,0.1
+11.07,Growth of innovative companies 1-7 (best),growth of innovative companies 17 best,11,7,Dinamismo Empresarial,2018,C,Factores de Innovación y Sofisticación,0.1
+11.08,Companies embracing disruptive ideas,companies embracing disruptive ideas,11,8,Dinamismo Empresarial,2018,C,Factores de Innovación y Sofisticación,0.1
+12.01,Diversity of workforce 1-7 (best),diversity of workforce 17 best,12,1,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.02,State of cluster development 1-7 (best),state of cluster development 17 best,12,2,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.03,International co-inventions applications/million pop.,international coinventions applicationsmillion pop,12,3,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.04,Multi-stakeholder collaboration 1-7 (best),multistakeholder collaboration 17 best,12,4,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.05,Scientific publications H Index,scientific publications h index,12,5,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.06,Patent applications applications/million pop.,patent applications applicationsmillion pop,12,6,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.07,GDP,gdp,12,7,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.08,Quality of research institutions index,quality of research institutions index,12,8,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.09,Buyer sophistication 1-7 (best),buyer sophistication 17 best,12,9,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+12.10,Trademark applications applications/million pop.,trademark applications applicationsmillion pop,12,10,Capacidad de Innovación,2018,C,Factores de Innovación y Sofisticación,0.1
+1.01,Organized crime 1–7 (best),organized crime 17 best,1,1,Instituciones,2019,A,Requisitos Básicos,0.4
+1.02,"Homicide rate per 100,000 pop.",homicide rate per 100000 pop,1,2,Instituciones,2019,A,Requisitos Básicos,0.4
+1.03,Terrorism incidence 0 (very high) -100 (no incidence),terrorism incidence 0 very high 100 no incidence,1,3,Instituciones,2019,A,Requisitos Básicos,0.4
+1.04,Reliability of police services 1–7 (best),reliability of police services 17 best,1,4,Instituciones,2019,A,Requisitos Básicos,0.4
+1.05,Social capital 0–100 (best),social capital 0100 best,1,5,Instituciones,2019,A,Requisitos Básicos,0.4
+1.06,Budget transparency 0–100 (best),budget transparency 0100 best,1,6,Instituciones,2019,A,Requisitos Básicos,0.4
+1.07,Judicial independence 1–7 (best),judicial independence 17 best,1,7,Instituciones,2019,A,Requisitos Básicos,0.4
+1.08,Efficiency of legal framework in challenging regulations,efficiency of legal framework in challenging regulations,1,8,Instituciones,2019,A,Requisitos Básicos,0.4
+1.09,Freedom of the press 0–100 (worst),freedom of the press 0100 worst,1,9,Instituciones,2019,A,Requisitos Básicos,0.4
+1.10,Burden of government regulation,burden of government regulation,1,10,Instituciones,2019,A,Requisitos Básicos,0.4
+1.11,Efficiency of legal framework in settling disputes,efficiency of legal framework in settling disputes,1,11,Instituciones,2019,A,Requisitos Básicos,0.4
+1.12,Participation 0–1 (best),participation 01 best,1,12,Instituciones,2019,A,Requisitos Básicos,0.4
+1.13,Incidence of corruption 0–100 (best),incidence of corruption 0100 best,1,13,Instituciones,2019,A,Requisitos Básicos,0.4
+1.14,Property rights 1–7 (best),property rights 17 best,1,14,Instituciones,2019,A,Requisitos Básicos,0.4
+1.15,Intellectual property protection,intellectual property protection,1,15,Instituciones,2019,A,Requisitos Básicos,0.4
+1.16,Quality of land administration,quality of land administration,1,16,Instituciones,2019,A,Requisitos Básicos,0.4
+1.17,Strength of auditing and accounting standards,strength of auditing and accounting standards,1,17,Instituciones,2019,A,Requisitos Básicos,0.4
+1.18,Conflict of interest regulation,conflict of interest regulation,1,18,Instituciones,2019,A,Requisitos Básicos,0.4
+1.19,Shareholder governance 0–10 (best),shareholder governance 010 best,1,19,Instituciones,2019,A,Requisitos Básicos,0.4
+1.20,Government ensuring policy stability,government ensuring policy stability,1,20,Instituciones,2019,A,Requisitos Básicos,0.4
+1.21,Government's responsiveness to change,governments responsiveness to change,1,21,Instituciones,2019,A,Requisitos Básicos,0.4
+1.22,Legal framework's adaptability to digital business models,legal frameworks adaptability to digital business models,1,22,Instituciones,2019,A,Requisitos Básicos,0.4
+1.23,Government long-term vision,government longterm vision,1,23,Instituciones,2019,A,Requisitos Básicos,0.4
+1.24,Energy efficiency regulation 0–100 (best),energy efficiency regulation 0100 best,1,24,Instituciones,2019,A,Requisitos Básicos,0.4
+1.25,Renewable energy regulation,renewable energy regulation,1,25,Instituciones,2019,A,Requisitos Básicos,0.4
+1.26,Environment-related treaties in force,environmentrelated treaties in force,1,26,Instituciones,2019,A,Requisitos Básicos,0.4
+2.01,Road connectivity 0–100 (best),road connectivity 0100 best,2,1,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.02,Quality of road infrastructure,quality of road infrastructure,2,2,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.03,"Railroad density km/1,000 km[[2",railroad density km1000 km2,2,3,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.04,Efficiency of train services 1–7 (best),efficiency of train services 17 best,2,4,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.05,Airport connectivity score,airport connectivity score,2,5,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.06,Efficiency of air transport services,efficiency of air transport services,2,6,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.07,Liner shipping connectivity 0–100 (best),liner shipping connectivity 0100 best,2,7,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.08,Efficiency of seaport services,efficiency of seaport services,2,8,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.09,Electricity access % of population,electricity access of population,2,9,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.10,Electricity supply quality % of output,electricity supply quality of output,2,10,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.11,Exposure to unsafe drinking water,exposure to unsafe drinking water,2,11,Infraestructura,2019,A,Requisitos Básicos,0.4
+2.12,Reliability of water supply 1–7 (best),reliability of water supply 17 best,2,12,Infraestructura,2019,A,Requisitos Básicos,0.4
+3.01,Mobile-cellular telephone subscriptions,mobilecellular telephone subscriptions,3,1,Adopción de Tecnologías de Información y Comunicación (TIC),2019,A,Requisitos Básicos,0.4
+3.02,Mobile-broadband subscriptions,mobilebroadband subscriptions,3,2,Adopción de Tecnologías de Información y Comunicación (TIC),2019,A,Requisitos Básicos,0.4
+3.03,Fixed-broadband Internet subscriptions,fixedbroadband internet subscriptions,3,3,Adopción de Tecnologías de Información y Comunicación (TIC),2019,A,Requisitos Básicos,0.4
+3.04,Fibre internet subscriptions per 100 pop.,fibre internet subscriptions per 100 pop,3,4,Adopción de Tecnologías de Información y Comunicación (TIC),2019,A,Requisitos Básicos,0.4
+3.05,Internet users % of adult population,internet users of adult population,3,5,Adopción de Tecnologías de Información y Comunicación (TIC),2019,A,Requisitos Básicos,0.4
+4.01,Inflation %,inflation,4,1,Estabilidad Macroeconómica,2019,A,Requisitos Básicos,0.4
+4.02,Debt dynamics 0–100 (best),debt dynamics 0100 best,4,2,Estabilidad Macroeconómica,2019,A,Requisitos Básicos,0.4
+5.01,Healthy life expectancy years,healthy life expectancy years,5,1,Salud,2019,B,Impulsores de Eficiencia,0.5
+6.01,Mean years of schooling years,mean years of schooling years,6,1,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+6.02,Extent of staff training 1–7 (best),extent of staff training 17 best,6,2,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+6.03,Quality of vocational training 1–7 (best),quality of vocational training 17 best,6,3,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+6.04,Skillset of graduates 1–7 (best),skillset of graduates 17 best,6,4,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+6.05,Digital skills among active population,digital skills among active population,6,5,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+6.06,Ease of finding skilled employees,ease of finding skilled employees,6,6,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+6.07,School life expectancy years,school life expectancy years,6,7,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+6.08,Critical thinking in teaching 1–7 (best),critical thinking in teaching 17 best,6,8,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+6.09,Pupil-to-teacher ratio in primary education,pupiltoteacher ratio in primary education,6,9,Habilidades,2019,B,Impulsores de Eficiencia,0.5
+7.01,Distortive effect of taxes and subsidies on competition,distortive effect of taxes and subsidies on competition,7,1,Mercado de Productos,2019,B,Impulsores de Eficiencia,0.5
+7.02,Extent of market dominance 1–7 (best),extent of market dominance 17 best,7,2,Mercado de Productos,2019,B,Impulsores de Eficiencia,0.5
+7.03,Competition in services 1–7 (best),competition in services 17 best,7,3,Mercado de Productos,2019,B,Impulsores de Eficiencia,0.5
+7.04,Prevalence of non-tariff barriers,prevalence of nontariff barriers,7,4,Mercado de Productos,2019,B,Impulsores de Eficiencia,0.5
+7.05,Trade tariffs %,trade tariffs,7,5,Mercado de Productos,2019,B,Impulsores de Eficiencia,0.5
+7.06,Complexity of tariffs 1–7 (best),complexity of tariffs 17 best,7,6,Mercado de Productos,2019,B,Impulsores de Eficiencia,0.5
+7.07,Border clearance efficiency 1–5 (best),border clearance efficiency 15 best,7,7,Mercado de Productos,2019,B,Impulsores de Eficiencia,0.5
+8.01,Redundancy costs weeks of salary,redundancy costs weeks of salary,8,1,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.02,Hiring and firing practices 1–7 (best),hiring and firing practices 17 best,8,2,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.03,Cooperation in labour-employer relations,cooperation in labouremployer relations,8,3,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.04,Flexibility of wage determination,flexibility of wage determination,8,4,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.05,Active labour market policies 1–7 (best),active labour market policies 17 best,8,5,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.06,Workers' rights 0-100 (best),workers rights 0100 best,8,6,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.07,Ease of hiring foreign labour 1–7 (best),ease of hiring foreign labour 17 best,8,7,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.08,Internal labour mobility 1–7 (best),internal labour mobility 17 best,8,8,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.09,Reliance on professional management,reliance on professional management,8,9,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.10,Pay and productivity 1–7 (best),pay and productivity 17 best,8,10,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.11,Ratio of wage and salaried female workers to male workers,ratio of wage and salaried female workers to male workers,8,11,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+8.12,Labour tax rate %,labour tax rate,8,12,Mercado Laboral,2019,B,Impulsores de Eficiencia,0.5
+9.01,Domestic credit to private sector % GDP,domestic credit to private sector gdp,9,1,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+9.02,Financing of SMEs 1–7 (best),financing of smes 17 best,9,2,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+9.03,Venture capital availability 1–7 (best),venture capital availability 17 best,9,3,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+9.04,Market capitalization % GDP,market capitalization gdp,9,4,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+9.05,Insurance premium volume to GDP,insurance premium volume to gdp,9,5,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+9.06,Soundness of banks 1–7 (best),soundness of banks 17 best,9,6,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+9.07,Non-performing loans % of gross total loans,nonperforming loans of gross total loans,9,7,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+9.08,Credit gap %,credit gap,9,8,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+9.09,Banks’ regulatory capital ratio % of total risk-weighted assets,banks regulatory capital ratio of total riskweighted assets,9,9,Sistema Financiero,2019,B,Impulsores de Eficiencia,0.5
+10.01,Gross domestic product PPP $ billions,gross domestic product ppp billions,10,1,Tamaño del Mercado,2019,B,Impulsores de Eficiencia,0.5
+10.02,Imports of goods and services % GDP,imports of goods and services gdp,10,2,Tamaño del Mercado,2019,B,Impulsores de Eficiencia,0.5
+11.01,Cost of starting a business % of GNI per capita,cost of starting a business of gni per capita,11,1,Dinamismo Empresarial,2019,C,Factores de Innovación y Sofisticación,0.1
+11.02,Time to start a business days,time to start a business days,11,2,Dinamismo Empresarial,2019,C,Factores de Innovación y Sofisticación,0.1
+11.03,Insolvency recovery rate cents to the dollar,insolvency recovery rate cents to the dollar,11,3,Dinamismo Empresarial,2019,C,Factores de Innovación y Sofisticación,0.1
+11.04,Insolvency regulatory framework 0–16 (best),insolvency regulatory framework 016 best,11,4,Dinamismo Empresarial,2019,C,Factores de Innovación y Sofisticación,0.1
+11.05,Attitudes towards entrepreneurial risk 1–7 (best),attitudes towards entrepreneurial risk 17 best,11,5,Dinamismo Empresarial,2019,C,Factores de Innovación y Sofisticación,0.1
+11.06,Willingness to delegate authority 1–7 (best),willingness to delegate authority 17 best,11,6,Dinamismo Empresarial,2019,C,Factores de Innovación y Sofisticación,0.1
+11.07,Growth of innovative companies 1–7 (best),growth of innovative companies 17 best,11,7,Dinamismo Empresarial,2019,C,Factores de Innovación y Sofisticación,0.1
+11.08,Companies embracing disruptive ideas,companies embracing disruptive ideas,11,8,Dinamismo Empresarial,2019,C,Factores de Innovación y Sofisticación,0.1
+12.01,Diversity of workforce 1–7 (best),diversity of workforce 17 best,12,1,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.02,State of cluster development 1–7 (best),state of cluster development 17 best,12,2,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.03,International co-inventions per million pop.,international coinventions per million pop,12,3,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.04,Multi-stakeholder collaboration 1–7 (best),multistakeholder collaboration 17 best,12,4,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.05,Scientific publications score,scientific publications score,12,5,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.06,Patent applications per million pop.,patent applications per million pop,12,6,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.07,GDP,gdp,12,7,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.08,Research institutions prominence 0–100 (best),research institutions prominence 0100 best,12,8,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.09,Buyer sophistication 1–7 (best),buyer sophistication 17 best,12,9,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
+12.10,Trademark applications per million pop.,trademark applications per million pop,12,10,Capacidad de Innovación,2019,C,Factores de Innovación y Sofisticación,0.1
