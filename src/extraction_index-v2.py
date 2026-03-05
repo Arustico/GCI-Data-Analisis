@@ -44,6 +44,8 @@ logger = logging.getLogger(__name__)
 # Variables de configuración
 # ─────────────────────────────────────────────
 FOLDER_RAW_LOCAL = Path(os.getenv("FOLDER_RAW", "data/raw"))
+FOLDER_PROCESSED = Path(os.getenv("FOLDER_PROCESSED"))
+
 
 _pdf_path_env = os.getenv("PDF_FILES_PATH")
 if not _pdf_path_env:
@@ -54,7 +56,7 @@ if not _pdf_path_env:
 PDF_FILES_PATH = Path(_pdf_path_env)
 
 # Páginas a leer por PDF (en el mismo orden que los archivos del directorio).
-# NOTA: actualiza esta lista si se agregan nuevos PDFs o periodos.
+# NOTA: actualizar esta lista si se agregan nuevos PDFs o periodos.
 PAGES_PER_PDF: list[str] = ["63-65", "70-71", "55", "95", "111", "121"]
 
 # Patrón por defecto para capturar la descripción de un indicador
@@ -217,9 +219,7 @@ def leer_tablas_desde_pdfs(ruta_pdfs: Path) -> list[tuple]:
     return resultados
 
 
-def construir_dataframe_indices(
-    tablas_por_pdf: list[tuple],
-) -> pd.DataFrame:
+def construir_dataframe_indices(tablas_por_pdf: list[tuple]) -> pd.DataFrame:
     """
     Consolida los índices extraídos de todos los PDFs en un único DataFrame.
 
@@ -314,6 +314,78 @@ def construir_dataframe_indices(
     return df[OUTPUT_COLUMNS]
 
 
+def crea_subpilares(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Agrega las columnas subpilar y pilar. Además se agregan las categorías,
+    """
+    df['PILAR'] = df['NUM_INDX'].apply(lambda x: int(re.search(r'(^\d+)', x)[0]))
+    df['SUBPILAR'] = df['NUM_INDX'].apply(lambda x: int(re.search(r'(?<=\d.)(\d+)', x)[0]))
+
+    # Arreglo dtype al año
+    df['AÑO'] = df['AÑO'].astype(int)
+    df = df.sort_values(by=["AÑO","PILAR","SUBPILAR"]).reset_index(drop=True)
+
+    return df
+
+def crea_categorias(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Incorpora la categoría dada por los informes del WEF y su factor según metodología.
+    """
+    #  Creación de categorías
+    map_categorias = [{"CATEGORIA_INDX":"A","CATEGORIA_DESC":"Requisitos Básicos","FACTOR":0.4, "PILAR":[1,2,3,4]},
+                    {"CATEGORIA_INDX":"B","CATEGORIA_DESC":"Impulsores de Eficiencia","FACTOR":0.5, "PILAR":[5,6,7,8,9,10]},
+                    {"CATEGORIA_INDX":"C","CATEGORIA_DESC":"Factores de Innovación y Sofisticación","FACTOR":0.1, "PILAR":[11,12]}]
+
+    for cat in map_categorias:
+        df.loc[df['PILAR'].isin(cat['PILAR']),'CATEGORIA_INDX'] = cat['CATEGORIA_INDX']
+        df.loc[df['PILAR'].isin(cat['PILAR']),'CATEGORIA_DESC'] = cat['CATEGORIA_DESC']
+        df.loc[indicadores['PILAR'].isin(cat['PILAR']),'FACTOR'] = cat['FACTOR']
+
+    return df
+
+
+def crea_descripcion_pilar(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Incorpora la columna descripción de cada pilar
+    """
+   # Creación de descrpición de pilar
+    map_description_pilar = {
+        1: "Instituciones", 2: "Infraestructura",
+        3: "Adopción de Tecnologías de Información y Comunicación (TIC)",
+        4: "Estabilidad Macroeconómica", 5: "Salud", 6: "Habilidades",
+        7: "Mercado de Productos",8: "Mercado Laboral", 9: "Sistema Financiero",
+        10: "Tamaño del Mercado",11: "Dinamismo Empresarial",
+        12: "Capacidad de Innovación"
+        }
+    for pilar,des in dic_descr_pilar.items():
+        df.loc[df['PILAR']==pilar,'DESCRIPCION_PILAR'] = des
+
+def creacion_nuevas_columnas(df):
+    """
+    Crea nuevas columnas a partir de las funciones:
+        1. crea_subpilares
+        2. crea_categorias
+        3. crea_descripcion_pilar
+    """
+    print("=" * 90 + "\n")
+    logger.info("Incorporación de nuevas columnas")
+    print("=" * 90 + "\n")
+
+    df = crea_subpilares(df)
+    df = crea_categorias(df)
+    df = crea_descripcion_pilar(df)
+
+    # Arreglos finales
+    used_cols = ['NUM_INDX', 'DESCRIPCION','DESCRIPCION_INDX_NORM', 'PILAR', 'SUBPILAR','DESCRIPCION_PILAR','AÑO' ,
+                'CATEGORIA_INDX','CATEGORIA_DESC', 'FACTOR']
+    df = df.rename(columns={"DESCRIPCION":"DESCRIPCION_INDX",})
+
+    df = df[used_cols].copy()
+
+    return df
+
+
+
 # ─────────────────────────────────────────────
 # Punto de entrada
 # ─────────────────────────────────────────────
@@ -332,7 +404,7 @@ def main() -> None:
     print("=" * 90 + "\n")
 
     # Opcional: exportar a CSV en la carpeta raw local
-    ruta_salida = FOLDER_RAW_LOCAL / "indices_extraidos.csv"
+    ruta_salida = FOLDER_PROCESSED / "bd_diccionario_indices.csv"
     FOLDER_RAW_LOCAL.mkdir(parents=True, exist_ok=True)
     df_indices.to_csv(ruta_salida, index=False, encoding="utf-8-sig")
     logger.info("Archivo guardado en: %s", ruta_salida)
