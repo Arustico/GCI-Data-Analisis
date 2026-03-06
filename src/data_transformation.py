@@ -18,6 +18,7 @@ from pathlib import Path
 # Librerías de terceros
 # ─────────────────────────────────────────────
 import pandas as pd
+import numpy as np
 from dotenv import load_dotenv
 
 # ─────────────────────────────────────────────
@@ -118,8 +119,12 @@ def add_indices_info(df:pd.DataFrame) -> pd.DataFrame:
     """
     Agrega información de los indicadores presentes en la data
     """
-    logger.info(f"Leyendo información de indicadores: {file_indices_info}")
-    df_indicadores = pd.read_excel(file_indices_info)
+    print("="*90)
+    logger.info(f"\nLeyendo información de indicadores: {file_indices_info}")
+    try:
+        df_indicadores = pd.read_csv(file_indices_info)
+    except Exception as exc:
+        logger.error("No se leyó datos: %s",exc)
     # Arreglos
     df_indicadores['NUM_INDX'] = df_indicadores['NUM_INDX'].astype(str)
 
@@ -146,11 +151,14 @@ def add_indices_info(df:pd.DataFrame) -> pd.DataFrame:
 
     # todos con descrpición
     nodescrip = df_merged[df_merged['DESCRIPCION_INDX'].isna()]
-    if nodescrip:
+    if len(nodescrip)>0:
         logger.warning(f"Indicadores sin descripción: {nodescrip}")
+    else:
+        logger.info("Todos indicadores con descripción: OK\n")
 
     #% de nan en valores de índice
-    missed_values = df_merged['VALOR_INDICE'].isna().sum()/len(bd_indx_final)*100
+    missed_values = df_merged['VALOR_INDICE'].isna().sum()/len(df_merged)*100
+    missed_values = np.round(missed_values,2)
     logger.warning(f"Valores nulos: {missed_values}%")
     #indicadores['DESCRIPCION_INDX'].unique()
     return df_merged
