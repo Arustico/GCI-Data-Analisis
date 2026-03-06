@@ -140,9 +140,9 @@ Se introdujeron 2 nuevas categorías:
     - OECD
     - BRICS
 
-Esto permite validar la coherencia del clustering, examinar la heterogeneidad de la estructura de los datos y permite dar interpretatibilidad a los resultados.
-------------------------------------------------------------------------
+>Esto permite validar la coherencia del clustering, examinar la heterogeneidad de la estructura de los datos y permite dar interpretatibilidad a los resultados.
 
+------------------------------------------------------------------------
 ## 5. Framework de Análisis
 ### 5.1 Análisis Exploratorio Descriptivo (EDA)
 
