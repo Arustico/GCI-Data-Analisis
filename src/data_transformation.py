@@ -178,6 +178,10 @@ def main() -> None:
     print(df_score.head(10).to_string(index=False))
     print("=" * 90 + "\n")
 
+    file_data = f"{FOLDER_PROCESSED}/bd_indices_wef.csv"
+    df_score.to_csv(file_data, index=False)
+    logging.info(f"Datos guardados datos en: {file_data}")
+
 
 if __name__ == "__main__":
     main()
