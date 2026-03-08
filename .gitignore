@@ -43,10 +43,11 @@ tmp/*
 # =====================
 # Reportes y outputs
 # =====================
-reports/figuras/
+doc/figures
+doc/tables
 outputs/
 results/
-
+notebooks/iframe_figures
 
 # =====================
 # Logs
