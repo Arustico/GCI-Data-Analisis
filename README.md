@@ -166,53 +166,76 @@ $$
 
 ### 5.2 Principal Component Analysis (PCA)
 
--   PC1 ≈ 80% variance explained
+-   PC1 ≈ 80% varianza explicada
 -   PC2 ≈ 5%
 
-PC1 separates developed vs emerging economies.
-
+El componente PC1 separa economías emergentes vs economías desarrolladas
 
 
 ### 5.3 HJ-Biplot
 
-Based on Singular Value Decomposition (SVD).\
-Allows simultaneous representation of countries and pillar-year
-variables.
+Basado en la Descomposición de valores singulares (SVD).\
+Permite la representación simiultánea de los países (sujetos) y los pilares-años (variables)
 
-Key Finding: Structural rotations in pillars 3 and 10 during 2016 and
-2018.
-
+>Principal hallazgo: Rotaciones estructurales en pilares 3 y 10 durante 2016 y 2018.
 
 ### 5.4 STATIS (Multi-table Analysis)
 
-Each year treated as an independent table.\
-RV coefficient used to measure similarity across yearly matrices.
+Cada año es tratada como una tabla independiente.\
+Se utilizaron coeficientes RV para medir similitud a lo largo de las matrices anuales. 
 
-Findings:
-
--   Strong coherence within 2014--2017.
--   Distinct structure in 2018--2019.
--   Methodological discontinuity confirmed.
-
-------------------------------------------------------------------------
-
-## 6. Main Findings
-
-1.  Structural stability within homogeneous methodological periods.
-2.  Clear structural break between GCI 3.0 and GCI 4.0.
-3.  Pillars 3, 7, and 10 most sensitive to redesign.
-4.  Developed economies show lower structural volatility.
-5.  Multivariate geometry more informative than ranking positions.
+> Hallazgos:
+    > Fuerte coherencia entre 2014-2017.
+    > Estructura distinta en 2018 - 2019.
+    > Se confirma la discontuinidad metodológica.
 
 ------------------------------------------------------------------------
 
-## 7. Repository Structure
+## 6. Principales hallazgos
 
-    ├── data/
-    ├── notebooks/
-    ├── src/
-    ├── figures/
-    ├── README.md
+1.  Estabilidad estructural dentro de los periodos metodológicos homogéneos.
+2.  Clara discontinuidad estructural entre GCI 3.0 y GCI 4.0.
+3.  Pilares 3,7 y 10 fueron más suceptibles a los cambios metodológicos y de diseño.
+4.  Economías desrrolladas muestran menor volatilidad estructural.
+5.  Las geometrías multivariantes entregan mayor información que la posición del ranking.
+
+------------------------------------------------------------------------
+
+## 7. Esctructura del trabajo
+
+```
+├── data
+│   ├── processed
+│   │   ├── bd_diccionario_indices.csv
+│   │   ├── bd_indices_wef.csv
+│   │   ├── data_pivoted_2.csv
+│   │   └── data_pivoted.csv
+│   └── raw
+│       ├── bd_paises_info.csv
+│       ├── pdf
+│       ├── puntajes_paises_1.xlsx
+│       └── puntajes_paises_2.xlsx
+├── doc
+│   ├── figures
+│   ├── Presentación TFM.pdf
+│   ├── tables
+│   └── TMF_AN_MAMB_V1.3.pdf
+├── LICENSE
+├── notebooks
+│   └── analisis_indices_wef.ipynb
+├── poetry.lock
+├── pyproject.toml
+├── README.md
+└── src
+    ├── biplots_utils.py
+    ├── data_transformation.py
+    ├── extraction_index.py
+    └── pybiplots
+        ├── GH_Biplot.py
+        ├── HJ_Biplot.py
+        └── JK_Biplot.py
+
+```
 
 ------------------------------------------------------------------------
 
