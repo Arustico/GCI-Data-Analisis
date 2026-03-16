@@ -11,6 +11,19 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+dist/
+build/
+
+# =====================
+# R / RENV
+# =====================
+# Historial y temporales
+.Rhistory
+.RData
+.Ruserdata
+# Librerías locales creadas por R
+R/
+renv/library/
 
 # =====================
 # Entornos virtuales
