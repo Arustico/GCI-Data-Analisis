@@ -21,6 +21,8 @@ build/
 .Rhistory
 .RData
 .Ruserdata
+.Renviron
+
 # Librerías locales creadas por R
 R/
 renv/library/
