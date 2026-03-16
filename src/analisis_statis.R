@@ -28,7 +28,8 @@ library(FactoMineR)  # Métodos de reducción de dimensión complementarios
 # ─────────────────────────────────────────────────────────────────────────────
 
 # 2.1 Directorio de trabajo y lectura del Excel
-setwd("C:/Users/ArielNunezSalinas/Desktop/Ariel/UBO/Magister/TFM")
+FOLDER_PRJ = Sys.getenv("FOLDER_PRJCT")
+setwd(FOLDER_PRJ)
 
 datos <- read_excel("./datos_tratados/data_pivoted_2.xlsx")
 datos <- as.data.frame(datos)
