@@ -267,5 +267,10 @@ Los valores de GCI son comparables solo dentro de los periodos por separado:
 
 Una comparación directa a lo largo del cambio metodológico, es estadísticamente inválida sin ajustes estructurales.
 
+## Fuentes
+<!-- 
+1. Fuente 1 
+2. FUente 2.
+-->
 
 

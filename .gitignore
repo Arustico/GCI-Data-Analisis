@@ -8,6 +8,7 @@ credentials/
 # Python
 # =====================
 __pycache__/
+*.pyc
 *.py[cod]
 *.pyo
 *.pyd
@@ -23,16 +24,16 @@ build/
 .Ruserdata
 .Renviron
 
-# Librerías locales creadas por R
-R/
-renv/library/
-
 # =====================
 # Entornos virtuales
 # =====================
 .venv/
 venv/
 env/
+renv/library/
+R/
+
+
 
 # =====================
 # Poetry
@@ -63,6 +64,7 @@ doc/tables
 outputs/
 results/
 notebooks/iframe_figures
+website/_site
 
 # =====================
 # Logs
@@ -89,4 +91,4 @@ Thumbs.db
 # Archivos específicos
 # =====================
 src/testing_code.py
-
+.tmp/

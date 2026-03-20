@@ -16,11 +16,22 @@
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. LIBRERÍAS
+#   - readxl: Lectura de archivos Excel
+#   - ade4: STATIS y gráficos multivariados
+#   - FactorMiner: Métodos de reducción de dimensión complementarios
 # ─────────────────────────────────────────────────────────────────────────────
 
-library(readxl)      # Lectura de archivos Excel
-library(ade4)        # STATIS y gráficos multivariados
-library(FactoMineR)  # Métodos de reducción de dimensión complementarios
+library(renv) # instalación en environment seguro
+librerias <- c("readxl","ade4","FactoMineR")
+
+for (lbr in librerias) {
+  if (!require(lbr, character.only = TRUE)) {
+    renv::install(lbr)
+    library(lbr, character.only = TRUE)
+  }else{
+    library(lbr, character.only = TRUE)
+  }
+}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -28,10 +39,15 @@ library(FactoMineR)  # Métodos de reducción de dimensión complementarios
 # ─────────────────────────────────────────────────────────────────────────────
 
 # 2.1 Directorio de trabajo y lectura del Excel
-FOLDER_PRJ = Sys.getenv("FOLDER_PRJCT")
+
+readRenviron("../.env")
+
+FOLDER_PRJ <- Sys.getenv(c("FOLDER_PRJCT"))
+FOLDER_PROCESSED <- Sys.getenv(c("FOLDER_PROCESSED"))
 setwd(FOLDER_PRJ)
 
-datos <- read_excel("./datos_tratados/data_pivoted_2.xlsx")
+filename <- file.path(FOLDER_PROCESSED,"data_pivoted_2.csv")
+datos <- read.csv(filename)
 datos <- as.data.frame(datos)
 
 # 2.2 La columna PILAR pasa a ser el identificador de fila
