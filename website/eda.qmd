@@ -1,0 +1,596 @@
+---
+title: "Análisis Exploratorio de Datos (EDA)"
+engine: python
+---
+
+
+# Configuración del Entorno
+
+## Librerías y parámetros globales
+
+```{python}
+#| echo: false
+# ─── Librerías estándar ────────────────────────────────────────────────────
+import os
+import sys
+import warnings
+import logging
+from pathlib import Path
+
+warnings.filterwarnings("ignore")
+
+# ─── Variables de entorno ──────────────────────────────────────────────────
+from dotenv import load_dotenv
+load_dotenv("../.env", override=True)
+
+PRJ_PATH       = Path(os.getenv("FOLDER_PRJCT"))
+FOLDER_PROCESSED = Path(os.getenv("FOLDER_PROCESSED"))
+FIG_FOLDER     = Path(os.getenv("FIG_FOLDER"))
+
+# ─── Librerías de datos ────────────────────────────────────────────────────
+import pandas as pd
+import numpy as np
+
+# ─── Visualización ────────────────────────────────────────────────────────
+import matplotlib
+import matplotlib.pyplot as pl
+import seaborn as sns
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
+
+# ─── Módulos locales ──────────────────────────────────────────────────────
+modules_path = str(PRJ_PATH / "src")
+if modules_path not in sys.path:
+    sys.path.append(modules_path)
+
+import biplots_utils as bipl
+from pybiplots import HJ_Biplot as hj
+
+# ─── Tema global de gráficos ──────────────────────────────────────────────
+# Seaborn: fondo oscuro para gráficas matplotlib
+sns.set_theme(style="darkgrid", palette="Dark2", font_scale=1.05)
+
+# Paleta de colores coherente con el portafolio
+PALETTE_ORG  = {"BRICS": "#4CAF82", "OECD": "#E07B39", "OTRO": "#2C6E8A"}
+PALETTE_AÑO  = {
+    2014: "#264653", 2015: "#2a9d8f", 2016: "#e9c46a",
+    2017: "#f4a261", 2018: "#e76f51", 2019: "#c77dff"
+}
+
+print("✔ Entorno configurado correctamente")
+print(f"  · Proyecto  : {PRJ_PATH}")
+print(f"  · Datos     : {FOLDER_PROCESSED}")
+print(f"  · Figuras   : {FIG_FOLDER}")
+```
+
+---
+
+# Lectura y Preparación de Datos
+
+Los datos provienen de los informes anuales del GCI publicados por el WEF.
+El proceso de extracción de los índices desde los PDF de los informes está documentado
+en [`src/extraction_index.py`](https://github.com/Arustico/GCI-Data-Analisis/tree/main/src).
+El resultado son dos archivos:
+
+- **`bd_indices_wef.csv`** — Puntajes brutos de cada país por pilar, indicador y año.
+- **`bd_diccionario_indices.csv`** — Catálogo de indicadores con su pilar, subpilar y año.
+
+```{python}
+#| echo: false
+# ─── Puntajes de indicadores ──────────────────────────────────────────────
+file_ind = FOLDER_PROCESSED / "bd_indices_wef.csv"
+
+if file_ind.exists():
+    data_indicadores = pd.read_csv(file_ind, low_memory=False)
+else:
+    import data_transformation as creadata
+    creadata.main()
+    data_indicadores = pd.read_csv(file_ind, low_memory=False)
+
+# Conversión y normalización (escala 0–100, metodología GCI 4.0)
+data_indicadores["VALOR_INDICE"] = pd.to_numeric(
+    data_indicadores["VALOR_INDICE"], errors="coerce"
+)
+data_indicadores["VALOR_INDICE_NORM"] = (
+    data_indicadores
+    .groupby(["AÑO", "NUM_INDX"])["VALOR_INDICE"]
+    .transform(lambda x: bipl.normalizar_puntajes(x))
+)
+
+# ─── Diccionario de indicadores ───────────────────────────────────────────
+file_dicc = FOLDER_PROCESSED / "bd_diccionario_indices.csv"
+
+if file_dicc.exists():
+    indicadores_info = pd.read_csv(file_dicc)
+else:
+    import extraction_index as idx
+    idx.main()
+    indicadores_info = pd.read_csv(file_dicc)
+
+print(f"✔ Datos cargados")
+print(f"  · Registros      : {len(data_indicadores):,}")
+print(f"  · Países únicos  : {data_indicadores['PAIS_COD'].nunique()}")
+print(f"  · Años           : {sorted(data_indicadores['AÑO'].unique())}")
+print(f"  · Indicadores    : {data_indicadores['DESCRIPCION_INDX_NORM'].nunique()}")
+```
+
+---
+
+# Análisis Exploratorio
+
+## Indicadores a lo largo del período
+Una primera señal de los cambios metodológicos aparece al examinar cuántos
+indicadores permanecieron presentes a lo largo de **todos** los años de estudio.
+
+```{python}
+#| echo: false
+#| output: false
+unique_years    = sorted(data_indicadores["AÑO"].unique())
+num_unique_years = len(unique_years)
+
+# Conteo de años de presencia por indicador
+desc_year_counts = (
+    data_indicadores
+    .groupby("DESCRIPCION_INDX_NORM")["AÑO"]
+    .nunique()
+    .reset_index()
+    .rename(columns={"AÑO": "n_años"})
+)
+
+# ─── Gráfica interactiva: histograma de presencia ─────────────────────────
+conteo = desc_year_counts["n_años"].value_counts().sort_index().reset_index()
+conteo.columns = ["Años presentes", "Cantidad de indicadores"]
+
+fig_inx_ = px.bar(
+    conteo,
+    x="Años presentes",
+    y="Cantidad de indicadores",
+    color="Años presentes",
+    color_continuous_scale="Blues",
+    text="Cantidad de indicadores",
+    title="Distribución de indicadores según cuántos años\n estuvieron presentes (2014–2019)",
+    labels={"Años presentes": "N° de años presente", "Cantidad de indicadores": "N° de indicadores"},
+    template="plotly_white",
+)
+fig_inx_ = fig_inx_.update_traces(textposition="outside", marker_line_width=0)
+fig_inx_ = fig_inx_.update_layout(
+    showlegend=False,
+    coloraxis_showscale=False,
+    xaxis=dict(tickmode="linear", dtick=1),
+    plot_bgcolor="#F4F8FB",
+    annotations=[dict(
+        text=f"<b>Total de indicadores únicos: {desc_year_counts['DESCRIPCION_INDX_NORM'].nunique()}<br>Período: 2014–2019</b>",
+        x=4.5, y=115,
+        showarrow=False,
+        bgcolor="white",
+        bordercolor="#2C6E8A",
+        borderwidth=1,
+        font=dict(size=11),
+    )]
+)
+```
+```{python}
+#| echo: false
+fig_inx_.show()
+```
+
+```{=html}
+<p class="fig-note">
+  Solo 5 indicadores estuvieron presentes en los 6 años de estudio —
+  evidencia directa de la alta rotación de indicadores entre metodologías.
+</p>
+```
+
+
+```{python}
+#| echo: false
+#| output: false
+# ─── Tabla: indicadores presentes en todos los años ───────────────────────
+indicadores_completos = desc_year_counts[desc_year_counts["n_años"] >= num_unique_years - 1]
+
+usedcols = ["DESCRIPCION_INDX_NORM", "NUM_INDX", "PILAR", "SUBPILAR",
+            "DESCRIPCION_PILAR", "AÑO", "CATEGORIA_INDX"]
+
+tabla_completos = (
+    indicadores_completos
+    .merge(indicadores_info[usedcols], on="DESCRIPCION_INDX_NORM", how="left")
+    .groupby("DESCRIPCION_INDX_NORM")
+    .agg(lambda x: sorted(set(x)))
+    .reset_index()
+)
+
+# Mostrar como tabla Plotly interactiva
+fig_tabla = go.Figure(data=[go.Table(
+    columnwidth=[300, 80, 80, 200, 80],
+    header=dict(
+        values=["<b>Indicador</b>", "<b>Pilares</b>", "<b>Sub-pilares</b>",
+                "<b>Descripción pilar</b>", "<b>Años</b>"],
+        fill_color="#2C6E8A",
+        font=dict(color="white", size=12),
+        align="left",
+        height=35,
+    ),
+    cells=dict(
+        values=[
+            tabla_completos["DESCRIPCION_INDX_NORM"].str.title(),
+            tabla_completos["PILAR"].astype(str),
+            tabla_completos["SUBPILAR"].astype(str),
+            tabla_completos["DESCRIPCION_PILAR"].astype(str),
+            tabla_completos["AÑO"].astype(str),
+        ],
+        fill_color=[["#F4F8FB" if i % 2 == 0 else "white"
+                     for i in range(len(tabla_completos))]],
+        font=dict(size=11),
+        align="left",
+        height=28,
+    )
+)])
+fig_tabla = fig_tabla.update_layout(
+    title="Indicadores presentes en todos los años del período de estudio",
+    margin=dict(l=0, r=0, t=40, b=0),
+    height=230,
+)
+```
+```{python}
+#| echo: false
+fig_tabla.show()
+```
+
+## Resumen de cobertura por año
+
+```{python}
+#| echo: false
+#| output: false
+nullsize = lambda x: int(np.isnan(x).sum())
+
+resumen = (
+    data_indicadores
+    .groupby("AÑO")
+    .agg(
+        N_Indicadores  = ("DESCRIPCION_INDX_NORM", pd.Series.nunique),
+        Datos_Faltantes = ("VALOR_INDICE", nullsize),
+        Total_Datos     = ("VALOR_INDICE", len),
+    )
+    .reset_index()
+)
+resumen["Pct_Faltantes"] = (
+    resumen["Datos_Faltantes"] / resumen["Total_Datos"] * 100
+).round(1)
+
+# ─── KPI visual ──────────────────────────────────────────────────────────
+fig_resumen = go.Figure(data=[go.Table(
+    header=dict(
+        values=["<b>Año</b>", "<b>N° Indicadores</b>",
+                "<b>Datos Faltantes</b>", "<b>Total Datos</b>", "<b>% Faltantes</b>"],
+        fill_color="#2C6E8A",
+        font=dict(color="white", size=12),
+        align="center",
+    ),
+    cells=dict(
+        values=[
+            resumen["AÑO"],
+            resumen["N_Indicadores"],
+            resumen["Datos_Faltantes"],
+            resumen["Total_Datos"],
+            resumen["Pct_Faltantes"].astype(str) + " %",
+        ],
+        fill_color=[
+            # Resaltar 2018 y 2019 (cambio metodológico)
+            ["#fff3cd" if a in [2018, 2019] else
+             ("#F4F8FB" if i % 2 == 0 else "white")
+             for i, a in enumerate(resumen["AÑO"])]
+        ] * 5,
+        font=dict(size=11),
+        align="center",
+        height=30,
+    ),
+)])
+fig_resumen = fig_resumen.update_layout(
+    title="Tabla 1 · Información de cobertura por año "
+          "(celdas amarillas = cambio metodológico GCI 4.0)",
+    margin=dict(l=0, r=0, t=45, b=0),
+    height=285,
+)
+```
+```{python}
+#| echo: false
+fig_resumen.show()
+```
+
+<div class="insight-box">
+  <strong>Cambio estructural en 2018:</strong> el número de indicadores cae de
+  109 a 92 — una reducción del 16 % en un solo año. Esto, combinado con el cambio
+  de escala (1–7 → 0–100), implica que los puntajes de 2018 y 2019 no son
+  directamente comparables con los años anteriores sin un ajuste explícito.
+</div>
+
+## Valores faltantes por país
+
+```{python}
+#| echo: false
+#| output: false
+miss_pais = (
+    data_indicadores
+    .groupby("NOMBRE")["VALOR_INDICE"]
+    .apply(lambda x: x.isnull().mean() * 100)
+    .reset_index()
+    .rename(columns={"VALOR_INDICE": "pct_miss"})
+    .sort_values("pct_miss", ascending=False)
+)
+
+fig_miss_val = px.bar(
+    miss_pais,
+    x="NOMBRE", y="pct_miss",
+    color="pct_miss",
+    color_continuous_scale="Oranges",
+    title="Porcentaje de valores faltantes por país (período completo 2014–2019)",
+    labels={"NOMBRE": "País", "pct_miss": "% Valores Faltantes"},
+    template="plotly_white",
+    height=380,
+)
+fig_miss_val = fig_miss_val.update_layout(
+    xaxis_tickangle=-55,
+    coloraxis_showscale=False,
+    plot_bgcolor="#F4F8FB",
+)
+fig_miss_val = fig_miss_val.add_hline(
+    y=4.0,
+    line_dash="dash",
+    line_color="#E07B39",
+    annotation_text="Umbral 4 %",
+    annotation_position="top right",
+)
+```
+```{python}
+#| echo: false
+fig_miss_val.show()
+```
+
+```{=html}
+<p class="fig-note">
+  Solo Líbano y Emiratos Árabes Unidos superan levemente el 4 % de datos
+  faltantes; el resto de los países están bien cubiertos.
+</p>
+```
+
+## Distribución de indicadores por pilar y año
+
+El siguiente gráfico revela cómo la redistribución de 2018 modificó el
+**peso relativo** de cada pilar dentro del índice.
+
+```{python}
+#| echo: false
+#| output: false
+# Cálculo de porcentajes por pilar y año
+aux_pilar = (
+    data_indicadores
+    .groupby(["AÑO", "PILAR", "DESCRIPCION_PILAR"])["DESCRIPCION_INDX_NORM"]
+    .nunique()
+    .reset_index()
+    .rename(columns={"DESCRIPCION_INDX_NORM": "n_indic"})
+)
+tot_año = aux_pilar.groupby("AÑO")["n_indic"].transform("sum")
+aux_pilar["pct"]   = aux_pilar["n_indic"] / tot_año * 100
+aux_pilar["label"] = aux_pilar["PILAR"].astype(str) + ". " + aux_pilar["DESCRIPCION_PILAR"]
+
+fig_distr= px.bar(
+    aux_pilar,
+    x="AÑO", y="pct",
+    color="label",
+    text=aux_pilar["pct"].round(0).astype(int).astype(str) + "%",
+    title="Distribución de indicadores por pilar y año (%)",
+    labels={"AÑO": "Año", "pct": "% de indicadores", "label": "Pilar"},
+    template="plotly_white",
+    color_discrete_sequence=px.colors.qualitative.Set3,
+    height=520,
+)
+fig_distr= fig_distr.update_traces(textposition="inside", textfont_size=9)
+fig_distr= fig_distr.update_layout(
+    barmode="stack",
+    xaxis=dict(tickmode="linear", dtick=1, type="category"),
+    legend=dict(
+        orientation="v",
+        x=1.01, y=1,
+        font=dict(size=9),
+        title="Pilar",
+    ),
+    plot_bgcolor="#F4F8FB",
+)
+```
+```{python}
+#| echo: false
+fig_distr.show()
+```
+
+```{=html}
+<p class="fig-note">
+  La caída en el total de indicadores en 2018 es visible: el pilar 1 (Instituciones)
+  aumenta su peso relativo mientras que otros pilares se contraen, reflejando
+  la recomposición conceptual del GCI 4.0.
+</p>
+```
+
+---
+
+# Matrices de Correlación entre Pilares
+
+La correlación entre pilares es una primera señal de la **estructura interna** del
+índice. Si el cambio de metodología alteró la forma en que los pilares se relacionan
+entre sí, lo veremos aquí.
+
+```{python}
+#| echo: false
+#| output: false
+# ─── Función auxiliar para calcular correlación por año ───────────────────
+def corr_matrix_año(df: pd.DataFrame, año: int) -> pd.DataFrame:
+    return (
+        df[df["AÑO"] == año]
+        .pivot_table(index="PAIS_COD", columns="PILAR", values="VALOR_INDICE_NORM")
+        .corr()
+    )
+
+años = sorted(data_indicadores["AÑO"].unique())
+
+# ─── Subplots 3×2 interactivos ────────────────────────────────────────────
+fig_corr = make_subplots(
+    rows=3, cols=2,
+    subplot_titles=[f"Año: {a}" for a in años],
+    horizontal_spacing=0.06,
+    vertical_spacing=0.08,
+)
+
+for idx, año in enumerate(años):
+    row, col = divmod(idx, 2)
+    cm = corr_matrix_año(data_indicadores, año)
+    pilares = cm.columns.tolist()
+
+    fig_corr = fig_corr.add_trace(
+        go.Heatmap(
+            z=cm.values.round(2),
+            x=[f"P{p}" for p in pilares],
+            y=[f"P{p}" for p in pilares],
+            zmin=-1, zmax=1,
+            colorscale="RdBu",
+            showscale=(idx == 0),
+            colorbar=dict(x=1.01, len=0.96, y=0.45) if idx == 0 else None,
+            text=cm.values.round(2),
+            texttemplate="%{text}",
+            textfont=dict(size=8),
+            hovertemplate="Pilar %{x} × %{y}<br>r = %{z:.3f}<extra></extra>",
+        ),
+        row=row + 1, col=col + 1,
+    )
+
+fig_corr = fig_corr.update_layout(
+    title_text="Matrices de Correlación entre Pilares por Año",
+    title_font_size=16,
+    height=1100,
+    width=600,
+    template="plotly_white",
+    plot_bgcolor="#F4F8FB",
+)
+```
+```{python}
+#| echo: false
+fig_corr.show()
+```
+
+<div class="insight-box">
+  <strong>Lectura clave:</strong> Las matrices de 2014–2017 presentan una estructura
+  de correlaciones similar entre sí. A partir de 2018 la estructura cambia visiblemente —
+  en particular el pilar 10 (Tamaño del Mercado) pierde la fuerte correlación negativa
+  que tenía con otros pilares. Esto anticipa la ruptura estructural que confirmarán los
+  análisis multivariantes.
+</div>
+
+---
+
+# Análisis Descriptivo: Evolución Temporal
+
+## Mapa mundial animado del GCI
+
+```{python}
+#| echo: false
+#| output: false
+# Índice global: promedio simple de los 12 pilares por país y año (GCI 4.0)
+global_df = (
+    data_indicadores
+    .groupby(["PAIS_COD", "NOMBRE", "BLOCK", "ORG", "AÑO"])
+    ["VALOR_INDICE_NORM"]
+    .mean()
+    .reset_index()
+    .rename(columns={"VALOR_INDICE_NORM": "GCI"})
+)
+
+z_min_g = global_df["GCI"].min()
+z_max_g = global_df["GCI"].max()
+
+# ─── Construcción del mapa animado ────────────────────────────────────────
+años_disp = sorted(global_df["AÑO"].unique())
+
+frames_mapa = []
+for año in años_disp:
+    df_a = global_df[global_df["AÑO"] == año].copy()
+    hover = (
+        "<b>" + df_a["NOMBRE"] + "</b><br>" +
+        "Bloque: " + df_a["BLOCK"] + "<br>" +
+        "Organización: " + df_a["ORG"] + "<br>" +
+        "GCI: " + df_a["GCI"].round(2).astype(str)
+    )
+    frames_mapa.append(go.Frame(
+        name=str(año),
+        data=[go.Choropleth(
+            locations=df_a["PAIS_COD"],
+            z=df_a["GCI"],
+            hovertemplate=hover + "<extra></extra>",
+            colorscale="Plasma",
+            zmin=z_min_g, zmax=z_max_g,
+        )],
+        layout=go.Layout(title_text=f"GCI Normalizado — {año}"),
+    ))
+
+df_base = global_df[global_df["AÑO"] == años_disp[0]].copy()
+hover_base = (
+    "<b>" + df_base["NOMBRE"] + "</b><br>" +
+    "Bloque: " + df_base["BLOCK"] + "<br>" +
+    "Organización: " + df_base["ORG"] + "<br>" +
+    "GCI: " + df_base["GCI"].round(2).astype(str)
+)
+
+fig_mapa = go.Figure(
+    data=[go.Choropleth(
+        locations=df_base["PAIS_COD"],
+        z=df_base["GCI"],
+        hovertemplate=hover_base + "<extra></extra>",
+        colorscale="Plasma",
+        zmin=z_min_g, zmax=z_max_g,
+        colorbar=dict(title="GCI<br>Normalizado", thickness=12, len=0.7),
+    )],
+    layout=go.Layout(
+        title=dict(text=f"GCI Normalizado — {años_disp[0]}", x=0.5, font_size=15),
+        geo=dict(
+            showframe=False, showcoastlines=True,
+            coastlinecolor="lightgray", showland=True,
+            landcolor="whitesmoke", showocean=True, oceancolor="#EAF4FB",
+        ),
+        height=480,
+        margin=dict(l=0, r=0, t=55, b=100),
+        updatemenus=[dict(
+            type="buttons", direction="left",
+            showactive=False,
+            x=0.12, xanchor="center", y=-0.07, yanchor="top",
+            buttons=[
+                dict(label="▶ Play", method="animate",
+                     args=[None, {"frame": {"duration": 900, "redraw": True},
+                                  "fromcurrent": True}]),
+                dict(label="⏸ Pausa", method="animate",
+                     args=[[None], {"frame": {"duration": 0}, "mode": "immediate"}]),
+            ],
+        )],
+        sliders=[dict(
+            active=0,
+            currentvalue=dict(prefix="Año: ", font_size=13, xanchor="center"),
+            pad=dict(t=40, b=5), len=0.85, x=0.075,
+            steps=[dict(
+                label=str(a), method="animate",
+                args=[[str(a)], {"frame": {"duration": 100, "redraw": True},
+                                 "mode": "immediate"}]
+            ) for a in años_disp],
+        )],
+    ),
+    frames=frames_mapa,
+)
+```
+```{python}
+#| echo: false
+fig_mapa.show()
+```
+
+```{=html}
+<p class="fig-note">
+  Usa el slider o el botón ▶ para explorar la evolución del GCI entre 2014 y 2019.
+  El salto visual en 2018 es en parte un artefacto del cambio metodológico.
+</p>
+```
+---

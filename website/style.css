@@ -1,0 +1,106 @@
+/* ── Paleta de colores del proyecto ── */
+:root {
+    --color-primary:   #2C6E8A;
+    --color-secondary: #4CAF82;
+    --color-accent:    #E07B39;
+    --color-light:     #F4F8FB;
+    --color-dark:      #1A2B3C;
+}
+
+/* Hero banner */
+.hero-banner {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
+    color: white;
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.hero-banner h2 { color: white; margin: 0 0 0.5rem 0; font-size: 1.6rem; }
+.hero-banner p  { margin: 0; opacity: 0.88; font-size: 1rem; line-height: 1.6; }
+
+/* Callout personalizado */
+.insight-box {
+    background: var(--color-light);
+    border-left: 5px solid var(--color-primary);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: 0.95rem;
+}
+.insight-box strong { color: var(--color-primary); }
+
+/* Badge de metodología */
+.method-badge {
+    display: inline-block;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 20px;
+    padding: 0.15rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin: 0 0.2rem;
+    vertical-align: middle;
+}
+.method-badge.v2 { background: var(--color-accent); }
+
+/* Tabla resumen metodologías */
+.method-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+.method-table th {
+    background: var(--color-primary);
+    color: white;
+    padding: 0.6rem 1rem;
+    text-align: left;
+}
+.method-table td { padding: 0.5rem 1rem; border-bottom: 1px solid #ddd; }
+.method-table tr:nth-child(even) { background: var(--color-light); }
+.method-table .highlight { background: #fff3cd !important; font-weight: 600; }
+
+/* Separador de sección */
+.section-divider {
+    border: none;
+    border-top: 2px solid var(--color-light);
+    margin: 2.5rem 0 1.5rem 0;
+}
+
+/* KPI cards */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin: 1.2rem 0;
+}
+.kpi-card {
+    background: white;
+    border: 1px solid #e0e8f0;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.kpi-card .kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1;
+}
+.kpi-card .kpi-label {
+    font-size: 0.78rem;
+    color: #666;
+    margin-top: 0.3rem;
+}
+
+/* Nota de figura */
+.fig-note {
+    font-size: 0.82rem;
+    color: #666;
+    text-align: center;
+    margin-top: 0.1rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+}

@@ -1,0 +1,426 @@
+---
+title: "Agrupamiento y Biplot"
+engine: python
+---
+
+
+<!-- Lectura de los datos: NO SE MUESTRA -->
+```{python}
+#| echo: false
+
+# ─── Librerías estándar ────────────────────────────────────────────────────
+import os
+import sys
+import warnings
+import logging
+from pathlib import Path
+
+warnings.filterwarnings("ignore")
+
+# ─── Variables de entorno ──────────────────────────────────────────────────
+from dotenv import load_dotenv
+load_dotenv("../.env", override=True)
+
+PRJ_PATH       = Path(os.getenv("FOLDER_PRJCT"))
+FOLDER_PROCESSED = Path(os.getenv("FOLDER_PROCESSED"))
+FIG_FOLDER     = Path(os.getenv("FIG_FOLDER"))
+
+# ─── Librerías de datos ────────────────────────────────────────────────────
+import pandas as pd
+import numpy as np
+
+# ─── Visualización ────────────────────────────────────────────────────────
+import matplotlib
+import matplotlib.pyplot as pl
+import seaborn as sns
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
+
+# ─── Módulos locales ──────────────────────────────────────────────────────
+modules_path = str(PRJ_PATH / "src")
+if modules_path not in sys.path:
+    sys.path.append(modules_path)
+
+import biplots_utils as bipl
+from pybiplots import HJ_Biplot as hj
+
+# ─── Tema global de gráficos ──────────────────────────────────────────────
+# Seaborn: fondo oscuro para gráficas matplotlib
+sns.set_theme(style="darkgrid", palette="Dark2", font_scale=1.05)
+
+# Paleta de colores coherente con el portafolio
+PALETTE_ORG  = {"BRICS": "#4CAF82", "OECD": "#E07B39", "OTRO": "#2C6E8A"}
+PALETTE_AÑO  = {
+    2014: "#264653", 2015: "#2a9d8f", 2016: "#e9c46a",
+    2017: "#f4a261", 2018: "#e76f51", 2019: "#c77dff"
+}
+
+```
+
+<!-- Lectura de los datos # NO SE MUESTRA -->
+
+```{python}
+#| echo: false
+# ─── Puntajes de indicadores ──────────────────────────────────────────────
+file_ind = FOLDER_PROCESSED / "bd_indices_wef.csv"
+
+if file_ind.exists():
+    data_indicadores = pd.read_csv(file_ind, low_memory=False)
+else:
+    import data_transformation as creadata
+    creadata.main()
+    data_indicadores = pd.read_csv(file_ind, low_memory=False)
+
+# Conversión y normalización (escala 0–100, metodología GCI 4.0)
+data_indicadores["VALOR_INDICE"] = pd.to_numeric(
+    data_indicadores["VALOR_INDICE"], errors="coerce"
+)
+data_indicadores["VALOR_INDICE_NORM"] = (
+    data_indicadores
+    .groupby(["AÑO", "NUM_INDX"])["VALOR_INDICE"]
+    .transform(lambda x: bipl.normalizar_puntajes(x))
+)
+
+# ─── Diccionario de indicadores ───────────────────────────────────────────
+file_dicc = FOLDER_PROCESSED / "bd_diccionario_indices.csv"
+
+if file_dicc.exists():
+    indicadores_info = pd.read_csv(file_dicc)
+else:
+    import extraction_index as idx
+    idx.main()
+    indicadores_info = pd.read_csv(file_dicc)
+
+```
+
+---
+
+
+
+
+
+
+
+# Agrupamiento Jerárquico
+
+El agrupamiento jerárquico construye una jerarquía de similitudes entre objetos
+basándose en la matriz de distancias euclidianas entre sus perfiles de puntajes.
+Aquí lo aplicamos agrupando **años**, **organizaciones**, **bloques regionales** y
+**países**, tomando como variables los 12 pilares.
+
+```{python}
+#| include: false
+#| output: false
+from scipy.spatial.distance import pdist
+from scipy.cluster.hierarchy import linkage, dendrogram, cophenet
+
+# ─── Función auxiliar para calcular y graficar agrupamiento ───────────────
+def plot_dendrograma(col: str, titulo: str, figsize=(10, 5)) -> None:
+    """
+    Calcula el agrupamiento jerárquico (Ward + Euclidiana) y
+    grafica el dendrograma para la columna `col` como índice.
+
+    Args:
+        col    : columna a usar como índice de la tabla pivote.
+        titulo : título del gráfico.
+        figsize: tamaño de la figura.
+    """
+    piv = (
+        data_indicadores
+        .pivot_table(index=col, columns="PILAR", values="VALOR_INDICE_NORM")
+        .dropna()
+    )
+    Z = linkage(piv.values, method="ward", metric="euclidean")
+    c, _ = cophenet(Z, pdist(piv.values))
+
+    colores_dendro = {
+        "AÑO"  : ["#2C6E8A", "#4CAF82"],
+        "ORG"  : ["#E07B39", "#2C6E8A", "#4CAF82"],
+        "BLOCK": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#c77dff", "#4361ee"],
+    }
+
+    #pl.close("all")  # limpiar estado previo de matplotlib
+    fig_dend, ax_dend = pl.subplots(figsize=figsize)
+    dendrogram(
+        Z,
+        labels=piv.index.tolist(),
+        orientation="right",
+        ax=ax_dend,
+        color_threshold=0.7 * max(Z[:, 2]),
+        above_threshold_color="grey",
+    )
+    ax_dend.set_title(
+        f"{titulo}\n(Coeficiente Cophenético: {c:.3f})",
+        fontsize=12, pad=10,
+    )
+    ax_dend.set_xlabel("Distancia Euclidiana (método Ward)", fontsize=10)
+    ax_dend.spines[["top", "right"]].set_visible(False)
+    ax_dend.grid(axis="x", linestyle="--", alpha=0.5)
+    pl.tight_layout()
+    return None
+```
+
+## Agrupamiento por año
+
+```{python}
+#| echo: false
+plot_dendrograma(
+    "AÑO",
+    "Agrupamiento Jerárquico — Años como observaciones",
+    figsize=(10, 4),
+)
+```
+
+<div class="insight-box">
+  <strong>Resultado clave:</strong> el dendrograma separa claramente dos grupos —
+  <em>2014–2017</em> vs. <em>2018–2019</em>. Con un coeficiente Cophenético de
+  ~0.98, este agrupamiento captura fielmente la geometría real de los datos.
+  La brecha entre ambos grupos es la "huella" del cambio metodológico.
+</div>
+
+## Agrupamiento por organización
+
+```{python}
+#| echo: false
+plot_dendrograma(
+    "ORG",
+    "Agrupamiento Jerárquico — Organización (OCDE, BRICS, Otro)",
+    figsize=(10, 3.5),
+)
+```
+
+## Agrupamiento por bloque regional
+
+```{python}
+#| echo: false
+plot_dendrograma(
+    "BLOCK",
+    "Agrupamiento Jerárquico — Bloque Regional",
+    figsize=(10, 4.5),
+)
+```
+
+## Agrupamiento por país (con mapa de calor)
+
+```{python}
+#| echo: false
+#| width: 8
+#| height: 10
+
+import numpy as np
+import matplotlib.pyplot as pl
+
+from scipy.cluster.hierarchy import linkage, dendrogram, cophenet
+from scipy.spatial.distance import pdist
+import matplotlib.ticker as ticker
+from matplotlib.gridspec import GridSpec
+
+col = "PAIS_COD"
+piv_pais = (
+  data_indicadores
+  .pivot_table(
+    index=col,
+    columns="PILAR",
+    values="VALOR_INDICE_NORM")
+  .dropna()
+)
+
+
+# Agrupado por jerarquía: criterio de enlace: ward y distnacia euclidiean
+Z_pais = linkage(piv_pais.values, method="ward", metric="euclidean")
+# Coefficiente de correlación cophenetico: mide que tan bueno es el agrupado
+c_pais, _ = cophenet(Z_pais, pdist(piv_pais.values))
+
+print("Coeficiente Cophenético:", np.round(c_pais,2))
+
+pais_cods = piv_pais.index.tolist()
+
+
+# Figura dendograma
+fig_dend_pais = pl.figure(constrained_layout=True)
+gs = GridSpec(1, 2, width_ratios=[2, 1.2], figure=fig_dend_pais)
+
+ax_dend = fig_dend_pais.add_subplot(gs[0])
+orden_dendro = dendrogram(
+  Z_pais,
+  labels=pais_cods,
+  orientation="left",
+  ax=ax_dend,
+  color_threshold=70,
+)
+
+# ordenamiento
+piv_ordenada = piv_pais.iloc[orden_dendro["leaves"][::-1]]
+
+_ = ax_dend.set_xlabel("Distancia")
+_ = ax_dend.tick_params(axis='y', labelsize=8)
+
+# resalto de chile
+ticks_y = ax_dend.get_yticklabels()
+for tick in ticks_y:
+  if tick.get_text()=="CHL":
+    tick.set_color('red')
+    tick.set_fontweight('bold')
+
+# ---- Heatmap ----
+axm = fig_dend_pais.add_subplot(gs[1])
+cax = axm.imshow(
+    piv_ordenada,
+    aspect="auto",
+    interpolation="nearest",
+    cmap="coolwarm"
+)
+
+# configuraciones de la visualización
+_ = axm.set_yticks([])
+_ = axm.set_xticks(range(len(piv_ordenada.columns)))
+_ = axm.set_xticklabels(piv_ordenada.columns, rotation=60)
+_ = axm.set_title("Pilares")
+
+# Colorbar
+cbar = fig_dend_pais.colorbar(cax, ax=axm)
+cbar.set_label("GCI")
+
+pl.show()
+```
+
+```{python}
+#| echo: false
+import plotly.graph_objects as _go_coph
+from scipy.cluster.hierarchy import linkage as _lnk_coph, cophenet as _cph_coph
+from scipy.spatial.distance import pdist as _pdist_coph
+import pandas as _pd_coph
+# ─── Tabla de calidad de agrupamientos ────────────────────────────────────
+
+_res = []
+for _idx in ["BLOCK", "ORG", "AÑO"]:
+    _pv = (
+        data_indicadores
+        .pivot_table(index=_idx, columns="PILAR", values="VALOR_INDICE_NORM")
+        .dropna()
+    )
+    _Z = _lnk_coph(_pv.values, method="ward", metric="euclidean")
+    _coef, _ = _cph_coph(_Z, _pdist_coph(_pv.values))
+    _res.append({"Índice": _idx,
+                 "Coef. Cophenético": round(_coef, 4),
+                 "Interpretación": ("Excelente (> 0.9)" if _coef > 0.9 else
+                                    "Buena (0.75–0.9)"  if _coef > 0.75 else
+                                    "Moderada (0.5–0.75)")})
+
+_pv_p = (
+    data_indicadores
+    .pivot_table(index="PAIS_COD", columns="PILAR", values="VALOR_INDICE_NORM")
+    .dropna()
+)
+_Z_p = _lnk_coph(_pv_p.values, method="ward", metric="euclidean")
+_coef_p, _ = _cph_coph(_Z_p, _pdist_coph(_pv_p.values))
+_res.append({"Índice": "PAÍS",
+             "Coef. Cophenético": round(_coef_p, 4),
+             "Interpretación": ("Excelente (> 0.9)" if _coef_p > 0.9 else
+                                "Buena (0.75–0.9)"  if _coef_p > 0.75 else
+                                "Moderada (0.5–0.75)")})
+
+_df_c = _pd_coph.DataFrame(_res)
+
+fig_coph = _go_coph.Figure(data=[_go_coph.Table(
+    header=dict(
+        values=["<b>Índice</b>", "<b>Coef. Cophenético</b>", "<b>Interpretación</b>"],
+        fill_color="#2C6E8A", font=dict(color="white", size=12), align="center",
+    ),
+    cells=dict(
+        values=[_df_c["Índice"], _df_c["Coef. Cophenético"], _df_c["Interpretación"]],
+        fill_color=[["#d4edda" if "Excelente" in str(_v) else
+                     "#fff3cd" if "Buena" in str(_v) else "white"
+                     for _v in _df_c["Interpretación"]]] * 3,
+        font=dict(size=11), align="center", height=30,
+    ),
+)])
+fig_coph.update_layout(title="Calidad de los agrupamientos jerárquicos",
+                       margin=dict(l=0, r=0, t=40, b=0), height=220)
+fig_coph
+```
+
+---
+
+# HJ-Biplot
+
+El HJ-Biplot proyecta simultáneamente países (puntos) y pilares-año (vectores) en
+el plano de máxima variabilidad, ofreciendo una representación de igual calidad
+para ambos. Los países son los **individuos** y las combinaciones Pilar-Año las **variables**.
+
+```{python}
+#| echo: false
+import warnings
+warnings.filterwarnings("ignore")
+
+# ─── Lectura de la matriz pivotada ────────────────────────────────────────
+data_pivoted = (
+    pd.read_csv(FOLDER_PROCESSED / "data_pivoted.csv")
+    .reset_index(drop=True)
+    .set_index("PAIS_COD")
+)
+for col in data_pivoted.columns:
+    data_pivoted[col] = pd.to_numeric(data_pivoted[col])
+
+# ─── Metadatos de países ──────────────────────────────────────────────────
+aux_bp = data_pivoted.dropna()
+paises = aux_bp.index.tolist()
+
+groups_org = [
+    data_indicadores.loc[data_indicadores["PAIS_COD"] == p, "ORG"].iloc[0]
+    for p in paises
+]
+groups_blk = [
+    data_indicadores.loc[data_indicadores["PAIS_COD"] == p, "BLOCK"].iloc[0]
+    for p in paises
+]
+
+# ─── Ajuste del HJ-Biplot ─────────────────────────────────────────────────
+HJ = hj.fit(aux_bp, Transform="Standardize columns")
+
+var_exp = HJ.explained_variance
+print("Varianza explicada:")
+for i, v in enumerate(var_exp[:4], 1):
+    print(f"  · Eje {i}: {v:.2f} %")
+```
+
+```{python}
+#| echo: false
+_grp_bp   = groups_org
+_lbl_bp   = aux_bp.index.tolist()
+_ngrp_bp  = len(set(_grp_bp))
+
+fig_biplot, _vec_bp = bipl.crear_biplot_interactivo(
+    HJ, groups=_grp_bp, text_label=_lbl_bp
+)
+_vec_bp = _vec_bp.reset_index().rename(columns={"index": "primarykey"})
+_vec_bp[["Pilar", "Año"]] = pd.DataFrame(
+    _vec_bp["primarykey"].str.split("-").tolist(),
+    columns=["Pilar_key", "Año_key"],
+)
+_vec_bp["Pilar"] = _vec_bp["Pilar"].astype(int)
+
+fig_biplot = bipl.agregar_filtros_biplot(
+    fig_biplot, _vec_bp,
+    filter_cols=["Pilar", "Año"],
+    num_traces_previos=_ngrp_bp,
+)
+fig_biplot = fig_biplot.update_layout(
+    title="HJ-Biplot — Países (puntos) vs. Pilares×Año (vectores)",
+    height=620, template="plotly_white", plot_bgcolor="#F4F8FB",
+)
+fig_biplot
+```
+
+<div class="insight-box">
+  <strong>Cómo leer el Biplot:</strong>
+  el <strong>eje 1</strong> (~64 % de varianza) separa economías emergentes
+  (izquierda) de economías consolidadas (derecha). El <strong>eje 2</strong>
+  (~7 %) discrimina principalmente según tamaño de mercado (pilar 10) hasta 2017;
+  desde 2018, pasa a ser dominado por pilares de infraestructura y salud.
+  Los vectores del <strong>pilar 10</strong> en 2018–2019 son notablemente
+  más cortos — señal de pérdida de poder discriminante tras el rediseño conceptual.
+</div>
+
+---

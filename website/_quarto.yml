@@ -1,0 +1,44 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Coherencia y Discontinuidades del GCI: 2014 - 2019"
+  site-url: https://arustico.github.io/arielnunezsalinas.github.io/gci
+  navbar:
+    left:
+      - text: "Resumen"
+        href: index.qmd
+      - text: "Análisis EDA"
+        href: eda.qmd
+      - text: "Agrupamiento y Biplot"
+        href: biplot.qmd
+      - text: "STATIS"
+        href: statis.qmd
+    right:
+      - icon: github
+        href: https://github.com/Arustico/GCI-Data-Analisis
+        aria-label: "Repositorio GitHub"
+
+format:
+  html:
+    css: style.css
+    toc: true
+    toc-depth: 3
+    toc-title: "Contenidos"
+    toc-location: left
+    theme: cosmo
+    code-fold: false
+    highlight-style: github
+    fig-width: 10
+    fig-height: 6
+    fig-align: center
+    number-sections: true
+    smooth-scroll: true
+    html-math-method: katex
+
+execute:
+    echo: false
+    warning: false
+    message: false
+    cache: false

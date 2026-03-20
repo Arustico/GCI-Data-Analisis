@@ -1,0 +1,283 @@
+---
+title: "Análisis STATIS"
+engine: knitr
+---
+
+
+# Análisis STATIS
+
+STATIS (*Structuration de Tableaux À Trois Indices de Statistique*) es el método
+más potente del análisis para responder la pregunta central: **¿son coherentes entre sí las
+tablas anuales del GCI?**
+
+## Implementación en R
+
+```{r}
+#| label: statis-setup
+#| echo: true
+#| output: false
+
+library(readxl)
+library(ade4)
+library(FactoMineR)
+library(ggplot2)
+
+readRenviron("../.env")
+FOLDER_PRJ       <- Sys.getenv("FOLDER_PRJCT")
+FOLDER_PROCESSED <- Sys.getenv("FOLDER_PROCESSED")
+setwd(FOLDER_PRJ)
+```
+
+## Lectura y preparación de la K-tabla
+
+```{r}
+#| label: statis-data
+#| echo: true
+#| output: false
+
+# ── Lectura del archivo pivotado ──────────────────────────────────────────
+filename <- file.path(FOLDER_PROCESSED, "data_pivoted_2.csv")
+datos    <- read.csv(filename)
+datos    <- as.data.frame(datos)
+
+# Cada fila es una combinación Pilar-Año (ej. "3-2017")
+rownames(datos) <- datos$PILAR
+datos$PILAR     <- NULL
+
+# Solo columnas numéricas (países)
+datos <- datos[, sapply(datos, is.numeric)]
+
+# Eliminar columnas y filas completamente vacías
+datos <- datos[, colSums(is.na(datos))  < nrow(datos)]
+datos <- datos[rowSums(is.na(datos))    < ncol(datos), ]
+
+# Imputación por media de columna
+for (j in seq_len(ncol(datos))) {
+  idx_na <- is.na(datos[, j])
+  if (any(idx_na)) datos[idx_na, j] <- mean(datos[, j], na.rm = TRUE)
+}
+
+# Eliminar columnas de varianza cero
+datos <- datos[, apply(datos, 2, sd) > 0]
+
+# Metadatos de filas
+nombres_filas <- rownames(datos)
+pilar <- sub("-.*", "", nombres_filas)
+anio  <- sub(".*-", "", nombres_filas)
+
+cat("✔ Datos preparados:", nrow(datos), "filas ×", ncol(datos), "columnas\n")
+```
+
+## Construcción de la K-tabla y aplicación de STATIS
+
+```{r}
+#| label: statis-run
+#| echo: true
+#| output: false
+
+# K-tabla: cada bloque = un país (columna del data.frame)
+tablas_por_pais <- lapply(colnames(datos), function(pais) {
+  data.frame(valor = datos[[pais]], row.names = rownames(datos))
+})
+names(tablas_por_pais) <- colnames(datos)
+
+ktab_paises <- ktab.list.df(
+  obj      = tablas_por_pais,
+  tabnames = names(tablas_por_pais),
+  rownames = rownames(datos),
+)
+
+# ── Aplicación de STATIS ──────────────────────────────────────────────────
+#   scannf = FALSE → no pedir número de ejes interactivamente
+#   nf = 2         → retener 2 factores principales
+res.statis <- statis(ktab_paises, scannf = FALSE, nf = 2)
+
+cat("✔ STATIS calculado\n")
+cat("\nCoeficiente RV (primeras 5×5):\n")
+print(round(res.statis$RV[1:5, 1:5], 3))
+```
+
+## Interestructura: similitud entre tablas anuales
+
+```{r}
+#| echo: false
+#| label: statis-interestructura
+
+# ── K-tabla agrupada por AÑO ──────────────────────────────────────────────
+anios_uniq <- unique(anio)
+tablas_por_año <- lapply(anios_uniq, function(a) {
+  idx <- which(anio == a)
+  datos[idx, ]
+})
+names(tablas_por_año) <- anios_uniq
+
+ktab_años <- ktab.list.df(
+  obj      = tablas_por_año,
+  tabnames = anios_uniq,
+  rownames = NULL,
+)
+
+res.statis.años <- statis(ktab_años, scannf = FALSE, nf = 2)
+
+# ── Gráfico de interestructura ────────────────────────────────────────────
+par(mfrow = c(1, 2), mar = c(4, 4, 3, 1))
+
+s.label(
+  res.statis.años$RV.coo,
+  clab  = 1.2,
+  sub   = "Interestructura — Similitud entre años",
+  csub  = 1.2,
+)
+
+barplot(
+  res.statis.años$RV.tabw,
+  names.arg = anios_uniq,
+  col       = ifelse(anios_uniq %in% c("2018", "2019"), "#E07B39", "#2C6E8A"),
+  main      = "Peso tipológico de cada año",
+  ylab      = "Peso",
+  las       = 1,
+  border    = NA,
+)
+legend("topright",
+       legend = c("GCI 3.0 (2014–2017)", "GCI 4.0 (2018–2019)"),
+       fill   = c("#2C6E8A", "#E07B39"),
+       bty    = "n", cex = 0.85)
+```
+
+## Compromiso y trayectorias de pilares
+
+```{r}
+#| echo: false
+#| label: statis-compromise
+#| fig-height: 8
+
+# Coordenadas del compromiso (observaciones = pilar-año)
+coord_comp <- res.statis$C.li
+
+# Etiquetas
+pilar_label <- paste0("P", pilar, "-", anio)
+
+# ── Plano del compromiso ──────────────────────────────────────────────────
+par(mar = c(4, 4, 3, 1))
+s.label(
+  coord_comp,
+  clab  = 0.75,
+  sub   = "Plano del Compromiso STATIS\n(observaciones = Pilar × Año)",
+  csub  = 1.1,
+)
+```
+
+```{r}
+#| echo: false
+#| label: statis-trayectorias
+#| fig-height: 10
+
+# ── Trayectorias por pilar ────────────────────────────────────────────────
+# Cada faceta muestra cómo evolucionó un pilar año a año en el espacio común.
+
+# Se extraen pilar y año directamente de los rownames de coord_comp para
+# garantizar que los vectores tienen exactamente el mismo largo y orden
+# que las filas de la matriz de coordenadas, sin depender de variables
+# definidas en chunks anteriores que podrían tener un orden distinto.
+if (is.null(coord_comp) || nrow(coord_comp) == 0) {
+  stop("coord_comp está vacío o no fue calculado. Verifica que res.statis se ejecutó correctamente.")
+}
+nombres_comp <- rownames(coord_comp)
+if (is.null(nombres_comp)) {
+  stop("coord_comp no tiene rownames con formato 'PILAR-AÑO'. Verifica la construcción de ktab_paises.")
+}
+pilar_comp   <- sub("-.*", "", nombres_comp)   # parte antes del guión
+anio_comp    <- sub(".*-", "", nombres_comp)   # parte después del guión
+
+df_tray <- data.frame(
+  CS1   = coord_comp[, 1],
+  CS2   = coord_comp[, 2],
+  Pilar = pilar_comp,
+  Año   = anio_comp,
+  Label = paste0("P", pilar_comp, "-", anio_comp),
+  stringsAsFactors = FALSE
+)
+
+df_tray$Año   <- as.integer(df_tray$Año)
+df_tray$Pilar <- as.integer(df_tray$Pilar)
+
+ggplot(df_tray, aes(x = CS1, y = CS2, color = factor(Año), label = Año)) +
+  geom_path(aes(group = Pilar), linewidth = 0.8, arrow = arrow(
+    length = unit(0.15, "cm"), type = "closed", ends = "last"
+  )) +
+  geom_point(size = 2.5, alpha = 0.85) +
+  geom_text(size = 2.5, vjust = -0.7, fontface = "bold") +
+  facet_wrap(~ Pilar, ncol = 3,
+             labeller = labeller(Pilar = function(x) paste("Pilar", x))) +
+  scale_color_manual(
+    values = c("2014"="#264653","2015"="#2a9d8f","2016"="#e9c46a",
+               "2017"="#f4a261","2018"="#e76f51","2019"="#c77dff"),
+    name = "Año",
+  ) +
+  labs(
+    title    = "STATIS — Trayectorias temporales por pilar",
+    subtitle = "Cada faceta muestra la evolución del pilar en el espacio de compromiso",
+    x        = "Componente 1 (CS1)",
+    y        = "Componente 2 (CS2)",
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    strip.background = element_rect(fill = "#2C6E8A", color = NA),
+    strip.text       = element_text(color = "white", face = "bold", size = 9),
+    plot.title       = element_text(face = "bold", size = 12),
+    plot.subtitle    = element_text(size = 9, color = "#555"),
+    legend.position  = "bottom",
+  )
+```
+
+```{r}
+#| echo: false
+#| label: statis-chile
+#| fig-height: 6
+
+# ── Mapa RV con Chile destacado ───────────────────────────────────────────
+coord_rv  <- res.statis$RV.coo
+idx_chile <- which(rownames(coord_rv) == "CHL")
+idx_otros <- setdiff(seq_len(nrow(coord_rv)), idx_chile)
+
+if (length(idx_chile) == 0) {
+  warning("Chile (CHL) no encontrado. Códigos: ",
+          paste(rownames(coord_rv), collapse = ", "))
+} else {
+  plot(coord_rv[, 1], coord_rv[, 2],
+       type = "n",
+       xlab = "Eje 1 — Estructura de compromiso",
+       ylab = "Eje 2 — Estructura de compromiso",
+       main = "Mapa RV — Similitud estructural entre países\n(Chile destacado en rojo)",
+  )
+  # Rejilla sutil
+  abline(h = 0, v = 0, col = "grey80", lty = 2)
+  # Resto de países
+  points(coord_rv[idx_otros, 1], coord_rv[idx_otros, 2],
+         pch = 16, col = "grey70", cex = 0.9)
+  text(coord_rv[idx_otros, 1], coord_rv[idx_otros, 2],
+       labels = rownames(coord_rv)[idx_otros],
+       pos = 3, col = "grey50", cex = 0.55)
+  # Chile
+  points(coord_rv[idx_chile, 1], coord_rv[idx_chile, 2],
+         pch = 19, col = "#E07B39", cex = 2.2)
+  text(coord_rv[idx_chile, 1], coord_rv[idx_chile, 2],
+       labels = "CHL", pos = 3, col = "#E07B39", cex = 1.0, font = 2)
+  # Descripción de cuadrantes
+  usr <- par("usr")
+  text(usr[1] + 0.02, usr[4] - 0.01, "Economías emergentes\nmenos estables",
+       adj = c(0, 1), col = "#888", cex = 0.7, font = 3)
+  text(usr[2] - 0.02, usr[4] - 0.01, "Economías avanzadas\nmás estables",
+       adj = c(1, 1), col = "#888", cex = 0.7, font = 3)
+}
+```
+
+<div class="insight-box">
+  <strong>Chile en el mapa RV:</strong> Chile aparece en una zona intermedia,
+  agrupado con países como España y Portugal — economías con mercados de tamaño
+  mediano y un nivel de desarrollo institucional moderadamente alto. Su posición
+  relativa confirma el puesto 33° en el GCI 2019.
+</div>
+
+---
+
