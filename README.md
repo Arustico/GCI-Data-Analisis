@@ -202,6 +202,7 @@ Se utilizaron coeficientes RV para medir similitud a lo largo de las matrices an
 ------------------------------------------------------------------------
 
 ## 7. Esctructura del trabajo
+La estructura del proyecto se divide en 3 partes principales. Una parte es la ```data```, otra son los ```notebooks``` de análisis exploratorios y de testeo y otro corresponde al ```website```, que muestra los resultados de forma íntegra y lúdica. 
 
 ```
 ├── data
@@ -215,31 +216,49 @@ Se utilizaron coeficientes RV para medir similitud a lo largo de las matrices an
 │       ├── pdf
 │       ├── puntajes_paises_1.xlsx
 │       └── puntajes_paises_2.xlsx
-├── doc
-│   ├── figures
-│   ├── Presentación TFM.pdf
-│   ├── tables
-│   └── TMF_AN_MAMB_V1.3.pdf
-├── LICENSE
 ├── notebooks
+│   ├── analisis_gci_py.qmd
+│   ├── analisis_gci_r.qmd
 │   └── analisis_indices_wef.ipynb
 ├── poetry.lock
 ├── pyproject.toml
 ├── README.md
-└── src
-    ├── biplots_utils.py
-    ├── data_transformation.py
-    ├── extraction_index.py
-    └── pybiplots
-        ├── GH_Biplot.py
-        ├── HJ_Biplot.py
-        └── JK_Biplot.py
-
+├── renv/
+├── renv.lock
+├── reportes
+│   ├── figures/
+│   ├── tables/
+│   ├── Presentación TFM.pdf
+│   └── TMF_AN_MAMB_V1.3.pdf
+├── src
+│   ├── analisis_statis.R
+│   ├── biplots_utils.py
+│   ├── data_transformation.py
+│   ├── extraction_index.py
+│   ├── pybiplots
+│   │   ├── GH_Biplot.py
+│   │   ├── HJ_Biplot.py
+│   │   ├── __init__.py
+│   │   └── JK_Biplot.py
+│   └── setup_r.sh
+└── website
+    ├── biplot.qmd
+    ├── deploy.sh
+    ├── eda.qmd
+    ├── index.qmd
+    ├── _quarto.yml
+    ├── _site/
+    ├── statis.qmd
+    └── style.css
 ```
 
 ------------------------------------------------------------------------
 
 ## 8. Reproducibilidad
+### Environments
+
+- renv
+- poetry
 
 ### Dependencias de Python
 
@@ -256,6 +275,10 @@ Se utilizaron coeficientes RV para medir similitud a lo largo de las matrices an
 -   FactoMineR
 -   ggplot2
 
+### Dependencias para website
+
+- quarto 
+
 ------------------------------------------------------------------------
 
 ## 9. Consideraciones metodológicas
@@ -268,9 +291,14 @@ Los valores de GCI son comparables solo dentro de los periodos por separado:
 Una comparación directa a lo largo del cambio metodológico, es estadísticamente inválida sin ajustes estructurales.
 
 ## Fuentes
-<!-- 
-1. Fuente 1 
-2. FUente 2.
--->
+
+- Farris, J. S. (1969). On the Cophenetic Correlation Coefficient. *Systematic Zoology*, 18, 279. [DOI](https://doi.org/10.2307/2412324)
+- Ferreira, E., Macedo, P., Fernandes, E., & Coelho, M.C. (2023). A combined framework of Biplots and Machine Learning for real-world driving volatility. *Sustainable Cities and Society*, 99, 104945. [DOI](https://doi.org/10.1016/j.scs.2023.104945)
+- Galindo Villardón, M.P. (1986). Una alternativa de representación simultánea: HJ-Biplot. *Questiio*, 10, 13–23.
+- Olczyk, M., Kuc-Czarnecka, M., & Saltelli, A. (2022). Changes in the GCI 4.0 Methodology. *Journal of Competitiveness*, 14, 118–135. [DOI](https://doi.org/10.7441/joc.2022.01.07)
+- Raschka, S., & Mirjalili, V. (2017). *Python Machine Learning*. Packt Publishing.
+- Toledo-San-Martín, Á., Ruff, C., & Vicente-Galindo, P. (2025). A multivariate framework for measuring international mobility in tertiary education. *Neutrosophic Sets and Systems*, 89, 333–356.
+- Torres-Cubilla, C. (2020). *PyBiplots*. GitHub. [Repositorio](https://github.com/carlostorrescubila/PyBiplots)
+- WEF (2015–2019). *The Global Competitiveness Report* (ediciones 2014-15 a 2019). World Economic Forum. [www.weforum.org/gcr](https://www.weforum.org/gcr)
 
 
