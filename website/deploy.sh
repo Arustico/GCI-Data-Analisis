@@ -36,7 +36,8 @@ set +a
 [ -n "${PORTFOLIO_DIR:-}" ] || error "PORTFOLIO_DIR no está definido en .env"
 [ -n "${GCI_SUBFOLDER:-}" ] || error "GCI_SUBFOLDER no está definido en .env"
 
-COMMIT_MSG="${1:-"Actualiza análisis GCI: $(date '+%Y-%m-%d %H:%M')"}"
+#COMMIT_MSG="${1:-"Actualiza análisis GCI: $(date '+%Y-%m-%d %H:%M')"}"
+COMMIT_MSG="Actualización Website del Análisis GCI: $(date '+%Y-%m-%d %H:%M')"
 
 # ── Verificaciones previas ────────────────────────────────────────────────────
 info "Verificando requisitos..."
@@ -71,8 +72,10 @@ if git diff --quiet && git diff --staged --quiet; then
     warning "No hay cambios nuevos. Nada que publicar."
     exit 0
 fi
-
-git add "$GCI_SUBFOLDER/"
+info "Estado del Git..."
+git status
+info "Agregando cambios..."
+git add .
 git commit -m "$COMMIT_MSG"
 git push || error "git push falló. Verifica tu conexión y permisos."
 
