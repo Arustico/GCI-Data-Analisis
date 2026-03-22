@@ -5,6 +5,9 @@ project:
 website:
   title: "Coherencia y Discontinuidades del GCI: 2014 - 2019"
   site-url: https://arustico.github.io/arielnunezsalinas.github.io/gci
+  search:
+    location: navbar
+    type: overlay
   navbar:
     left:
       - text: "Resumen"
@@ -19,6 +22,9 @@ website:
       - icon: github
         href: https://github.com/Arustico/GCI-Data-Analisis
         aria-label: "Repositorio GitHub"
+      - icon: bookmark-star-fill
+        href: https://arustico.github.io/arielnunezsalinas.github.io
+        aria-label: "Portafolio"
 
 format:
   html:
