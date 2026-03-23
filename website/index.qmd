@@ -1,6 +1,6 @@
 ---
 title: "Coherencia, Estabilidad y Discontinuidades del Índice de Competitividad Global"
-subtitle: "Un Estudio Multivariante para el Período 2014–2019 · World Economic Forum"
+subtitle: "Un Estudio Multivariante para el Período 2014–2019"
 author: "Ariel Núñez Salinas"
 date: "Diciembre 2025"
 ---
@@ -87,7 +87,7 @@ Este análisis aborda esa pregunta para un conjunto de **55 países** durante el
     <div class="kpi-label">grupos temporales detectados por agrupamiento jerárquico</div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-value">0.98</div>
+    <div class="kpi-value"> >0.94</div>
     <div class="kpi-label">coeficiente Cophenético (agrupamiento por año) — calidad excelente</div>
   </div>
   <div class="kpi-card">

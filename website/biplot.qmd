@@ -97,11 +97,6 @@ else:
 ---
 
 
-
-
-
-
-
 # Agrupamiento Jerárquico
 
 El agrupamiento jerárquico construye una jerarquía de similitudes entre objetos
@@ -116,7 +111,7 @@ from scipy.spatial.distance import pdist
 from scipy.cluster.hierarchy import linkage, dendrogram, cophenet
 
 # ─── Función auxiliar para calcular y graficar agrupamiento ───────────────
-def plot_dendrograma(col: str, titulo: str, figsize=(10, 5)) -> None:
+def plot_dendrograma(col: str, titulo: str, figsize=(8, 5)) -> None:
     """
     Calcula el agrupamiento jerárquico (Ward + Euclidiana) y
     grafica el dendrograma para la columna `col` como índice.
@@ -168,14 +163,14 @@ def plot_dendrograma(col: str, titulo: str, figsize=(10, 5)) -> None:
 plot_dendrograma(
     "AÑO",
     "Agrupamiento Jerárquico — Años como observaciones",
-    figsize=(10, 4),
+    figsize=(8, 4),
 )
 ```
 
 <div class="insight-box">
   <strong>Resultado clave:</strong> el dendrograma separa claramente dos grupos —
   <em>2014–2017</em> vs. <em>2018–2019</em>. Con un coeficiente Cophenético de
-  ~0.98, este agrupamiento captura fielmente la geometría real de los datos.
+  ~0.93, este agrupamiento captura fielmente la geometría real de los datos.
   La brecha entre ambos grupos es la "huella" del cambio metodológico.
 </div>
 
@@ -186,7 +181,7 @@ plot_dendrograma(
 plot_dendrograma(
     "ORG",
     "Agrupamiento Jerárquico — Organización (OCDE, BRICS, Otro)",
-    figsize=(10, 3.5),
+    figsize=(8, 3.5),
 )
 ```
 
@@ -197,7 +192,7 @@ plot_dendrograma(
 plot_dendrograma(
     "BLOCK",
     "Agrupamiento Jerárquico — Bloque Regional",
-    figsize=(10, 4.5),
+    figsize=(8, 4.5),
 )
 ```
 
@@ -238,8 +233,8 @@ pais_cods = piv_pais.index.tolist()
 
 
 # Figura dendograma
-fig_dend_pais = pl.figure(constrained_layout=True)
-gs = GridSpec(1, 2, width_ratios=[2, 1.2], figure=fig_dend_pais)
+fig_dend_pais = pl.figure(figsize=(7,6),constrained_layout=True)
+gs = GridSpec(1, 2, width_ratios=[1.8, 0.8], figure=fig_dend_pais)
 
 ax_dend = fig_dend_pais.add_subplot(gs[0])
 orden_dendro = dendrogram(
@@ -387,31 +382,39 @@ for i, v in enumerate(var_exp[:4], 1):
 
 ```{python}
 #| echo: false
+#| output: false
 _grp_bp   = groups_org
 _lbl_bp   = aux_bp.index.tolist()
 _ngrp_bp  = len(set(_grp_bp))
 
-fig_biplot, _vec_bp = bipl.crear_biplot_interactivo(
-    HJ, groups=_grp_bp, text_label=_lbl_bp
+fig_biplot, vec = bipl.crear_biplot_interactivo(
+    HJ,
+    groups=_grp_bp,
+    text_label=_lbl_bp,
+    meta_bool=True,
+    filters=["Pilar", "Year"]
 )
-_vec_bp = _vec_bp.reset_index().rename(columns={"index": "primarykey"})
-_vec_bp[["Pilar", "Año"]] = pd.DataFrame(
-    _vec_bp["primarykey"].str.split("-").tolist(),
-    columns=["Pilar_key", "Año_key"],
-)
-_vec_bp["Pilar"] = _vec_bp["Pilar"].astype(int)
 
-fig_biplot = bipl.agregar_filtros_biplot(
-    fig_biplot, _vec_bp,
-    filter_cols=["Pilar", "Año"],
-    num_traces_previos=_ngrp_bp,
-)
+#fig_biplot, _vec_bp = bipl.crear_biplot_interactivo(
+#    HJ, groups=_grp_bp, text_label=_lbl_bp
+#)
+
 fig_biplot = fig_biplot.update_layout(
     title="HJ-Biplot — Países (puntos) vs. Pilares×Año (vectores)",
-    height=620, template="plotly_white", plot_bgcolor="#F4F8FB",
+    height=400, template="plotly_white", plot_bgcolor="#F4F8FB",
 )
-fig_biplot
+
+# Se agregan filtros
+from IPython.display import HTML
+html_str = bipl.inject_js_filters(
+                fig_biplot, vec,
+                ["Pilar", "Year"],
+                filepath="HJbiplot_fig_org.html",num_traces_previos=3)
+#HTML(html_str)
+
 ```
+
+<iframe src="HJbiplot_fig_org.html" width="100%" height="420"></iframe>
 
 <div class="insight-box">
   <strong>Cómo leer el Biplot:</strong>

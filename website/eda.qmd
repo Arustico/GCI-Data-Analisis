@@ -130,29 +130,25 @@ unique_years    = sorted(data_indicadores["AÑO"].unique())
 num_unique_years = len(unique_years)
 
 # Conteo de años de presencia por indicador
-desc_year_counts = (
-    data_indicadores
-    .groupby("DESCRIPCION_INDX_NORM")["AÑO"]
-    .nunique()
-    .reset_index()
-    .rename(columns={"AÑO": "n_años"})
-)
+presencia_indic = data_indicadores[data_indicadores["AÑO"] == 2014]["DESCRIPCION_INDX_NORM"].unique()
+count_presencia = []
+for yr, df in data_indicadores.groupby("AÑO"):
+    _presencia = df[df["DESCRIPCION_INDX_NORM"].isin(presencia_indic)]["DESCRIPCION_INDX_NORM"]
+    _count = _presencia.nunique()
+    count_presencia.append([yr, _count])
+    presencia_indic = _presencia.unique()
 
-# ─── Gráfica interactiva: histograma de presencia ─────────────────────────
-conteo = desc_year_counts["n_años"].value_counts().sort_index().reset_index()
-conteo.columns = ["Años presentes", "Cantidad de indicadores"]
+count_presencia = pd.DataFrame(count_presencia,columns=["Año", "Cantidad de Indicadores"])
+
 
 fig_inx_ = px.bar(
-    conteo,
-    x="Años presentes",
-    y="Cantidad de indicadores",
-    color="Años presentes",
+    count_presencia,
+    x="Año", y="Cantidad de Indicadores",
+    color="Cantidad de Indicadores",
     color_continuous_scale="Blues",
-    text="Cantidad de indicadores",
-    title="Distribución de indicadores según cuántos años\n estuvieron presentes (2014–2019)",
-    labels={"Años presentes": "N° de años presente", "Cantidad de indicadores": "N° de indicadores"},
-    template="plotly_white",
-)
+    )
+
+# ─── Gráfica interactiva: histograma de presencia ─────────────────────────
 fig_inx_ = fig_inx_.update_traces(textposition="outside", marker_line_width=0)
 fig_inx_ = fig_inx_.update_layout(
     showlegend=False,
@@ -160,8 +156,8 @@ fig_inx_ = fig_inx_.update_layout(
     xaxis=dict(tickmode="linear", dtick=1),
     plot_bgcolor="#F4F8FB",
     annotations=[dict(
-        text=f"<b>Total de indicadores únicos: {desc_year_counts['DESCRIPCION_INDX_NORM'].nunique()}<br>Período: 2014–2019</b>",
-        x=4.5, y=115,
+        text=f"<b>Total de indicadores únicos: {data_indicadores['DESCRIPCION_INDX_NORM'].nunique()}<br>Período: 2014–2019</b>",
+        x=2018.5, y=115,
         showarrow=False,
         bgcolor="white",
         bordercolor="#2C6E8A",
@@ -169,6 +165,7 @@ fig_inx_ = fig_inx_.update_layout(
         font=dict(size=11),
     )]
 )
+
 ```
 ```{python}
 #| echo: false
@@ -178,7 +175,7 @@ fig_inx_.show()
 ```{=html}
 <p class="fig-note">
   Solo 5 indicadores estuvieron presentes en los 6 años de estudio —
-  evidencia directa de la alta rotación de indicadores entre metodologías.
+  evidencia directa de la alta rotación de indicadores entre años y metodologías.
 </p>
 ```
 
@@ -187,6 +184,14 @@ fig_inx_.show()
 #| echo: false
 #| output: false
 # ─── Tabla: indicadores presentes en todos los años ───────────────────────
+desc_year_counts = (
+    data_indicadores
+    .groupby("DESCRIPCION_INDX_NORM")["AÑO"]
+    .nunique()
+    .reset_index()
+    .rename(columns={"AÑO": "n_años"})
+)
+
 indicadores_completos = desc_year_counts[desc_year_counts["n_años"] >= num_unique_years - 1]
 
 usedcols = ["DESCRIPCION_INDX_NORM", "NUM_INDX", "PILAR", "SUBPILAR",
@@ -202,13 +207,13 @@ tabla_completos = (
 
 # Mostrar como tabla Plotly interactiva
 fig_tabla = go.Figure(data=[go.Table(
-    columnwidth=[300, 80, 80, 200, 80],
+    columnwidth=[250, 80, 80, 200, 130],
     header=dict(
-        values=["<b>Indicador</b>", "<b>Pilares</b>", "<b>Sub-pilares</b>",
-                "<b>Descripción pilar</b>", "<b>Años</b>"],
+        values=["Indicador", "Pilares", "Sub-pilares",
+                "Descripción pilar", "Años"],
         fill_color="#2C6E8A",
-        font=dict(color="white", size=12),
-        align="left",
+        font=dict(color="white", size=12, weight="bold"),
+        align="center",
         height=35,
     ),
     cells=dict(
@@ -226,10 +231,11 @@ fig_tabla = go.Figure(data=[go.Table(
         height=28,
     )
 )])
+
 fig_tabla = fig_tabla.update_layout(
     title="Indicadores presentes en todos los años del período de estudio",
     margin=dict(l=0, r=0, t=40, b=0),
-    height=230,
+    height=300,
 )
 ```
 ```{python}
@@ -349,7 +355,7 @@ fig_miss_val.show()
 
 ```{=html}
 <p class="fig-note">
-  Solo Líbano y Emiratos Árabes Unidos superan levemente el 4 % de datos
+  Africa del sur es el país con mayor falta de datos (14%), le siguen Líbano y Emiratos Árabes Unidos superan levemente el 4 % de datos
   faltantes; el resto de los países están bien cubiertos.
 </p>
 ```
@@ -453,7 +459,7 @@ for idx, año in enumerate(años):
             zmin=-1, zmax=1,
             colorscale="RdBu",
             showscale=(idx == 0),
-            colorbar=dict(x=1.01, len=0.96, y=0.45) if idx == 0 else None,
+            colorbar=dict(x=1.01, len=0.98, y=0.5) if idx == 0 else None,
             text=cm.values.round(2),
             texttemplate="%{text}",
             textfont=dict(size=8),
@@ -463,9 +469,10 @@ for idx, año in enumerate(años):
     )
 
 fig_corr = fig_corr.update_layout(
-    title_text="Matrices de Correlación entre Pilares por Año",
+    title_text="<b>Matrices de Correlación entre Pilares por Año</b>",
+    margin=dict(t=80),
     title_font_size=16,
-    height=1100,
+    height=900,
     width=600,
     template="plotly_white",
     plot_bgcolor="#F4F8FB",
@@ -478,10 +485,15 @@ fig_corr.show()
 
 <div class="insight-box">
   <strong>Lectura clave:</strong> Las matrices de 2014–2017 presentan una estructura
-  de correlaciones similar entre sí. A partir de 2018 la estructura cambia visiblemente —
-  en particular el pilar 10 (Tamaño del Mercado) pierde la fuerte correlación negativa
-  que tenía con otros pilares. Esto anticipa la ruptura estructural que confirmarán los
-  análisis multivariantes.
+  de correlaciones similar entre sí — salvo por el pilar 3 en el 2016 que para ese año
+  pasa a ser Adopción de TIC que hasta 2015 era Entorno macroeconómico.
+
+  A partir de 2018 la estructura cambia visiblemente —
+  en particular el pilar 10 (Tamaño del Mercado) A partir de 2018 la estructura cambia visiblemente —
+  en particular el pilar 10 (Tamaño del Mercado) que pasa de tener bajas correlaciones positivas
+  a bajas correlaciones negativas. Lo que anticipa los cambios estructurales que confirman los análisis
+  multivariantes.
+
 </div>
 
 ---
