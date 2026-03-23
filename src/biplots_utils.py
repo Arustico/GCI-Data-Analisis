@@ -137,6 +137,8 @@ def crear_biplot_interactivo(
     arrow_head: int                    = DEFAULT_ARROW_HEAD,
     marker_size: int                   = DEFAULT_MARKER_SIZE,
     title: Optional[str]               = None,
+    meta_bool: Optional[bool]          = False,
+    filters: list[str]             = ["Pilar","Anio"]
 ) -> tuple[go.Figure, pd.DataFrame]:
     """
     Genera un biplot interactivo con Plotly a partir de un objeto HJ_Biplot
@@ -171,6 +173,10 @@ def crear_biplot_interactivo(
         Tamaño de los marcadores de individuos. Default 12.
     title : str | None
         Título del gráfico. Si es None se usa 'Biplot Interactivo'.
+    meta_bool: bool | False
+        Variable para determinar si escribe o no ``meta_dict``
+    filters: list | [Pilar, Anio]
+        Filtros para escribir meta_dict
 
     Returns
     -------
@@ -191,7 +197,7 @@ def crear_biplot_interactivo(
     >>> fig, vec = crear_biplot_interactivo(modelo, groups='Region', title='GCI 2019')
     >>> fig.show()
     """
-    # ── 1. Validar índices de ejes ────────────────────────────────────────────
+    # Validación de indices y ejes
     n_ejes = len(hj_biplot.explained_variance)
     for nombre, valor in (("axis_x", axis_x), ("axis_y", axis_y)):
         if not (0 <= valor < n_ejes):
@@ -200,14 +206,19 @@ def crear_biplot_interactivo(
                 f"El modelo tiene {n_ejes} ejes (0–{n_ejes - 1})."
             )
 
-    # ── 2. Preparar datos ─────────────────────────────────────────────────────
+    # Prepararación de datos
     # row_coordinates: coordenadas de los individuos (filas del biplot)
     ind = hj_biplot.row_coordinates.reset_index()
 
     # column_coordinates: coordenadas de las variables (vectores del biplot)
     vec = hj_biplot.column_coordinates.copy()
 
-    # ── 3. Nombrar ejes con varianza explicada ────────────────────────────────
+    if meta_bool: # el primary key es: pilar - año
+        vec = vec.reset_index().rename(columns={"index":"primarykey"})
+        vec[colsfilters] = pd.DataFrame(vec["primarykey"].str.split("-").to_list(),columns=[f"key-{filter}"for filter in colsfilters])
+
+    vec = vec.set_index("primarykey")
+    # Nombrar ejes con varianza explicada
     # Incluir el % de varianza facilita la interpretación del gráfico.
     axis1_label = _nombre_eje(hj_biplot, axis_x)
     axis2_label = _nombre_eje(hj_biplot, axis_y)
@@ -218,7 +229,7 @@ def crear_biplot_interactivo(
         f"Axis {axis_y + 1}": axis2_label,
     })
 
-    # ── 4. Scatter de individuos ──────────────────────────────────────────────
+    # Scatter de individuos
     fig = px.scatter(
         ind,
         x=axis1_label,
@@ -239,7 +250,10 @@ def crear_biplot_interactivo(
     for nombre_var, fila in vec.iterrows():
         x_fin = fila.iloc[axis_x]
         y_fin = fila.iloc[axis_y]
-
+        if meta_bool:
+            meta_dict = {col: str(fila[col]) for col in filters}
+        else:
+            meta_dict = None
         fig.add_trace(
             go.Scatter(
                 x=[0, x_fin],
@@ -258,11 +272,12 @@ def crear_biplot_interactivo(
                 name=str(nombre_var),
                 hoverinfo="text",
                 hovertext=str(nombre_var),
+                meta = meta_dict,
             )
         )
 
-    logger.debug("Biplot creado: %d individuos, %d vectores.", len(ind), len(vec))
-
+    #logger.debug("Biplot creado: %d individuos, %d vectores.", len(ind), len(vec))
+    print("Biplot creado: %d individuos, %d vectores.", len(ind), len(vec))
     # ── 6. Layout base ────────────────────────────────────────────────────────
     fig.update_layout(
         xaxis_title=axis1_label,
@@ -272,6 +287,7 @@ def crear_biplot_interactivo(
     )
 
     return fig, vec
+
 
 
 # ══════════════════════════════════════════════════════════════════════════════
