@@ -215,7 +215,7 @@ def crear_biplot_interactivo(
 
     if meta_bool: # el primary key es: pilar - año
         vec = vec.reset_index().rename(columns={"index":"primarykey"})
-        vec[colsfilters] = pd.DataFrame(vec["primarykey"].str.split("-").to_list(),columns=[f"key-{filter}"for filter in colsfilters])
+        vec[filters] = pd.DataFrame(vec["primarykey"].str.split("-").to_list(),columns=[f"key-{filter}"for filter in filters])
 
     vec = vec.set_index("primarykey")
     # Nombrar ejes con varianza explicada
@@ -534,6 +534,138 @@ def exportar_figure_json(fig: go.Figure, filename: str) -> Path:
     fig.write_json(filename, pretty=False, remove_uids=False)
     print(f"✓ Exportado: {output_path}  ({output_path.stat().st_size / 1024:.1f} KB)")
     return output_path
+
+
+import json
+
+def inject_js_filters(
+    fig: go.Figure,
+    vec: pd.DataFrame,
+    filter_columns: list[str],
+    num_traces_previos: Optional[int] = 0,
+    filepath:Optional[Path] = None,
+    return_html:bool = False):
+    """
+    Inyecta filtros combinables vía JavaScript en una figura Plotly.
+
+    Parameters
+    ----------
+    fig : go.Figure
+    vec : pd.DataFrame
+        DataFrame con columnas de filtrado.
+    filter_columns : list[str]
+    num_traces_previos : int
+        Trazas que siempre permanecen visibles.
+    """
+
+    # Validación fuerte
+    for col in filter_columns:
+        if col not in vec.columns:
+            raise ValueError(f"Columna '{col}' no existe en vec.")
+
+    # Obtener valores únicos por filtro
+    unique_values = {
+        col: sorted(vec[col].dropna().sort_values().astype(str).unique().tolist())
+        for col in filter_columns
+    }
+
+    unique_values_json = json.dumps(unique_values)
+    print(f"Valores filtros: {unique_values_json}")
+    js_code = f"""
+            window.addEventListener("DOMContentLoaded", function() {{
+
+                const graphDiv = document.querySelector(".plotly-graph-div");
+                if (!graphDiv) {{
+                    console.error("Plotly graph no encontrado");
+                    return;
+                }}
+                const filters = {unique_values_json};
+
+                let selected = {{}};
+
+                // Crear contenedor
+                const container = document.createElement("div");
+                container.style.marginBottom = "20px";
+
+                // Crear dropdowns dinámicamente
+                Object.keys(filters).forEach(col => {{
+
+                    selected[col] = null;
+
+                    const label = document.createElement("label");
+                    label.innerHTML = col + ": ";
+                    label.style.marginRight = "8px";
+
+                    const select = document.createElement("select");
+                    select.style.marginRight = "20px";
+
+                    const optAll = document.createElement("option");
+                    optAll.value = "";
+                    optAll.text = "Todos";
+                    select.appendChild(optAll);
+
+                    filters[col].forEach(val => {{
+                        const opt = document.createElement("option");
+                        opt.value = val;
+                        opt.text = val;
+                        select.appendChild(opt);
+                    }});
+
+                    select.addEventListener("change", function(e) {{
+                        selected[col] = e.target.value || null;
+                        applyFilters();
+                    }});
+
+                    container.appendChild(label);
+                    container.appendChild(select);
+                }});
+
+                graphDiv.parentNode.insertBefore(container, graphDiv);
+
+                function applyFilters() {{
+
+                    const visibility = graphDiv.data.map((trace, i) => {{
+
+                        if (i < {num_traces_previos}) return true;
+
+                        if (!trace.meta) return true;
+
+                        for (let key in selected) {{
+                           if (
+                                selected[key] !== null &&
+                                String(trace.meta[key]) !== selected[key]
+                            ){{
+                                return false;
+                            }}
+                        }}
+
+                        return true;
+                    }});
+
+                    Plotly.restyle(graphDiv, {{ visible: visibility }});
+                }}
+
+            }});
+            """
+    fig.add_layout_image(dict())  # hack para forzar render completo
+    if not filepath:
+        filepath = "output.html"
+
+    if return_html:
+        return fig.to_html(
+            full_html=False,
+            include_plotlyjs="cdn",
+            post_script=js_code,
+            )
+    else:
+        fig.write_html(
+            filepath,
+            include_plotlyjs="cdn",
+            post_script=js_code,
+            full_html=True,
+            auto_open=False,
+        )
+        return fig
 
 # ══════════════════════════════════════════════════════════════════════════════
 # UTILIDADES INTERNAS
