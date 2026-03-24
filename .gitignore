@@ -53,8 +53,7 @@ R/
 # Datos
 # =====================
 data/raw/
-tmp/*
-
+cache/
 
 # =====================
 # Reportes y outputs
