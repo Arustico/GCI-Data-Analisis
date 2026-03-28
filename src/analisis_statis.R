@@ -46,7 +46,8 @@ FOLDER_PRJ <- Sys.getenv(c("FOLDER_PRJCT"))
 FOLDER_PROCESSED <- Sys.getenv(c("FOLDER_PROCESSED"))
 setwd(FOLDER_PRJ)
 
-filename <- file.path(FOLDER_PROCESSED,"data_pivoted_2.csv")
+filename <- file.path(FOLDER_PROCESSED,"data_pivoted_2.csv") # países como índices
+#filename <- file.path(FOLDER_PROCESSED,"data_pivoted.csv")    # pilares cómo índices
 datos <- read.csv(filename)
 datos <- as.data.frame(datos)
 
@@ -214,52 +215,137 @@ s.label(
 # ⚠️  Ajustar `codigo_chile` si el identificador en los datos es distinto
 #     (e.g., "Chile", "chile", "CHL").
 
-codigo_chile <- "CHL"
-
-idx_chile <- which(rownames(coord_paises_rv) == codigo_chile)
-idx_otros <- setdiff(seq_len(nrow(coord_paises_rv)), idx_chile)
-
-# Verificar que Chile existe en los datos antes de graficar
-if (length(idx_chile) == 0) {
-  warning(
-    "El código '", codigo_chile, "' no se encontró en los datos. ",
-    "Códigos disponibles: ",
-    paste(rownames(coord_paises_rv), collapse = ", ")
-  )
-} else {
-
-  plot(
-    coord_paises_rv[, 1], coord_paises_rv[, 2],
-    type = "n",
-    xlab = "Eje 1 (compromiso)",
-    ylab = "Eje 2 (compromiso)",
-    main = "Mapa RV – Países (Chile destacado)"
-  )
-
-  # Resto de países en gris
-  points(
-    coord_paises_rv[idx_otros, 1],
-    coord_paises_rv[idx_otros, 2],
-    pch = 16, col = "grey70", cex = 0.9
-  )
-  text(
-    coord_paises_rv[idx_otros, 1],
-    coord_paises_rv[idx_otros, 2],
-    labels = rownames(coord_paises_rv)[idx_otros],
-    pos = 3, col = "grey50", cex = 0.6
-  )
-
-  # Chile en rojo
-  points(
-    coord_paises_rv[idx_chile, 1],
-    coord_paises_rv[idx_chile, 2],
-    pch = 19, col = "red", cex = 1.8
-  )
-  text(
-    coord_paises_rv[idx_chile, 1],
-    coord_paises_rv[idx_chile, 2],
-    labels = codigo_chile,
-    pos = 3, col = "red", cex = 1.0, font = 2
-  )
+if (grepl("data_pivoted_2.csv", filename, fixed=TRUE)){  
+  codigo_chile <- "CHL"
+  
+  idx_chile <- which(rownames(coord_paises_rv) == codigo_chile)
+  idx_otros <- setdiff(seq_len(nrow(coord_paises_rv)), idx_chile)
+  
+  # Verificar que Chile existe en los datos antes de graficar
+  if (length(idx_chile) == 0) {
+    warning(
+      "El código '", codigo_chile, "' no se encontró en los datos. ",
+      "Códigos disponibles: ",
+      paste(rownames(coord_paises_rv), collapse = ", ")
+    )
+  } else {
+  
+    plot(
+      coord_paises_rv[, 1], coord_paises_rv[, 2],
+      type = "n",
+      xlab = "Eje 1 (compromiso)",
+      ylab = "Eje 2 (compromiso)",
+      main = "Mapa RV – Países (Chile destacado)"
+    )
+  
+    # Resto de países en gris
+    points(
+      coord_paises_rv[idx_otros, 1],
+      coord_paises_rv[idx_otros, 2],
+      pch = 16, col = "grey70", cex = 0.9
+    )
+    text(
+      coord_paises_rv[idx_otros, 1],
+      coord_paises_rv[idx_otros, 2],
+      labels = rownames(coord_paises_rv)[idx_otros],
+      pos = 3, col = "grey50", cex = 0.6
+    )
+  
+    # Chile en rojo
+    points(
+      coord_paises_rv[idx_chile, 1],
+      coord_paises_rv[idx_chile, 2],
+      pch = 19, col = "red", cex = 1.8
+    )
+    text(
+      coord_paises_rv[idx_chile, 1],
+      coord_paises_rv[idx_chile, 2],
+      labels = codigo_chile,
+      pos = 3, col = "red", cex = 1.0, font = 2
+    )
+  }
 }
 
+# ── 6.6 Validaciones ───────────────────────────────────────────
+# La matriz RV (entre tablas) se extraen los autovalores.
+# La matriz de compromiso se justifica porque el primer autovalor es mucho más 
+# grande que los demás, conservando la mayória de la variabilidad de la data
+# y justificando que exista una interestructura coherente. 
+
+# Autovalores
+eig_rv <- res.statis$C.eig # autovalores
+prop_var <- eig_rv / sum(eig_rv) # proporción explicada
+round(prop_var,4)
+
+barplot(
+  prop_var,
+  main = "Autovalores - Interestructura (Matriz RV)",
+  ylab = "Proporción de varianza",
+  xlab = "Ejes",
+  col = "steelblue"
+  )
+
+# cos2
+coord <- res.statis$C.li
+
+# Distancia total al origen en el espacio completo
+dist2_total <- rowSums(coord^2)
+
+# Cos2 para eje 1 y 2
+cos2_eje1 <- coord[,1]^2 / dist2_total
+cos2_eje2 <- coord[,2]^2 / dist2_total
+cos2_total <- cos2_eje1 + cos2_eje2
+
+
+hist(cos2_total,
+     main="Distribución Cos² – Observaciones",
+     col="steelblue")
+
+
+pie(peso_paises,
+    main="Contribución de cada país al compromiso")
+
+
+# Chequeo de diferencias estructurales en los pilares
+scores_eje1 <- res.statis$C.li[,1]
+compromise <- res.statis$C.li
+# correlacion simple
+cor_pilares_eje1 <- cor(compromise, scores_eje1)
+round(cor_pilares_eje1, 3)
+
+
+cols_pre  <- grep("2014|2015|2016|2017", colnames(compromise))
+cols_post <- grep("2018|2019", colnames(compromise))
+
+library(tidyr)
+library(dplyr)
+
+df <- as.data.frame(res.statis$C.li)
+df$Pilar_Año <- rownames(df)
+
+df <- df %>%
+  separate(Pilar_Año, into = c("Pilar","Año"), sep = "-")
+
+df$Año <- as.numeric(df$Año)
+
+resumen <- df %>%
+  group_by(Pilar) %>%
+  summarise(
+    pre  = mean(C1[Año <= 2017]),
+    post = mean(C1[Año >= 2018])
+  ) %>%
+  mutate(
+    delta_abs = abs(post - pre),
+    delta_pct = delta_abs / abs(pre),
+    delta_pct_perc = delta_pct * 100
+  )
+
+resumen <- resumen[order(-resumen$delta_pct),]
+
+write.csv2(resumen, "./cache/cambios_pilares_compromiso.csv")
+# res.statis$C.li -> correlación con el eje 1 y 2 de compromiso de cada pilar
+# Pilar     2014      2019        menciones
+#------------------------------------------------------------------------
+#  3   -0.2319109 -0.3096154    -0.2001295 (2016)
+# 10   -0.3448419 -0.1450796
+# 7    -0.3173680 -0.3210835

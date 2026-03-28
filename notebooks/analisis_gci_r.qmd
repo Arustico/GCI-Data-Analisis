@@ -281,3 +281,58 @@ if (length(idx_chile) == 0) {
 
 ---
 
+## Validación de Statis
+
+La principal validación de STATIS es a través de los autovalores que se obtienen. Estos son un indicador de cuanta información (variabilidad) de los datos está contenida o es representada por los vectores de estos autovalores. Se espera que el primer autovalor sea mucho mayor que el resto de los ejes porque eso justifica que exista: es decir $\lambda_{1} >> \lambda_{n+1}, n>0$
+
+
+```{r}
+#| echo: false
+#| label: statis-autovalores-valid
+#| fig-height: 10
+# Autovalores
+eig_rv <- res.statis$C.eig # autovalores
+prop_var <- eig_rv / sum(eig_rv) # proporción explicada
+round(prop_var,4)
+
+barplot(
+  prop_var,
+  main = "Autovalores - Interestructura (Matriz RV)",
+  ylab = "Proporción de varianza",
+  xlab = "Ejes",
+  col = "steelblue"
+  )
+
+# cos2
+coord <- res.statis$C.li
+
+# Distancia total al origen en el espacio completo
+dist2_total <- rowSums(coord^2)
+
+# Cos2 para eje 1 y 2
+cos2_eje1 <- coord[,1]^2 / dist2_total
+cos2_eje2 <- coord[,2]^2 / dist2_total
+cos2_total <- cos2_eje1 + cos2_eje2
+
+
+hist(cos2_total,
+     main="Distribución Cos² – Observaciones",
+     col="steelblue")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
