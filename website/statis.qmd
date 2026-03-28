@@ -146,6 +146,8 @@ legend("topright",
 
 ## Compromiso y trayectorias de pilares
 
+Habitualmente, se comparan pilares a lo largo de periodos, sin considerar los cambios metodológicos. A continuación STATIS permite cuantificar y visualizar si los cambios de los pilares a lo largo del periodo, corresponden a factores económicos, estructurales, o una mezcla de ambos. Para determinarlo se analizó los cambios a nivel estructural de los pilares año a año. 
+
 ```{r}
 #| echo: false
 #| label: statis-compromise
@@ -167,10 +169,109 @@ s.label(
 )
 ```
 
+### ¿Cuanto cambió estructuralmente un pilar?
+
+```{=html}
+
+<table class="method-table">
+  <thead>
+    <tr>
+      <th> Rangos de cambio (%) del Pilar</th>
+      <th> Significado </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> < 5% </td>
+      <td> Ruido técnico o variación esperable. </td>
+    </tr>
+    <tr>
+      <td> 5% – 15% </td>
+      <td> Cambio leve / ajuste metodológico menor.</td>
+    </tr>
+    <tr>
+      <td> 15% – 25% </td>
+      <td> Cambio estructural moderado. </td>
+    </tr>
+    <tr>
+      <td> 25% </td>
+      <td> Cambio estructural fuerte. </td>
+    </tr>
+  </tbody>
+</table>
+```
+
+
+Para cuantificar el cambio estructural del pilar se calculó utilizando el promedio del coeficiente de correlación que obtuvo el pilar con el eje 1 del compromiso, separados en dos grupos: uno antes del cambio metodológico y el siguiente después del cambio metodológico. La siguiente tabla resume el criterio para determinar que tan importante es el cambio estructural del pilar. Es decir
+
+$$
+  \%\triangle P_n= 100 \times \frac{P_{n,\,C1.post} - P_{n,\,C1.prev}}{P_{n,\,C1.prev}}
+$$
+
+
+```{r}
+#|echo: false
+
+library(tidyr)
+library(dplyr)
+
+df <- as.data.frame(res.statis$C.li)
+df$Pilar_Año <- rownames(df)
+
+df <- df %>%
+  separate(Pilar_Año, into = c("Pilar","Año"), sep = "-")
+
+df$Año <- as.numeric(df$Año)
+
+resumen <- df %>%
+  group_by(Pilar) %>%
+  summarise(
+    pre  = mean(C1[Año <= 2017]),
+    post = mean(C1[Año >= 2018])
+  ) %>%
+  mutate(
+    delta_abs = abs(post - pre),
+    delta_pct = delta_abs / abs(pre),
+    delta_pct_perc = delta_pct * 100,
+    cambio_llamativo = ifelse(delta_pct_perc > 20, "⚠ Alto", "Normal")
+  )
+
+resumen <- resumen[order(-resumen$delta_pct),]
+```
+
+```{r}
+#|echo: False
+
+library(gt)
+
+resumen %>%
+  gt() %>%
+  fmt_number(
+    columns = c(pre, post, delta_abs),
+    decimals = 3
+  ) %>%
+  fmt_number(
+    columns = delta_pct_perc,
+    decimals = 2
+  ) %>%
+  cols_label(
+    pre = "Pre 2018",
+    post = "Post 2018",
+    delta_abs = "Δ absoluto",
+    delta_pct_perc = "Δ %"
+  ) %>%
+  tab_header(
+    title = "Cambio estructural por pilar"
+  )
+
+```
+
+
 ```{r}
 #| echo: false
 #| label: statis-trayectorias
-#| fig-height: 10
+#| fig-height: 8
+#| fig-width: 10
 
 # ── Trayectorias por pilar ────────────────────────────────────────────────
 # Cada faceta muestra cómo evolucionó un pilar año a año en el espacio común.
@@ -281,3 +382,72 @@ if (length(idx_chile) == 0) {
 
 ---
 
+
+## Validación de Statis
+
+La principal validación de STATIS es a través de los autovalores que se obtienen. Estos son un indicador de cuanta información (variabilidad) de los datos está contenida o es representada por los vectores de estos autovalores. Se espera que el primer autovalor sea mucho mayor que el resto de los ejes porque eso justifica que exista: es decir $\lambda_{1} >> \lambda_{n+1}$, con $n=1,2...$.
+
+
+```{r}
+#| echo: false
+#| fig-height: 4
+# Autovalores
+eig_rv <- res.statis$C.eig # autovalores
+prop_var <- eig_rv / sum(eig_rv) # proporción explicada
+
+barplot(
+  prop_var,
+  main = "Autovalores - Interestructura (Matriz RV)",
+  ylab = "Proporción de varianza",
+  xlab = "Ejes",
+  col = "steelblue"
+  )
+
+# cos2
+coord <- res.statis$C.li
+
+# Distancia total al origen en el espacio completo
+dist2_total <- rowSums(coord^2)
+
+# Cos2 para eje 1 y 2
+cos2_eje1 <- coord[,1]^2 / dist2_total
+cos2_eje2 <- coord[,2]^2 / dist2_total
+cos2_total <- cos2_eje1 + cos2_eje2
+
+
+hist(cos2_total,
+     main="Distribución Cos² – Observaciones",
+     col="steelblue")
+```
+
+
+El eje 1 de compromiso de STATIS es el eje que contiene practicamente toda la información de la estructura, separando claramente tipos de economías y el eje 2 del compromiso que aunque es residual, interpretativamente es relevante pues separa economías muy relegadas de economías más consolidadas. 
+
+```{=html}
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-value">0.87</div>
+    <div class="kpi-label">Promedio de la matriz RV</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value">0.484 - 0.992</div>
+    <div class="kpi-label">Rango del matríz RV.</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value"> >0.979</div>
+    <div class="kpi-label">Promedio de las observaciones del cos2 del eje 1</div>
+  </div>
+</div>
+```
+
+Los resultados indican que:
+
+* Alto primer autovalor: Las estructuras son muy similares. No hay bloques estructurales muy diferenciados y el sistema es fuertemente coherente.
+
+* La estructura común domina fuertemente: Existen algunos pares de países con similitud moderada (~0.48), y también existen pares casi idénticos (~0.99).
+
+* El eje 1 captura prácticamente toda la variabilidad de las observaciones: La dimensión real del compromiso es 2, ya que se utilizó un $nf=2$ y la suma de los $cos^2$ es 1, lo que indica que la estructura inter-tablas es practicamente unidimensional.
+
+<div class="insight-box">
+  <strong>Globalmente:</strong> No hay "modelos estructurales alternativos". STATIS muestra  muy claramente que hay una sola estructura dominante.
+</div>
